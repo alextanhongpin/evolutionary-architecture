@@ -1,0 +1,31 @@
+digraph G {
+  node [shape = box]
+
+  p [label = Producer, style = filled, fillcolor = grey95]
+  db [label = Database, shape=ellipse]
+  c [label = "Content Enricher", style = filled, fillcolor = grey95]
+  d [label = Delivery, style = filled, fillcolor = grey95]
+  a [label = APIs]
+  q1 [label = Queue]
+
+  { rank = same; p; d; c; }
+
+  // Producer Pipeline
+  p -> db [label = Query]
+  db -> p [label = Stream]
+
+  // Content Builder Pipeline
+  p -> q1 [label = "Pub/Sub"]
+  q1 -> c [label= Pool]
+  q1 -> q1 [label = "Dead Letter"]
+
+  // Delivery Pipeline
+  c -> d [label = "Pub/Sub"]
+  d -> d [label = "Dead Letter"]
+
+  // API Calls
+  c -> a -> c
+
+  // Shadow
+  p -> c [style=dotted]
+}

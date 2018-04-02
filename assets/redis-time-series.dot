@@ -1,0 +1,37 @@
+digraph G {
+   rankdir = LR
+
+  node [shape = box]
+  g [label = "API Gateway"]
+  a [label = "Analytic API", style = filled, fillcolor = beige]
+  r [label = Redis, style = filled, color = firebrick3, fontcolor = white ]
+  s [label = Archiver]
+  db [label = Database, shape = ellipse]
+  cr [label = Cron]
+  u [label = User]
+
+  c1 [label = "Client 1"]
+  c2 [label = "Client 2"]
+  c3 [label = "Client N"]
+
+  c1 -> g
+  c2 -> g
+  c3 -> g [style = dotted]
+
+  // Gateway Pipeline
+  g -> a [label = "Aggregate"]
+  a -> r [label = "Write to"]
+ 
+  // Archiver Pipeline
+  s -> r
+  r -> s 
+  s -> db [label  = "Archive Data"]
+
+  // User Pipeline
+  u -> a  -> u
+  r -> u [label  = "Pub/Sub"]
+ { rank = same; u; a; }
+
+  cr -> s [label = "Pool every 15 min" ]
+  { rank = same; r; s;   }
+}

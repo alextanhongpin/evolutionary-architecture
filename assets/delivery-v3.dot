@@ -1,0 +1,64 @@
+digraph G {
+  compound = true
+  node [shape = box]
+
+  p [label = Source, style = filled, colorfill = grey95]
+  c1 [label = "Content Enricher 1", style = filled, colorfill = grey95]
+  c2 [label = "Content Enricher N", style = filled, colorfill = grey95]
+  w [label = Sink, style = filled, colorfill = grey95]
+  a1 [label = "APIs 1"]
+  a2 [label = "APIs N"]
+  q1 [label = Queue]
+  q2 [label = Queue]
+  q3 [label = Queue]
+  cr [label = Cron, style = filled, colorfill = grey95]
+  g [label = Generator, style = filled, colorfill = grey95]
+  d [label = Delivery, style = filled, colorfill = grey95]
+  s [label = Storage, shape = ellipse]
+  s2 [label = Storage, shape = ellipse]
+  db [label = Database, shape = ellipse]
+
+  // Producer Pipeline
+  p -> db [label = Query]
+  db -> p [label = Stream]
+
+  // Content Builder Pipeline
+  p -> q1 [label = "Pub/Sub"]
+  q1 -> c1 [label= Pool]
+  q1 -> q1 [label = "Dead Letter"]
+
+  c1 -> q2 [label = "Pub/Sub"]
+  q2 -> q2 [label = "Dead Letter"]
+  q2 -> c2 [label = "Pool"]
+
+  // Delivery Pipeline
+  c2 -> q3 [label = "Pub/Sub"]
+  q3 -> q3 [label = "Dead Letter"]
+  q3 -> w [label = Pool]
+
+  // API Calls
+  c1 -> a1 -> c1
+  c2 -> a2 -> c2
+
+  // Shadow
+  p -> c1 -> c2 -> w [style=dotted]
+
+  w -> s [label = "Write"]
+
+  // Preprocessing
+  subgraph cluster_0 {
+    label = Preprocessing
+    { rank = same; p; c1; c2; w; }
+    { rank = source; db; a1; a2; s; }
+    p db c1 a1 q1 s q2 c2 q3
+  }
+
+  subgraph cluster_1 {
+    label = "Actual Delivery"
+    { rank = same; g; d; cr; }
+    cr -> g [label = Schedule]
+    g -> s2 [label = Query]
+    s2 -> g [label = Stream]
+    g -> d [label = "Pub/Sub"]
+  }
+}

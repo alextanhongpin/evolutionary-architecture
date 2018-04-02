@@ -1,0 +1,19 @@
+digraph G {
+  node [shape=box]
+
+  p [label = Producer, style = filled, fillcolor = grey95]
+  db [label = Database, shape = ellipse]
+  c [label = "Content Enricher", style = filled, fillcolor = grey95]
+  d [label = Delivery, style = filled, fillcolor = grey95]
+  a [label = APIs]
+
+  { rank = same; p; d; c;  }
+  p -> db [label = Query]
+  db -> p [label = Stream]
+  p -> c [label = "Pub/Sub"]
+  c -> d [label = "Pub/Sub"]
+
+  d -> d [label = "Dead Letter"]
+
+  c -> a -> c
+}
