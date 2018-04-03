@@ -33,6 +33,10 @@ Naive implementation that does not scale once the number of users exceeds 50k.
 
 ![v3](../assets/delivery-v3.png)
 
+The **Content Enricher** can be scaled up and down accordingly:
+
+![load-balanced](../assets/delivery-load-balanced.png)
+
 - Split processing and delivery
 - Cache-aside
 - Circuit-breaker, retries, and timeout

@@ -1,0 +1,33 @@
+digraph G {
+  rankdir = LR;
+  compound = true;
+  node [shape = box]
+  lb [label = "Load Balancer"]
+
+  i1 [label = "Instance 1"]
+  i2 [label = "Instance 2"]
+  iN [label = "Instance N"]
+  in  [label = "In", shape = ellipse]
+  out [label = "Out", shape = ellipse]
+
+  q [label = "Queue"]
+
+
+ subgraph cluster_0 {
+  label = "Load Balanced Instance";
+
+
+  lb -> {i1; iN}
+  lb -> i2 [label = "Round Robin"]
+
+  {i1; iN} -> q
+  i2 -> q [label = "Pub/Sub"]
+
+  }
+
+
+ q -> q [label = "Dead Letter"]
+
+  in -> lb [lhead = cluster_0]
+  q -> out [ltail = cluster_0]
+}

@@ -24,3 +24,10 @@ Collection of best practices when designing an server-side and client-side archi
 - add database related stuff
 - add event sourcing
 - add real-time analytics stream
+
+
+## Generating Graphviz
+
+```bash
+$ dot -Tpng delivery-load-balance.dot -o delivery-load-balanced.png
+```
