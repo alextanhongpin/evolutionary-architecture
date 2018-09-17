@@ -34,3 +34,16 @@ if !ok {
   // Handle error
 }
 ```
+
+## Step-wise application logic
+
+Most of the time, we will have a large function that is composed of several dependencies, and we need to orchestrate the logic in a linearly-dependent way (requires the previous function to complete etc). But this make this function hard to test, as it is hard to test each steps independently. One option is to mock the dependency required for the steps - another is to just mock each steps. Note that we exclude db here, as it is already a mockable external dependency:
+
+```
+user = step.generateUser()
+time = step.generateFrozenTime()
+token = step.generateToken(user, time)
+db.user.save(user)
+
+return token
+```
