@@ -75,7 +75,8 @@ class User {
     this.id = id
     this.updated_at = Date.now()
   }
-  
+  // Bad: This is not desired, as different domains might have different requirements for the isActive state of user. 
+  // Say, if we have a Notification service, we might want to perform some conditional logic to determine if the user is active before sending them an email to encourage them to login. Or we might have another service to determine if the user is inactive for 1 year before sending them an email that their account will be deleted. In this sense, it's better to let the domain have control over the logic themselves, than the User Entity to have create a so-called `generic` function that caters for all logics.
   isActive() {
     // Perform logic to check if the updated_at is less than 2 hrs
   }
@@ -98,7 +99,35 @@ class UserModel {
   }
 }
 // It can also be an anonymous function, since the domain can be dynamic, and you might end up with different variation of this factory pattern.
-newUser := function () {
+let newUser = function () {
   return new User()
 }
 ```
+
+
+## Combining different entity
+
+Let's come back to the User and Notification example again. Say, we have this two supposedly independent entity, but we need both of them to create a new service - the Newsletter service, how do we do it?
+```js
+// Entities - holds the data.
+class User {}
+class Notification {}
+
+// Model - contains business logic.
+class UserModel {}
+class Notification {}
+```
+
+Logically, we should have another facade/mediator/bridge in between this two services that will orchestrate the logic. It can be a simple function:
+
+```
+function sendDailyNewsletter (userModel, notificationModel, user, notification) {
+  if (userModel.isActive(user)) {
+      let preferences = notificationModel.checkPreference(user)
+      let email = notificationModel.composeEmail(preferences)
+      notificationModel.send(email)
+  }
+}
+```
+
+Note that in some cases, it might be overkill to create user models using classes. You can simply pass down an anonymous function.
