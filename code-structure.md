@@ -159,3 +159,29 @@ However, we are skipping too many steps. However, breaking them into smaller fun
 ## Are Entity, Models and Repository the same?
 
 Entity are just the representation of a domain object, and are stored into the repository. Models are responsible for transforming the entity/generating them into the correct format.
+
+```
+Entity 
+- standalone object that represents the data structure in the storage
+- have basic getters/setters
+- may contain the basic validation for required/optional field, or types or min/max boundary, format (date, uri etc), but no domain-specific validation/business rules.
+- has the ability to create a new basic entity (with no knowledge on the business rules), possibly initiating the values to the default values (empty array, default min age etc)
+- e.g. We have a user entity, it can have getters/setters for name, age, email state. It can have basic validation for email, or name must be present, or age cannot be less than 0 etc. It has no knowledge on the business rules. They have to be applied to the entity.
+
+Model
+- may embed an object
+- may embed a validation policy (specific to business rules)
+- may create an Entity speficic to the domain. E.g. Create a new User entity with the role Admin assigned to it. 
+- may perform data injection, removal, modifications, apply business logic to the entity as it deems fit. 
+- may only perform operation on one entity (? how strict is this rule). The model should not be able to perform modification on several entity at the same time. That is the role of the service.
+- may define interaction with the storage layer through repository patterns, but no strict implementation. Just through interface. 
+
+Service
+- may contain several models
+- does not have direct access to the storage layer nor models - it should be communicated through the model.
+- handles at most request/response at the highest layer. Mockable.
+- may orchestrate complex business logic. 
+- should be pure and contains no side-effects. Initialization of values should be the models responsibility, and creation of any models should also be done by models.
+- could perform validation, but best for only nil/required values. Business logic validation should be left to the models.
+
+```
