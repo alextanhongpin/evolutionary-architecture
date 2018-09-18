@@ -131,3 +131,31 @@ function sendDailyNewsletter (userModel, notificationModel, user, notification) 
 ```
 
 Note that in some cases, it might be overkill to create user models using classes. You can simply pass down an anonymous function.
+
+
+## Functional patterns
+
+Scoping functions with side-effects is essential for good code structure. Below we have a simple function that registers a user. It performs several other mutating operations internally:
+```
+function registerUser(user) {
+  valid = validateUser(user)
+  parsedUser = removeAdditionalFields(user)
+  save(user)
+  token = generateTokenWithExpiryTime()
+  return token
+}
+```
+
+One of the advantage of a huge function that encapsulates this side-effects is that it can be mocked (skipping all steps) and we can easily test all the functions:
+
+```
+function mockRegisterUser() {
+  return 'fakeToken'
+}
+```
+
+However, we are skipping too many steps. However, breaking them into smaller functions means more mock functions are required to test the functionality. So where is the boundary between splitting and placing it in a large function? This is a tough question, especially when we have multiple dependencies and we need to orchestrate them together. For a start, we can isolate the infrastructure-layer dependencies, such as database, logger etc. For utill/helpers, we can utilize the pattern above to reduce the side-effects. Especially for time-related fields, it's essential to isolate them. We can use an interface to define the operations, but will soon fall into the interface flood.
+
+## Are Entity, Models and Repository the same?
+
+Entity are just the representation of a domain object, and are stored into the repository. Models are responsible for transforming the entity/generating them into the correct format.
