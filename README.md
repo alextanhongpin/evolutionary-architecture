@@ -51,6 +51,15 @@ References:
 - https://www.percona.com/blog/2007/03/13/to-uuid-or-not-to-uuid/
 - https://news.ycombinator.com/item?id=14523523
 
+## System Design Interviews
+
+References:
+- https://www.quora.com/How-would-you-design-a-large-system-like-Facebook
+- https://www.quora.com/How-do-you-answer-the-interview-question-How-would-you-design-and-scale-a-platform-like-Twitter
+- https://github.com/checkcheckzz/system-design-interview
+- https://medium.freecodecamp.org/how-to-system-design-dda63ed27e26
+- https://hackernoon.com/top-10-system-design-interview-questions-for-software-engineers-8561290f0444
+
 ## Generating Graphviz
 
 ```bash
