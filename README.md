@@ -38,7 +38,18 @@ References:
 - https://www.slideshare.net/davegardnerisme/unique-id-generation-in-distributed-systems
 - https://www.ctl.io/developers/blog/post/server-generated-keys-unique-ids-for-distributed-databases
 - http://antirez.com/news/99
+- Flick's Ticket Server: http://code.flickr.net/2010/02/08/ticket-servers-distributed-unique-primary-keys-on-the-cheap/
+- How Firebase generate a unique ID: https://firebase.googleblog.com/2015/02/the-2120-ways-to-ensure-unique_68.html
 
+## Compressing UUID to Binary
+
+Motivation: We want to compress UUID to binary in order to save the storage size (?) and also improve performance (?).
+
+References:
+- https://mysqlserverteam.com/storing-uuid-values-in-mysql-tables/
+- https://stackoverflow.com/questions/28251144/inserting-and-selecting-uuids-as-binary16
+- https://www.percona.com/blog/2007/03/13/to-uuid-or-not-to-uuid/
+- https://news.ycombinator.com/item?id=14523523
 
 ## Generating Graphviz
 
