@@ -60,6 +60,26 @@ References:
 - https://medium.freecodecamp.org/how-to-system-design-dda63ed27e26
 - https://hackernoon.com/top-10-system-design-interview-questions-for-software-engineers-8561290f0444
 
+
+## Projects
+
+- implementing scalable real-time chat/file transfer etc
+- notification delivery
+- file p2p
+- scraper + indexer with pagerank
+- live news feed
+- recommendation engine for github, stocks etc
+- routing problem (searching cheapest fares for flight etc)
+- twitter/instagram/fb/uber/spotify/youtube
+- streaming architecture like netflix
+- photo serving service
+
+## APIs
+
+- design sample apis for financial stuff
+- design sample api for music player
+- design sample api for notification delivery
+
 ## Generating Graphviz
 
 ```bash
