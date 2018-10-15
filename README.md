@@ -73,6 +73,7 @@ References:
 - twitter/instagram/fb/uber/spotify/youtube
 - streaming architecture like netflix
 - photo serving service
+- facebook's safety check feature
 
 ## APIs
 
