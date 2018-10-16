@@ -8,6 +8,7 @@ Collection of best practices when designing an server-side and client-side archi
   - Omni-Channel Delivery Engine
   - [Engineers.my Event Page](https://github.com/alextanhongpin/go-grpc-event)
   - [go-hook, a Webhook Server](https://github.com/alextanhongpin/go-hook)
+  - [go-chat, a chat server](https://github.com/alextanhongpin/go-chat)
 - Language
   - [NodeJS](https://github.com/alextanhongpin/node-rest)
 - Machine Learning
