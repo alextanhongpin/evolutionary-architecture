@@ -183,5 +183,47 @@ Service
 - may orchestrate complex business logic. 
 - should be pure and contains no side-effects. Initialization of values should be the models responsibility, and creation of any models should also be done by models.
 - could perform validation, but best for only nil/required values. Business logic validation should be left to the models.
-
 ```
+
+## No-op
+
+In go (or any language with interface), it is better to create `Nop` structs that fulfils the interface, especially for dependencies that does not need to be tested (or just need to be marked as success test). This makes testing easier, since you do not want to test chaining the different logics at the same time. 
+
+
+## Model in golang
+
+I've been using the models to call the repository in golang for quite a while, then I realise it's an anti-pattern. Because it kept things nested (model needs to initialize the repository) and there can be a lot of unnecessary layer when it's just a plain CRUD (service calls model, which just call the repository). It also makes testing harder, due the initialization sequence (repo -> model -> service). A better way is to just let the model take the parameter it needs, and validate it. So model and repository stays in the same layer. This makes testing a whole lot easier, since we do not need to initialize the repository to mock the results before calling the model. Instead, the values can be passed to the model directly. 
+
+## If/else business logic vs Chain of Responsibility
+
+Rather than having an if/else statement, we can instead use chain of responsibility to delegate the work to be done. This is particularly useful when testing, because we can scope the work and test the logic independantly on the hardcoded if/else in the code section.
+
+## CQRS Naming Convention
+It's hard to find proper CQRS naming convention, hence I've decided to find what's useful and add it here. Some useful guideline is:
+- separate read and write
+- separate command and events
+- use `verb-noun` for commands
+- use `noun-verb` for events in past tense
+
+E.g. Write Service
+
+| Command | Event |
+| --------|-------|
+| CreateEvent | EventCreated |
+| ChangeCustomerLocale | CustomerLocaleChanged |
+| MakeCustomerPreferred | CustomerPreferredMade |
+| EditCustomerDetails | CustomerDetailsEdited | 
+
+Note that it is best to avoid `REST` terms like `UPDATE`, because there's a loss of information here (what is being updated?). In other words, be as specific as possible and group necessary fields that needs to be updated. E.g. `UpdateUserPreference`, `UpdateUserAddress`. If possible, all `WRITE` services should be logged, since they change the state of the application, unlike `READ` services.
+
+E.g. Read Service
+
+| Command | Event |
+| --------|-------|
+| GetCustomer | - |
+| GetCustomerByName | - |
+| GetPreferredCustomer | - |
+
+For `boolean/flags`, you can use the term `Mark/Set` to indicate status change. Don't use ambiguous term such as `Toggle` - they do not provide information of the end state of the action. E.g. when delivering a food - `MarkFoodDelivered`, or order `MarkOrderConfirmed`.
+
+For `update`, note that it can give more meaningful context compared to traditional CRUD. Say we have a separate Ops team to handle user orders, and the user called the customer service to amend the changes made to the order (which is not possible through the webui), we can create an event called `AmendCustomerOrder`, rather than the `UpdateCustomerOrder`, which can serve as a meaningful metrics to find out how many customers made mistakes or other useful data.
