@@ -185,6 +185,13 @@ Service
 - could perform validation, but best for only nil/required values. Business logic validation should be left to the models.
 ```
 
+## Some of the scenarios that needs to be considered
+
+- what if a service needs to access multiple databases? simple - initialize the databases at the main function and pass them down through dependency injection. If they are not sharing logic - create a new service.
+- where is a service needs to access multiple resources (same database, different collections/documents/table)? We can do a facade that orchestrates what needs to be shared - or look into patterns to decouple them like messaging/saga etc. Normally it is considered a violation to just allow a service to access multiple other resources. Another alternative is to create a new service that calls the different resources. Which means - another extra layer for that.
+- where does the validation goes? Validations can and should be pure functions that returns an error after checking the fields. There are some exceptions such as checking if the user exists in the database, but we can compensate by using data structures such as bloom filter to avoid hitting the database. The only issue is you need to find a way to populate the bloom filter every time they restart - you can for example snapshot (?) the bloom filter on another server and sync it once the server restarts to avoid rebuilding the state.
+- how to handle dependencies such as random number or time. This, unfortunately needs to be mocked externally, which means passing them down through dependency injection. One way is to provide a callback function, which if exists, allows you to modify the data that is supposed to be mutated. But by doing so, does testing makes sense anymore?
+
 ## No-op
 
 In go (or any language with interface), it is better to create `Nop` structs that fulfils the interface, especially for dependencies that does not need to be tested (or just need to be marked as success test). This makes testing easier, since you do not want to test chaining the different logics at the same time. 
