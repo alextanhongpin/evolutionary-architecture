@@ -96,6 +96,8 @@ class UserModel {
   updateUser(user) {
     // Updates the user's updated_at date
     // Refer to the data injection pattern above
+    // NOTE: On second thought, it should not modify the entity, rather it should return just the new values to the entity.
+    // so rather than update user, it should be generateUser<FieldName>()
   }
 }
 // It can also be an anonymous function, since the domain can be dynamic, and you might end up with different variation of this factory pattern.
@@ -174,7 +176,8 @@ Model
 - may create an Entity speficic to the domain. E.g. Create a new User entity with the role Admin assigned to it. 
 - may perform data injection, removal, modifications, apply business logic to the entity as it deems fit. 
 - may only perform operation on one entity (? how strict is this rule). The model should not be able to perform modification on several entity at the same time. That is the role of the service.
-- may define interaction with the storage layer through repository patterns, but no strict implementation. Just through interface. 
+- may define interaction with the storage layer through repository patterns, but no strict implementation. Just through interface.
+- after a few attempts, I realized that the model should just be performing business logic. It should be pure functions - rather than modifying the entity, it should return the new values that needs to be set to the data. In other words, it acts as a pure provider, which is basically just a namespaced class with methods that returns values. This is especially useful when dealing with data that is hard to mock (token generation, time, random values). It should not modify the entity at all.
 
 Service
 - may contain several models
