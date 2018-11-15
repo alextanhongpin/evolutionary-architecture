@@ -16,7 +16,7 @@ user = {
 
 We have a user, and we want to generate the token for the user. One option is of course to make token as an interface, and pass the creation of the token from external. Another way is to simply mock the function creating it:
 
-```
+```js
 model.injectToken(user)
 validate(user)
 ```
@@ -25,7 +25,7 @@ validate(user)
 
 This pattern can be used with mock dependency injection. Example, you have a token generator. It can be mocked to generate token, but here we are holding a huge assumption that it does the right thing. A better way is to perform validation after executing it:
 
-```
+```js
 uuid = newuuid()
 // Validate, can be through regex, or custom validation, checking for empty values, bad values etc. 
 // Here we will query the cache/db to check if the ID exists in the db before putting it.
@@ -39,7 +39,8 @@ if !ok {
 
 Most of the time, we will have a large function that is composed of several dependencies, and we need to orchestrate the logic in a linearly-dependent way (requires the previous function to complete etc). But this make this function hard to test, as it is hard to test each steps independently. One option is to mock the dependency required for the steps - another is to just mock each steps. Note that we exclude db here, as it is already a mockable external dependency:
 
-```
+```js
+// Some interesting observation - generic generators for random values.
 user = step.generateUser()
 time = step.generateFrozenTime()
 token = step.generateToken(user, time)
@@ -48,11 +49,13 @@ db.user.save(user)
 return token
 ```
 
+In golang we can do it with functional optionals. But it means the code will get larger too - and it becomes slightly more complicated when you need to mock some of the data being returned.
+
 ## Model/Entity
 
 An entity is a representation of an object in a domain. It can be a user object, for example. Say we have the following representation of a user:
 
-```
+```js
 class User {
   constructor(name, age, id, updated_at) {
     this.name = name
@@ -67,7 +70,7 @@ The entity can have basic methods (setters/getters) that allows it to modify its
 
 The same goes for `created_at`. Often, the logic that contains side-effects or mutations should not be placed at the `entity`, but rather the `model`. Take for example setting the `created_at` date.
 
-```
+```js
 class User {
   constructor(name, age, id) {
     this.name = name
@@ -163,12 +166,13 @@ However, we are skipping too many steps. However, breaking them into smaller fun
 Entity are just the representation of a domain object, and are stored into the repository. Models are responsible for transforming the entity/generating them into the correct format.
 
 ```
-Entity 
+Entity (a.k.a types, model)
 - standalone object that represents the data structure in the storage
-- have basic getters/setters
+- have basic getters/setters that is not tied to business logic
 - may contain the basic validation for required/optional field, or types or min/max boundary, format (date, uri etc), but no domain-specific validation/business rules.
 - has the ability to create a new basic entity (with no knowledge on the business rules), possibly initiating the values to the default values (empty array, default min age etc)
 - e.g. We have a user entity, it can have getters/setters for name, age, email state. It can have basic validation for email, or name must be present, or age cannot be less than 0 etc. It has no knowledge on the business rules. They have to be applied to the entity.
+- how is this different than model? An entity only represents the types of data. It should also provide a _basic_ initializer (not all languages support multiple constructors). If we need to customize the entity during construction, it should best be placed in the model, not entity. What are such cases? Let's take an example of creating a user with a role field. By default, it should only create a normal user. What if you need to initialize the the user as admin? Simple - if the role has to be defined all the time - pass in a flag when initializing. But if the assumptions is too vague - then create a factory to initialize it. There's no right or wrong in this case, and it's sometimes hard to find a sweet spot - because any way works. If you have a preferred method - stick with it.
 
 Model
 - may embed an object
@@ -177,9 +181,10 @@ Model
 - may perform data injection, removal, modifications, apply business logic to the entity as it deems fit. 
 - may only perform operation on one entity (? how strict is this rule). The model should not be able to perform modification on several entity at the same time. That is the role of the service.
 - may define interaction with the storage layer through repository patterns, but no strict implementation. Just through interface.
-- after a few attempts, I realized that the model should just be performing business logic. It should be pure functions - rather than modifying the entity, it should return the new values that needs to be set to the data. In other words, it acts as a pure provider, which is basically just a namespaced class with methods that returns values. This is especially useful when dealing with data that is hard to mock (token generation, time, random values). It should not modify the entity at all.
+- ~~after a few attempts, I realized that the model should just be performing business logic. It should be pure functions - rather than modifying the entity, it should return the new values that needs to be set to the data. In other words, it acts as a pure provider, which is basically just a namespaced class with methods that returns values. This is especially useful when dealing with data that is hard to mock (token generation, time, random values). It should not modify the entity at all.~~
+- update: do we even need a model? adding another layer only means more things to mock. 
 
-Service
+Service (a.k.a usecases)
 - may contain several models
 - does not have direct access to the storage layer nor models - it should be communicated through the model.
 - handles at most request/response at the highest layer. Mockable.
@@ -199,6 +204,199 @@ Service
 
 In go (or any language with interface), it is better to create `Nop` structs that fulfils the interface, especially for dependencies that does not need to be tested (or just need to be marked as success test). This makes testing easier, since you do not want to test chaining the different logics at the same time. 
 
+## Private methods in golang
+
+You can keep fields in golang private. This is also another example of showing how to create a domain model with responsibility.
+```go
+type User struct {
+  password string
+  privateData interface()
+}
+
+// Ensure that whenever the password is set, it will always be hashed.
+func (u *User) SetPassword(plaintext string) (err error) {
+  u.password, err = hasher(plaintext)
+  return 
+}
+
+// Allows only user with the valid password to access the private data.
+func (u *User) AccessData(plaintext string) (data interface{}, err error) {
+  // Use constant-time compare of course, this is just an example.
+  if hasher(plaintext) != u.password {
+    err = errors.New("unauthorized")
+    return 
+  }
+  data = u.privateData
+  return
+}
+```
+
+## Better ways to validate?
+
+There are several approaches to this:
+- set, then validate object in group
+- validate specific fields before setting
+- validate when setting
+- provide default if not exist
+
+```js
+// E.g., set, then validate. This is useful for grouping validation rules. If we know that the user object needs to have certain fields that needs to be validated, you can provide a facade of validation rules in a function. The downside is, if you need to handle an error differently, it can be a little harder. 
+user.name = newName
+validate(user)
+
+// E.g. validate before setting. This is useful to decouple validation logic, and reuse them. 
+// When you are validating just a specific field (e.g. regex for email), use this. If you need to handle specific errors differently, this will work the best.
+if (!isValid(newName)) {
+  // Handle error
+}
+user.name = newName
+
+// E.g. validate when setting. This is very useful to enforce business logic. It is basically saying, if you don't provide a valid name, I will return an error.
+const [modified, err] = user.setName(newName)
+
+class User {
+  constructor(name) {
+    this.name = name
+  }
+  setName(name) {
+    if (!name.trim().length) {
+      // Throw error?
+    }
+    this.name = name
+  }
+}
+```
+
+To find the boundary of this, always bring it to the extreme. If you have a struct of 20 fields, with varying condition, you may even have to resort to all three different ways of validating the object, that is:
+- validate required fields and default fields - or you can provide an object with those defaults and clone/destructure/apply new results on it
+- handle specific errors 
+- validate the whole object based on domain model etc
+
+## Structs versus Methods arguments in golang
+
+For a while I don't understand the true difference between structs and just plain functions. I've seen several code that does things differently - one is initializing the struct with dependencies and another is calling just the method with the interface passed.
+```go
+package user
+type Service struct {
+  repo Repository
+}
+
+func NewService(repo Repository) *Service {
+  return &Service{repo}
+}
+func (s *Service) Method1 (id string) error {
+  return repo.CheckExist(id)
+}
+
+// versus
+func Method1 (repo Repository, id string) error {
+  return repo.CheckExist(id)
+}
+```
+
+What are the advantages/disadvantages of both of them. Let's take the former - which is initializing a struct. In this package user, we have a service struct. Let's see the different initialization method.
+```go
+package main
+func main() {
+  // I can call this, but the repo is not provided.
+  usvc := user.Service{}
+  
+  // This is probably better, but gets more troublesome when the dependencies grow.
+  usvc := user.NewService(repo)
+  usvc.Method1("1")
+  usvc.Method2("1")
+  usvc.Method1000()
+  // We are experiencing namespacing here. We create a namespace for the set of methods we want to use from the service. This is useful if all the services are related to one another. If you only need to call one method, e.g. `Method5` from the user package, this is slightly overkill. Why do I have to initialize the whole struct just to call one method?
+  
+  // Compared to this. I am calling `Method1` directly (independently without needing to initialize the service namespace). I can also (can be repetitive) pass in a different type of repos when calling `Method1`.
+  user.Method1(repo1, "1")
+  user.Method1(repo2, "1")
+  // Looks similar to the standard go convention, fmt.Fprintf(f, "data"), os.Write(f, "data")
+  // Would be troublesome when you have multiple dependencies...But hey, one method should only do one thing right? Passing down the unused dependencies to the namespaced struct is even worse.
+  user.Method1(repo1, rand1, anotherclass2, "data")
+  
+  // How about hybrid?
+  // Defined a userservice with a repo
+  usvc := user.NewService(repo)
+  
+  // Calls external dependency with through methods instead
+  usvc.Method50(dependency, "1")
+  
+  // Or, create a package user that provides just pure functions, then create another internal package that groups similar functions and initializes all the dependencies. This is probably the most preferred way. 
+  // so, package `user` would have the functions
+  user.Method1(repo, "1") // No more user.NewService()! Can be tested independently!
+  // and another package usersvc would have a group of methods
+  svc := usersvc.New(repo) // No more stutter!
+  svc.Method1("1")
+  
+  // Bringing it to the extreme - 10 deps, 100 methods
+}
+```
+
+## Mocking non-deterministic data
+
+There are some methods that will provide random values. This is usually not desirable in tests, because every call will return a different value. E.g. crypto, random number generation, time, id, database(!) etc.
+
+One way is to simply create a mock for each of them. But this gets troublesome - do we have to mock the entire thing just to return that desired value, say the whole time package? No, we can just create another interface to get the specific method that produces that value. Or, we create `Provider` (or `Generator`, `Requester`, if you prefer another term), a one time method that returns the value. The term provider does not suggest a creation of classes with method, rather it can be plain anonymous function that is passed in the function.
+
+```go
+// Option 1: Pass as interface
+func CreateUser(provider Provider){
+  u := user.New()
+  u.ID = provider.NewID()
+  // ...
+}
+
+// Option 2: Pass as first-class function. We choose a function, but you can also replace it with a value directly, for e.g. the newly created id. That way
+func CreateUser(fn func () string) {
+  u := user.New()
+  u.ID = provider.NewID()
+  // ...
+}
+
+// Option 3: Structs with initialized dependencies
+type User struct {
+  provider Provider
+  // a
+  // b
+  // c
+  // d
+  // e
+  // If we need to mock 10 fields in one method, we need to initialize here 10 times. If they are unused by other methods, it looks undesirable.
+}
+
+func (u *User) CreateUser() {
+  u := user.New()
+  u.ID = u.provider.NewID()
+  // ...
+}
+```
+
+The problem with this is where to pass down the `Provider`? If we perform Dependency Injection, it makes sense to pass it down during the initialization of the class. But again, passing down one dependency to be used by just one method doesn't seem desirable. 
+
+It's a tough problem. First, we have to ask ourselves if we can live without knowing the exact value generated? If it's an id generation service, we definitely know that it would provide random values, so if there's little value in testing it, then we can skip the trouble. But if it has something to do with time, and we want to test expiration date, then it becomes slightly more troublesome.
+
+We can follow the pattern in golang's `rand` package, by creating a global seed. But this would work well only if you don't modify the values often. When testing expiry time, we need to initialize it with our desired time, and test the possibilities. This means we need to initialize the values often. But for that, we probably do not need to test the generation of the random values, but rather the business logic (what is considered an expired time, what are the conditions and boundaries. If my function accepts a value, what can be deduced from it?).
+
+
+## Polymorphism
+I had to deal with structs that looks like this:
+```go
+type User struct {
+  Profile *Profile
+  Address *Address
+  Email *Email
+  Scope int
+}
+```
+
+Based on the scope, it should choose to set the values for Profile, Address and/or Email. There are several problems here. 1) It does not map well to the data storage layer. It has nil pointers, which makes initialization clunky, and also potential of panic. I need to perform safety check to ensure I'm not hitting nil. 
+
+A better way to refactor this is to remove the nil pointers and just flatten the data. Then use bits to indicate the scope (or linux ownership rwx). 
+
+## Always bring it to the extreme
+
+Some cases are too small to detect useful patterns. 
 
 ## Model in golang
 
