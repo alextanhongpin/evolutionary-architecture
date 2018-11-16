@@ -397,6 +397,15 @@ A better way to refactor this is to remove the nil pointers and just flatten the
 ## Always bring it to the extreme
 
 Some cases are too small to detect useful patterns. 
+## Better mocking
+
+Replace the values that you need to mock with function  (provider, generator etc) in the implementation. In the mock test, replace them with values.
+
+E.g. Mocking a expiry duration of a token:
+
+```
+see go-learn
+```
 
 ## Model in golang
 
