@@ -444,3 +444,10 @@ E.g. Read Service
 For `boolean/flags`, you can use the term `Mark/Set` to indicate status change. Don't use ambiguous term such as `Toggle` - they do not provide information of the end state of the action. E.g. when delivering a food - `MarkFoodDelivered`, or order `MarkOrderConfirmed`.
 
 For `update`, note that it can give more meaningful context compared to traditional CRUD. Say we have a separate Ops team to handle user orders, and the user called the customer service to amend the changes made to the order (which is not possible through the webui), we can create an event called `AmendCustomerOrder`, rather than the `UpdateCustomerOrder`, which can serve as a meaningful metrics to find out how many customers made mistakes or other useful data.
+
+
+## Definition of Code Architecture
+
+Architecture means enforcing certain rules to be adhere, at the same time allowing modifications when it is necessary. There is no structure that fits it all. Attempting to create a generic structure to adapt all cases will make the architecture loses its value. 
+
+There is no `generic` in an architecture. Some constraints needs to be applied for an architecture - and constraints are good - they limit what we can do. If we need to do more, then break some rules and just start another architecture.
