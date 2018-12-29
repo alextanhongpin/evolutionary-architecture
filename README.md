@@ -1,6 +1,9 @@
 # Evolutionary Architecture
 
-Collection of best practices when designing an server-side and client-side architecture
+Collection of best practices when designing an server-side and client-side architecture, microservices etc.
+I have always wanted to design something called the __Perfect Architecture__, and tried many different ways to implement it. But in the end I realised there's no one single perfect architecture for every scenario - the architecture depends on what you are actually building. Also, with that narrow mindset, I have end up creating a more complicated layered architecture when it can all be achieved with basic function calls. It's exactly what they coined the [XY Problem](http://xyproblem.info/). I was trying to fit something unnatural into the _patterns_ I've designed, and it kinda leaves a bad taste in the mouth. I think it's natural to try to _standardize_ the codebase and make everything look the same. As they say, _when you have a hammer everything looks like a nail_. But this approach is wrong, throughout the journey I learn to make exceptions.
+
+__Evolutionary architecture__ is just a change of mindset. Rather than starting a project with a solid architecture in mind (which is bad), just write enough code in a single file to get things working, and then refactor as the project evolves. It takes discipline to maintain and refactor the code base, but making minimal changes to improve the architecture is indeed effective, as it avoid overengineering or even underengineering. The only requirement again is just discipline. 
 
 ## Table of Content
 
