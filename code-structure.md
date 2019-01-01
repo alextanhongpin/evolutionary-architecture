@@ -592,8 +592,8 @@ But this approach still seems a little complicated especially the wiring between
 
 ```js
 function compose(obj, ...fns) {
-	return fns.reduce((o, fn) => {
-  	return fn(o)
+    return fns.reduce((o, fn) => {
+    return fn(o)
   }, obj)
 }
 
@@ -681,4 +681,63 @@ const createUseCase = {
     }
   }
 }
+```
+
+## Use Case with a single state object
+
+```js
+const getSumUseCase = {
+	repository () {
+  	const { db } = this
+  	return {
+      async getSum () {
+        return await db.query() + 1
+      }
+    }
+  },
+  async service (n = 10) {
+  	return await this.repository().getSum() + n
+  }
+}
+
+const db = {
+	query() {
+  	return 2
+  }
+}
+
+const getSum = { ...getSumUseCase, db }
+getSum.service(10).then(console.log)
+```
+
+## Use case with classes
+
+```js
+class GetSumUseCase {
+	constructor (db, repository) {
+  	// Avoid making db a global in the class (prevent service from making calls directly to db).
+    this.repository = repository || {
+    	async getSum () {
+        return await db.query() + 1
+      }
+    }
+  }
+  async service (n = 10) {
+  	const sum = await this.repository.getSum() + n
+    return sum * 100
+  }
+}
+
+const db = {
+	query() {
+  	return 2
+  }
+}
+const svc = new GetSumUseCase(db, {
+	// Mocking the repository.
+	async getSum () {
+  	return -1000
+  }
+})
+svc.service(10).then(console.log)
 ```
