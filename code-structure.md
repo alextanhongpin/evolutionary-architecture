@@ -88,7 +88,7 @@ class User {
 
 If we allow the user to initialize the date, it becomes harder to test the `isActive` function. Hence, the `model` should only contain setters/getters and the rights to assign the parameters should be given to the `model`. 
 
-```
+```js
 class UserModel {
   newUser() {
     // Returns a new user with the given parameter
@@ -141,7 +141,7 @@ Note that in some cases, it might be overkill to create user models using classe
 ## Functional patterns
 
 Scoping functions with side-effects is essential for good code structure. Below we have a simple function that registers a user. It performs several other mutating operations internally:
-```
+```js
 function registerUser(user) {
   valid = validateUser(user)
   parsedUser = removeAdditionalFields(user)
@@ -153,7 +153,7 @@ function registerUser(user) {
 
 One of the advantage of a huge function that encapsulates this side-effects is that it can be mocked (skipping all steps) and we can easily test all the functions:
 
-```
+```js
 function mockRegisterUser() {
   return 'fakeToken'
 }
@@ -201,6 +201,8 @@ Service (a.k.a usecases)
 - how to handle dependencies such as random number or time. This, unfortunately needs to be mocked externally, which means passing them down through dependency injection. One way is to provide a callback function, which if exists, allows you to modify the data that is supposed to be mutated. But by doing so, does testing makes sense anymore?
 
 ## No-op
+
+(Edit: I made a mistake, `nop` refers to null object patterns, not no-operations as I first thought)
 
 In go (or any language with interface), it is better to create `Nop` structs that fulfils the interface, especially for dependencies that does not need to be tested (or just need to be marked as success test). This makes testing easier, since you do not want to test chaining the different logics at the same time. 
 
@@ -687,26 +689,31 @@ const createUseCase = {
 
 ```js
 const getSumUseCase = {
-	repository () {
-  	const { db } = this
-  	return {
-      async getSum () {
+  repository() {
+    const {
+      db
+    } = this
+    return {
+      async getSum() {
         return await db.query() + 1
       }
     }
   },
-  async service (n = 10) {
-  	return await this.repository().getSum() + n
+  async service(n = 10) {
+    return await this.repository().getSum() + n
   }
 }
 
 const db = {
-	query() {
-  	return 2
+  query() {
+    return 2
   }
 }
 
-const getSum = { ...getSumUseCase, db }
+const getSum = {
+  ...getSumUseCase,
+  db
+}
 getSum.service(10).then(console.log)
 ```
 
@@ -714,30 +721,72 @@ getSum.service(10).then(console.log)
 
 ```js
 class GetSumUseCase {
-	constructor (db, repository) {
-  	// Avoid making db a global in the class (prevent service from making calls directly to db).
+  constructor(db, repository) {
+    // Avoid making db a global in the class (prevent service from making calls directly to db).
     this.repository = repository || {
-    	async getSum () {
+      async getSum() {
         return await db.query() + 1
       }
     }
   }
-  async service (n = 10) {
-  	const sum = await this.repository.getSum() + n
+  async service(n = 10) {
+    const sum = await this.repository.getSum() + n
     return sum * 100
   }
 }
 
 const db = {
-	query() {
-  	return 2
+  query() {
+    return 2
   }
 }
 const svc = new GetSumUseCase(db, {
-	// Mocking the repository.
-	async getSum () {
-  	return -1000
+  // Mocking the repository.
+  async getSum() {
+    return -1000
   }
 })
 svc.service(10).then(console.log)
+```
+
+
+## Service-to-router converter
+
+```js
+function baseController(service, statusCode = 200, requestParser = (req) => req) {
+  async function controller(req, res) {
+    try {
+      const request = {
+        ...req.query,
+        ...req.params,
+        ...req.body
+      }
+      const ctx = {}
+      const response = await service(ctx, requestParser(request))
+      return res.status(statusCode).json(response)
+    } catch (error) {
+      return res.status(400).json({
+        error: error.message
+      })
+    }
+  }
+}
+
+function requestParser(...fields) {
+  return function(obj) {
+    return fields.reduce((o, field) => {
+      if (Reflect.has(obj, field)) {
+        o[field] = obj[field]
+      }
+      return o
+    }, {})
+  }
+}
+
+function toRoute(method = 'get', path = '/v1/path', service, router, statusCode = 200, requestParser) {
+  router[method](path, baseController(service, statusCode, requestParser))
+}
+
+toRoute('get', '/v1/books', getBooksUseCase, router, 200)
+toRoute('post', '/v1/books', createBookUseCase, router, 201, requestParser('name', 'id', 'isbn'))
 ```
