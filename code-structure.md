@@ -451,3 +451,234 @@ For `update`, note that it can give more meaningful context compared to traditio
 Architecture means enforcing certain rules to be adhere, at the same time allowing modifications when it is necessary. There is no structure that fits it all. Attempting to create a generic structure to adapt all cases will make the architecture loses its value. 
 
 There is no `generic` in an architecture. Some constraints needs to be applied for an architecture - and constraints are good - they limit what we can do. If we need to do more, then break some rules and just start another architecture.
+
+
+## UseCases
+
+After a number of attempts, I still struggle to find the ideal architecture. Sure, the perfect achitecture doesn't exist, but surely there is a better way to structure code regardless of the projects. All the while, I've been grouping them by functionality or resources:
+
+```
+/controllers
+  /user
+  /food
+/models
+/services
+/repository
+```
+
+Or by module:
+```
+/user
+  /controller
+  /service
+  /transport
+/food
+  /controller
+  /service
+  /transport
+/models // Models is still outside, since they can be shared(?)
+```
+
+But there's a problem that I face with both approach - I have to deal with `shotgun surgery`, where the changes in one file affects multiple file. What I probably need is to structure them by `usecases`:
+
+```
+/user
+  /user_crud (basic CRUD operation)
+  /user_search (business logic applied)
+  /user_ambassador (business logic for users that are ambassadors)
+/food
+  /food_crud
+  /food_order (business logic for creating foor order)
+  /food_delivery (business logic for creating a new delivery)
+```
+
+Organizing by functionality seems to be the best way to maintain the application as it grows. By separating the dumb CRUD and smart services (the ones with business rules), it makes it easier to handle new features, whether it's adding or removing them. I tend to design services this way:
+
+```js
+// service/car
+
+const internal = new WeakMap()
+// repository.js
+class Repository {
+  constructor (db) {
+    internal.set(this, { db })
+  }
+  create () {}
+  read () {}
+  update () {}
+  delete () {}
+}
+
+// service.js
+class Service {
+  constructor (repo) {
+    internal.set(this, {repo})
+  }
+}
+
+// controller.js
+class Controller {
+  constructor (service) {
+    internal.set(this, { service })
+  }
+  async getCars (req, res) {
+    const cars = await this.service.listCars()
+    return res.status(200).json(cars)
+  }
+  start (router) {
+    router.get('/v1/cars', this.getCars.bind(this))
+  }
+}
+
+// index.js
+class Builder {
+  constructor (db) { 
+    const repository = new Repository(db)
+    const service = new Service(repository)
+    const controller = new Controller(service)
+    return controller
+  }
+}
+const builder = new Builder(db)
+builder.start(app)
+```
+
+Separating the functionality based on groups is fine for small applications, but when the functionality grows, it becomes tiresome to update the logic, as changes in one file affects another. Besides, it has to be updated simulatenously. Breaking it into smaller pieces in the first place may seem overengineering:
+
+```js
+// services/car/crud-usecase.js
+const createUseCase = {
+  repository (db) {
+    return async function (params) {
+      const [rows] = await db.query(`SELECT * FROM cars`)
+      return rows
+    }
+  },
+  async route (controller) {
+    return function (router) {
+      router.get('/v1/cars', controller)
+    }
+  },
+  service (repository) {
+    return function (ctx, request) {
+      validate(request)
+      const response = await repository(request)
+      return response
+    }
+  },
+  controller (service) {
+    return async function (req, res) {
+      const request = {
+        ...req.query,
+        ...req.params, 
+        ...req.body
+      }
+      const response = await service(request)
+      return res.status(200).json(response)
+    }
+  }
+}
+function build (db) {
+  const repository = createUseCase.repository(db)
+  const service = createUseCase.service(repository)
+  const controller = createUseCase.controller(service)
+  return createUseCase.route(controller)
+}
+const serveCreateUseCase = build(db)
+serveCreateUseCase(router)
+```
+
+But this approach still seems a little complicated especially the wiring between dependencies. The `build` function steps are also pretty repetitive - the next step depends on the result of the prev execution. It can be further simplified through a compose function:
+
+```js
+function compose(obj, ...fns) {
+	return fns.reduce((o, fn) => {
+  	return fn(o)
+  }, obj)
+}
+
+// We can extract the controller as base controller, since they are repetitive.
+function baseController (deps) {
+  const { service } = deps
+  async function controller(req, res) {
+    try {
+      const request = {
+        ...req.query,
+        ...req.params, 
+        ...req.body
+      }
+      const ctx = {}
+      const response = await service(ctx, request)
+      return res.status(200).json(response)
+    } catch (error) {
+      return res.status(400).json({ error: error.message })
+    }
+  }
+  return {
+    ...deps,
+    controller
+  }
+}
+
+// Since this is also repetitive, this can also be extracted.
+function baseEndpoint (method = 'get', path = '/') {
+  return function ({ controller }) {
+    return function (router) {
+      router[method](path, controller)
+    }
+  }
+}
+
+// Simplified to only contain service and repository.
+const createUseCase = {
+  repository (db) {
+    return async function (params) {
+      const [rows] = await db.query(`SELECT * FROM cars`)
+      return rows
+    }
+  },
+  service (repository) {
+    return async function (ctx, request) {
+      validate(request)
+      const response = await repository(request)
+      return response
+    }
+  }
+}
+
+function build (usecase, deps) {
+  return compose(deps, 
+    usecase.repository, 
+    usecase.service, 
+    baseController, 
+    baseEndpoint('get', '/v1/users')
+  )
+}
+```
+
+The solution above does not keep the created states. If we want to persist it, store it in the object that is passed in:
+```js
+const createUseCase = {
+  repository (deps) {
+    const { db } = deps
+    return {
+      ...deps,
+      repository: async function (params) {
+        const [rows] = await db.query(`SELECT * FROM cars`)
+        return rows
+      }
+    }
+  },
+  service (deps) {
+    const { repository } = deps
+    return {
+      ...deps,
+      service: async function (ctx, request) {
+        validate(request)
+        const response = await repository(request)
+        return response
+      }
+    }
+  }
+}
+```
