@@ -3,7 +3,7 @@
 ```js
 1 byte = 8 bits  // The size of a char
 2 - 4 bytes      // The size of integer
-1 million int32 characters (8 bytes each) takes up 8MB.
+1 million int32 characters (8 bytes each) takes up 8MB. (Actually it should be 1024 * 1024 characters). How to proof it? See below.
 
 1024 bytes = 1 kilobyte (K / Kb) 
 1024 * 1024 = 1,048,576 bytes = 1024 kilobytes = 1 megabyte (M / MB)
@@ -105,7 +105,48 @@ Storage for 5 years: 15TB
 Memory for cache 170GB
 ```
 
+# Proving that 1 million (1024 * 1024) int32 is 4MB and, 1 million int64 is 8MB
+
+```go
+package main_test
+
+import "testing"
+
+func TestInt32(t *testing.T) {
+	size := 1024 * 1024
+	nums := make([]int32, size)
+	for i := 0; i < size; i++ {
+		nums[i] = int32(i)
+	}
+}
+
+func TestInt64(t *testing.T) {
+	size := 1024 * 1024
+	nums := make([]int64, size)
+	for i := 0; i < size; i++ {
+		nums[i] = int64(i)
+	}
+}
+```
+
+Output: 
+
+```
+# Create memory profile
+$ go test -memprofile mem.out
+
+# Run profiling
+$ go tool pprof mem.out
+(pprof) alloc_space
+(pprof) top10
+Showing nodes accounting for 12MB, 100% of 12MB total
+      flat  flat%   sum%        cum   cum%
+       8MB 66.66% 66.66%        8MB 66.66%  github.com/alextanhongpin/go-test_test.TestInt64
+       4MB 33.34%   100%        4MB 33.34%  github.com/alextanhongpin/go-test_test.TestInt32
+         0     0%   100%       12MB   100%  testing.tRunner
+```
 
 ## References
 - https://hostingfacts.com/internet-facts-stats/
 - http://highscalability.com/
+
