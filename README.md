@@ -64,6 +64,9 @@ References:
 - https://medium.freecodecamp.org/how-to-system-design-dda63ed27e26
 - https://hackernoon.com/top-10-system-design-interview-questions-for-software-engineers-8561290f0444
 
+## References
+
+- https://medium.com/pinterest-engineering/building-a-dynamic-and-responsive-pinterest-7d410e99f0a9
 
 ## Projects
 
