@@ -30,9 +30,6 @@ const EventEmitter = require('events')
 export const PURCHASE_MADE = 'purchase_made'
 
 class PurchaseService extends EventEmitter {
-  constructor(slackClient) {
-    this.slackClient = slackClient
-  }
   purchase(req) {
      // Simplified...
      const product = await repo.create()
