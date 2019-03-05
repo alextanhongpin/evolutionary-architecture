@@ -31,8 +31,35 @@ Extensions
     - <actor> backs out of this use case.
 ```
 
-
-
+## Example Passwordless Login
+```
+Title: Passwordless login
+Description: User ask system for a passwordless login token
+Primary actor: User
+Preconditions:
+- User have a valid e-mail address
+- User is not logged in
+Postconditions:
+- User is logged in the system
+Main success scenario:
+- 1. The use case begins when User is at the login page
+- 2. The User enters the email address
+- 3. The User click submits
+- 4. The system checks the email
+- 5. The system sends an email containing a token that is valid for 5 minutes
+- 6. The User clicks the link on the email
+- 7. The system checks if the token is valid
+- 8. The system logs the user in
+Extensions:
+- 4a) The email is not valid
+    - The system display an error message and ask the User to submit a new email
+    - The User can opt to back out of this use case
+- 5a) The User did not receive the email
+    - The User back out of the use case and start from beginning
+- 7b) The User clicks the link after token is expired.
+    - The system display an error message saying that the token is expired
+    - The User back out of this use case and start from the beginning
+```   
 # References
 
 Use Cases:
