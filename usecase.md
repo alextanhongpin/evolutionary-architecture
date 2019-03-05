@@ -44,11 +44,13 @@ Postconditions:
 Main success scenario:
 - 1. The use case begins when User is at the login page
 - 2. The User enters the email address
+     Business Rule: email must be valid
 - 3. The User click submits
-- 4. The system checks the email
+- 4. The system validate the email
 - 5. The system sends an email containing a token that is valid for 5 minutes
 - 6. The User clicks the link on the email
 - 7. The system checks if the token is valid
+     Business Rule: token has not expired
 - 8. The system logs the user in
 Extensions:
 - 4a) The email is not valid
