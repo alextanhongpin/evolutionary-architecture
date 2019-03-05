@@ -11,6 +11,26 @@
 | Extensions | - (2a) No courses are available for this student <br/> 1. System displays error message saying no courses are available, and provides the reason and how to rectify if possible. <br/> 2. Student either backs out of this use case, or tries again after rectifying the cause. <br/> - (5a) Some courses could not be registered. <br/> 1. System displays message showing which courses were registered, and which courses were not registered along with a reason for each failure. <br/> - (5b) None of the courses could be registered. <br/> 1. System displays message saying none of the courses could be registered, along with a reason for each failure. |
 
 
+## Template
+```
+Title: <perform action>
+Description: <actor> accesses the system and wants to <perform action>
+Primary Actor: <actor>
+Secondary Actor: system
+Preconditions:
+- <actor> is logged into system
+Postconditions:
+- <actor> successfully completed <action>
+Main success scenario:
+- 1. The use case begins when <actor> <perform action>
+- 2. <actor> <perform another action>
+- 3. <system> respond with <response>
+Extensions
+- (1a) when <null condition>. 
+    - <system> should respond with <message>.
+    - <actor> backs out of this use case.
+```
+
 
 
 # References
