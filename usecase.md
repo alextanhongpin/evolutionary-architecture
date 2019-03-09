@@ -80,3 +80,49 @@ Use Cases:
 
 UML 2.0
 - http://agilemodeling.com/style/useCaseDiagram.htm
+
+
+## Naming
+
+Manager, Director, Supervisor, Controller, Administrator, ...
+
+order_manager – can view, create, update and delete orders
+order_editor – can view, create and update orders, but not delete them
+order_inspector – can only view orders
+
+## Scope and roles
+
+- Scope: the resource you want to access. 
+- Roles: the actor responsibility
+
+Determining `scope` and `role` from user story:
+
+```
+As an Admin (role),
+I want to View Products (scope)
+
+As a User (role),
+I want to View Products (scope)
+
+As an Admin (role),
+I want to Delete Products (scope)
+```
+
+Table:
+
+| Scope | Role |
+| - | - |
+| View Products | Admin, User |
+| Delete Products | Admin |
+
+In the service:
+
+```
+router.get('/v1/products', scope(Admin, User), controller.getProducts)
+router.delete('/v1/products/:productId', scope(Admin), controller.deleteProducts)
+```
+
+References:
+- https://wso2.com/library/articles/2015/12/article-role-based-access-control-for-apis-exposed-via-wso2-api-manager-using-oauth-2.0-scopes/
+
+## User stories and use cases are different
