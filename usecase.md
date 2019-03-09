@@ -140,6 +140,7 @@ References:
 ## Documenting State machines
 
 Loop:
+
 | Prev state | Next state |
 | - | - |
 | Green Light | Orange Light |
@@ -147,6 +148,7 @@ Loop:
 | Red Light | Green Light |
 
 Finite:
+
 | Prev state | Next state | Action |
 | - | - | - | 
 | - (start) | Pending Approval | Payment Made |
