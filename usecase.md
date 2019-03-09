@@ -86,9 +86,9 @@ UML 2.0
 
 Manager, Director, Supervisor, Controller, Administrator, ...
 
-order_manager – can view, create, update and delete orders
-order_editor – can view, create and update orders, but not delete them
-order_inspector – can only view orders
+- order_manager: can view, create, update and delete orders
+- order_editor: can view, create and update orders, but not delete them
+- order_inspector: can only view orders
 
 ## Scope and roles
 
@@ -122,7 +122,17 @@ router.get('/v1/products', scope(Admin, User), controller.getProducts)
 router.delete('/v1/products/:productId', scope(Admin), controller.deleteProducts)
 ```
 
+- Sample roles includes: Admin, User, Developer, Employee
+- Sample scopes are named in the pattern `<action>:<resource>`: `create:user`, `update:user`, `delete:user`, `register:events`, `read:image`. For standardization purpose, use singular for resource.
+
 References:
 - https://wso2.com/library/articles/2015/12/article-role-based-access-control-for-apis-exposed-via-wso2-api-manager-using-oauth-2.0-scopes/
+- https://auth0.com/docs/scopes/current
+- https://auth0.com/docs/scopes/current/oidc-scopes
+- https://auth0.com/docs/scopes/current/api-scopes
+- https://auth0.com/docs/scopes/current/sample-use-cases#request-custom-API-access
+- https://auth0.com/docs/scopes/current/custom-claims
+- https://auth0.com/blog/on-the-nature-of-oauth2-scopes/
+- https://www.keycloak.org/docs/latest/server_admin/index.html#roles
 
 ## User stories and use cases are different
