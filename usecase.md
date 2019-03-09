@@ -81,7 +81,6 @@ Use Cases:
 UML 2.0
 - http://agilemodeling.com/style/useCaseDiagram.htm
 
-
 ## Naming
 
 Manager, Director, Supervisor, Controller, Administrator, ...
@@ -89,6 +88,10 @@ Manager, Director, Supervisor, Controller, Administrator, ...
 - order_manager: can view, create, update and delete orders
 - order_editor: can view, create and update orders, but not delete them
 - order_inspector: can only view orders
+
+## References
+
+- https://stackoverflow.com/questions/1866794/naming-classes-how-to-avoid-calling-everything-a-whatevermanager
 
 ## Scope and roles
 
@@ -156,3 +159,5 @@ Finite:
 | Pending Approval | Rejected | Payment Rejected | 
 | Rejected | Pending Approval | Payment Retry | 
 | Paid | - (end) | - |
+
+
