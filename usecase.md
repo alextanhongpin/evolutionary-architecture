@@ -136,3 +136,21 @@ References:
 - https://www.keycloak.org/docs/latest/server_admin/index.html#roles
 
 ## User stories and use cases are different
+
+## Documenting State machines
+
+Loop:
+| Prev state | Next state |
+| - | - |
+| Green Light | Orange Light |
+| Orange Light | Red Light |
+| Red Light | Green Light |
+
+Finite:
+| Prev state | Next state | Action |
+| - | - | - | 
+| - (start) | Pending Approval | Payment Made |
+| Pending Approval | Paid | Payment Approved | 
+| Pending Approval | Rejected | Payment Rejected | 
+| Rejected | Pending Approval | Payment Retry | 
+| Paid | - (end) | - |
