@@ -247,3 +247,73 @@ switch role {
 router.DELETE("/books", roleChecker.Only(Admin), controller.DeleteBooks)
 ```
 
+
+## Folder structure
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+)
+// Per role grouping. Four main files, usecase.go, repository.go, controller.go, and model.go.
+// This will be in usecase.go, and repository.go will have Repository interface.
+type UseCase interface {
+	// Reader.
+	// We might be tempted to write this, but use this for Repository.
+	// When defining a Service/UseCase, use the equivalent UseCaseRequest/UseCaseResponse struct.
+	// This is because we can easily use libraries that validates the struct, rather than individual arguments.
+	// GetUser(id string) (*User, error)
+	GetUser(context.Context, GetUserRequest) (*GetUserResponse, error)
+	GetUsers(context.Context, GetUsersRequest) (*GetUsersResponse, error)
+	GetUserByEmail(GetUserByEmailRequest) (*GetUserByEmailResponse, error)
+
+	// Writer.
+	CreateUser(context.Context, CreateUserRequest) (*CreteUserResponse, error)
+	UpdateUser(context.Context, UpdateUserRequest) (*UpdateUserResponse, error)
+	DeleteUser(context.Context, DeleteUserRequest) (*DeleteUserResponse, error)
+	UpdateUserRole(context.Context, UpdateUserRoleRequest) (*UpdateUserRoleResponse, error)
+
+	// Custom.
+	SearchUser(context.Context, SearchUserRequest) (*SearchUserResponse, error)
+	Login(context.Context, LoginRequest) (*LoginResponse, error)
+	Register(context.Context, RegisterRequest) (*RegisterResponse, error)
+}
+
+
+// Per file grouping. Many files which contains a usecase, repository each. One file containing model and controller respectively.
+// Define each use case in a file with repository.
+type LoginUseCase func(LoginRequest) (*LoginResponse, error)
+
+// This use case is driven by repository logic.
+type LoginUseCaseRepository interface {
+	CreateUser(email, password string) error
+	CheckUserExist(email string) error
+}
+
+func NewLoginUseCase(repo LoginUseCaseRepository) LoginUseCase {
+	return func(req LoginRequest) (*LoginResponse, error) {
+		err := repo.CheckUserExist(req.Email)
+		if err != nil {
+			return err
+		}
+		passwd, err := hashPassword(req.Password)
+		if err != nil {
+			return err
+		}
+		return repo.CreateUser(req.Email, passwd)
+	}
+}
+
+// UseCase ith multiple methods...
+type CreateOrderUseCase interface {
+	CheckOrderExist()
+	// use other services...
+}
+
+func main() {
+	fmt.Println("Hello, playground")
+}
+
+```
