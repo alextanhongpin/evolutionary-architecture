@@ -161,3 +161,89 @@ Finite:
 | Paid | - (end) | - |
 
 
+## Folder structure
+
+```
+
+
+service/usecases
+- user/(package user)
+	- usecase.go (user.UseCase/user.Service)
+	- model.go (user.Model)
+	- controller.go (user.Controller)
+	- repository.go (user.Repository)
+- book/
+	- usecase.go
+	- model.go
+	- controller.go
+	- repository.go
+- userbook/
+	- usecase.go
+	- model.go
+	- controller.go
+	- repository.go
+- auth/
+	- usecase.go
+	- model.go
+	- controller.go
+	- repository.go
+
+// Holds interfaces. But this seems redundant, keep the interface close to the caller that implements them.
+- repository/ (package repository)
+	- user.go (repository.User)
+	- book.go
+	- userbook.go
+- model/
+	- user.go
+	- book.go
+	- userbook.go
+- service/
+	- user.go
+	- book.go
+	- userbook.go
+	
+// This works, assuming there's only one role - which is the user accessing the resources. 
+// What if we have an Ops role that can manage book/reviews?
+// In this case, we have two main roles - the Owner of the resource, and also the Ops.
+// The Owner can view the data differently, such as they can only manage their data (delete etc), and only have Read-only access for other user's data.
+// book_manager (for admin, CRUD)
+// book_editor (for ownself, CRU, no Delete)
+// book_inspector (for others, R only)
+
+There are many constraints, such as user can only manage their own books (which means we need to know if the owner owns the book, which requires an additional query).
+It can be pain to define all Scopes for different Roles, we can simplify it by saying all Ops are Manager, and authenticated Users are Editor, and if the resources belong to them, they are Owner.
+
+Some scenarios:
+- User A owns Book A.
+- User A can update Book A.
+- User B cannot update Book A.
+- User A, B and Ops can view Book A.
+- Ops can update Book A's approval status.
+- Ops can delete Book A.
+- User A and B cannot delete Book A.
+
+// Where should the conditional check be? in the Controller, or Service? 
+// Or a RoleManager that checks the roles and delegates the responsibility?
+// Nevertheless, there will be a function that handles the book deletion by roles:
+// func DeleteBooks () {...}
+switch role {
+	case Ops:
+		// Owner delete books by soft-delete, and change the status to approved.
+		usecase.DeleteBooks()
+	case Owner:
+		// Owner sends request to delete book.
+		usecase.RequestDeleteBooks()
+	default:
+		// Unable to process...
+} 
+// Having conditionals for the same endpoint is nevertheless a bad idea.
+// Another option is to create separate endpoints for Ops and Users. 
+// This makes the services independent from one another, and it is easier to decouple the implementation.
+// There will be code repetition - but again we can create a "common" repository for code reused.
+// But for other cases, code reusability will again couple implementations, best to avoid and keep things simple.
+
+
+// If only one Role can access the Service, use a Middleware to limit the access:
+router.DELETE("/books", roleChecker.Only(Admin), controller.DeleteBooks)
+```
+
