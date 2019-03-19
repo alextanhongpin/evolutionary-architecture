@@ -8,6 +8,7 @@ Use JSON schema to build reusable schemas and host them in a central server. The
 - whitespaces. trim the strings to ensure the length is valid.
 - orientation for different languages (left to right and vice versa).
 - emoji in database. For mysql, set the character set to utf8mb4
+- payment record. Store the final pricing in a table once the item has been paid. Do not attempt to recalculate the values from scratch, because the values will change (product price, discounts etc). Always store the final state.
 
 ## Standard Format
 
