@@ -116,3 +116,8 @@ router.post('/v1/cars', bearerAuth, CarController.postCar)
 The validation rules resides in the services and models instead. The server-side models and client-side models are similar, which means that the validation rules can be shared. The client has more handling for the errors, since they might need to display it based on the user's locale (multilingual), and also warn user right when user enter the wrong information in the forms. 
 
 Sharing models is possible if both languages are the same on the server or client side (in go, we can expose the models as a package). Hence, a language-agnostic solution like __JSON Schema__ actually is more favorable, since it doesn't concern about the languages used and there is a module for different language.
+
+
+## Naming convention
+
+`validate` or `verify` should return error. `check` should return bool.
