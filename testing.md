@@ -25,3 +25,8 @@ Then [a result is produced, output]
   Should I test against a database?
 
 Testing with database is normally not recommended. But since it is easy to start a local docker development, this makes it easier to run integration testing against the database. This is also useful, since a lot of errors originates from the wrong sql query.
+
+
+## Testing and Different methodology
+
+There are TDD, BDD. There's also `should`, `assert` terms used when testing. UseCase requirements can be converted to BDD (GWT, Given When Then style). The problem is the test case tends to get long. Testing a pipeline service can be hard to setup, since there's a possibility the scenario may branch out, causing repetitive steps to be performed.
