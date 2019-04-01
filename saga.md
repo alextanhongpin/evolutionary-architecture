@@ -34,3 +34,19 @@ The state machines can usually be visualized as a table, with previous state, ne
 | delivered | - | the state machine ends here |
 
 Each action can be stored in the database as a row (or stored in one column to save space). They can be read and converted into bits and the sequence can be analysed.
+
+## Thoughts
+
+
+Have a main orchestrator manage the sequence.
+For example, an order delivery system.
+
+User purchase an item
+Set the status to checkout
+User pays an item.
+Check the previous state though the aggregate Id, if exist, Add it as a new entry.
+
+The algo is as follow, select all by the same aggregate id, if the I’d exists, query all events. For each events, validate the steps. Ge the last next step. If the current step equals the last next step, check if the validity is okay. add it in. Once all the steps have been completed, purge the entries, as it should not be retried. How to deal with versioning? Store the version in the Database and query them. For different version, we may have different state machine acting. 
+
+We can probably use sorted sets to sort the sequence. Then compare it.
+
