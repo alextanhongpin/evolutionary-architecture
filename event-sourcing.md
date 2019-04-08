@@ -22,3 +22,23 @@ For activities, we use the naming convention `actor-resource-verb` in past tense
 - Target
 - Metadata - Request,Response
 - CreatedAt (there's no updated at or deleted at)
+
+
+
+## Notes
+
+Commands are imperative
+- Commands is a request for the system to perform an action that changes the state of the system
+- Event describes something that has happened in the system, typically as a result of a command
+
+Tracking state changes 
+- We need to first create an initial state
+- After that, we create subsequent commands that request the state to change
+- The events is the resulting state that is changed
+- We can reapply all the events to the initial state to get the resulting state
+
+
+
+## Mistakes
+
+One of the common mistakes I made is not creating the initial state. Logging only the modified state does not add value - the modified states needs to be applied to the original state in order to compute the final state. Hence without the initial state, it is hard to know what changes. Also, how do we tie the states together? Since they can happen at a different timestamp, the changes needs to be aggregated in order to apply the changes.
