@@ -90,6 +90,10 @@ To simplify, saga consist of many steps. Each step will have a transaction, `t` 
 
 See golang code sample [here](https://github.com/alextanhongpin/go-learn/blob/master/saga.md)
 
+The golang last example is using a bitwise to keep track of the states. It is useful because the steps are usually ordered, and we need to be able to reverse the order easily. Also, we can easily set/unset the bit to indicate that an action has been executed (multiple set/unset for bitwise operations is idempotent too! setting twice/unsetting twice will always result in the correct end state). Checking if a state has been executed is simpler too. We can easily check if the bit has been set. 
+
+
+
 ## Keeping the states in mysql
 
 If we are using the bitwise operators, we can store each step number as a column in the unsigned int. Getting the sum is just as simple as:
@@ -97,14 +101,31 @@ If we are using the bitwise operators, we can store each step number as a column
 SELECT SUM(step) FROM saga WHERE aggregate_id = ?
 ```
 
-
 We can also create denormalized columns to store the prev and current state, as well as the applied state to ease compensation:
 
-| aggregate | aggregate_id | prev | data | current | step | desc |
-| - | - | - | - | - | - | - |
-| purchase_goods | abc | {...} | {...} | {...} | 1 | make order |
-| purchase_goods | abc | {...} | {...} | {...} | 2 | verify order |
-| purchase_goods | abc | {...} | {...} | {...} | 4 | make delivery |
+| aggregate_version | aggregate | aggregate_id | prev | data | current | step | desc | steps |
+| - | - | - | - | - | - | - | - | - |
+| 1 | purchase_goods | abc | {...} | {...} | {...} | 1 | order_requested | 1 |
+| 1 | purchase_goods | abc | {...} | {...} | {...} | 2 | order_verified | 3 |
+| 1 | purchase_goods | abc | {...} | {...} | {...} | 4 | delivery_made | 7 |
+
+NOTE: Here we are keeping the final computed steps to make it easier to rollback. There are many other ways to store the sequenced steps, such as [adjacency list](https://en.wikipedia.org/wiki/Adjacency_list) or [Nested set model](https://en.wikipedia.org/wiki/Nested_set_model).
+
+Note that we included the `aggregate_version`, it should contain the sequence of the valid steps that needs to be performed. We can create a reference table to store the sequence. This will make it easier to evolve the system. E.g. What if we are going to add another step called `payment_made` after `order_requested`? All the steps below needs to be increment to reflect the updated sequence. Keeping track of the sequences can be made easier if we version them. If a new sequence have been added on 1 January 2010, then:
+
+```
+version: v1
+aggregate: purchase_goods
+sequence: [order_requested: 1, order_verified: 2, delivery_made: 4]
+valid_from: 2000-01-01
+valid_till: 2010-01-01
+
+version: v2
+aggregate: purchase_goods
+sequence: [order_requested: 1, payment_made: 2, order_verified: 4, delivery_made: 8]
+valid_from: 2010-01-01
+valid_till: 9999-12-31
+```
 
 ## Ensuring data is not being tempered.
 
@@ -119,6 +140,5 @@ Of course, this can be used to verify if the data has been tempered or not. It d
 This also introduces another problem. If the parent can be updated, then the children hash must be recomputed. We can set a rule so that none of the rows can be updated, and can only be added. But then again, updating a parent will trigger a propagation to the children - all children rows that are dependent upon the row must be updated. It would have been easier to design the row to store additional columns that contains the previous state, not the hashed reference...
 
 In case if we do create a new row for the parent, we still need to indicate that the previously created row is invalid. We can add two additional columns - valid from and valid to to indicate the validity of the parent. Only the latest parent will be used for the query. This will add a significant amount of complexity as well as burden to the developers that works on the system, since they need to understand the reasoning behind such complex query.
-
 
 This concept could be similar to a linked-list, or blockchain blocks...
