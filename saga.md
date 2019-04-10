@@ -66,12 +66,15 @@ What if one of the steps are not immediate, say sendDelivery after payment is co
 
 To simplify, saga consist of many steps. Each step will have a transaction, `t` (an action that moves that state forward) and a compensation `c` (an action that will revert, or at best negate the previous state). If we have four steps in one saga transaction, then the steps will consist of `(t1, c1, t2, c2, t3, c3, t4, c4)`. But here's a catch:
 
-- each steps might live on a different service, complicating the execution flow
+- the transaction/compensation step can be distributed. Each steps might live on a different service, complicating the execution flow
   - we can create another versioned service that manages all the transaction and compensation step
   - this service would listen to all the events broadcasted and manage the state
   - we can call this service an orchestrator
 - the transactions must be executed in the correct order
-- the compensation must be executed in the opposite flow
+- you cannot skip a step
+- when restarting or retrying the execution, ensure the completed transaction is not repeated (this can happen if you restart the service)
+- if the transaction is paused (say if the server is restarted while the steps is executed halfway), ensure that the subsequent/current steps can be retried
+- the compensation must be executed in the opposite flow (stack)
 - it's a stack implementation (first-in, first-out)
 - both transaction and compensation should be idempotent. Best if we can ensure they are invoked only once.
 - invoking the compensation multiple times should not result in undesired side-effects
@@ -82,21 +85,21 @@ To simplify, saga consist of many steps. Each step will have a transaction, `t` 
 - compensation logic would require the knowledge of the change in state made by the transaction step
   - the orchestrator should know the states change made by each transaction
 - what if one step is missing in between, leaving a gap. this could happen by accident, even though it should not. 
-- irreverisble side-effects might be triggered by transaction (e.g. notifications, email delivery, invoice sent)
+- irreversible side-effects might be triggered by transaction (e.g. notifications, email delivery, invoice sent)
   - best to leave the side-effects at the very end of the saga, so that it will be executed last
 - current state might not be dependent on previous state (e.g. one step is payment, another step is delivery). While the payment is required before delivery, none of the delivery state is related the payment state. They are only related by the delivery status, in which it must be successful.
 - compensate to N-th step. Sometimes we do not need to compensate all the steps in the saga. By right, if there are no compensation required, it should be excluded from the saga transactions. If you happen to see any steps in between that has this property, remove it and redesign your saga.
-
+- on the other hand, some transactions are irreversible (resource creation etc). In this scenario, we might not want to undo the whole thing exactly (deleting the resource back), but just changing the status of the resource created (inactive, set deleted_at date for example).
+- compensation does not necessarily mean undoing the steps, it can be just updating the status or marking the steps as failure
 
 See golang code sample [here](https://github.com/alextanhongpin/go-learn/blob/master/saga.md)
 
 The golang last example is using a bitwise to keep track of the states. It is useful because the steps are usually ordered, and we need to be able to reverse the order easily. Also, we can easily set/unset the bit to indicate that an action has been executed (multiple set/unset for bitwise operations is idempotent too! setting twice/unsetting twice will always result in the correct end state). Checking if a state has been executed is simpler too. We can easily check if the bit has been set. 
 
-
-
 ## Keeping the states in mysql
 
 If we are using the bitwise operators, we can store each step number as a column in the unsigned int. Getting the sum is just as simple as:
+
 ```sql
 SELECT SUM(step) FROM saga WHERE aggregate_id = ?
 ```
@@ -109,7 +112,7 @@ We can also create denormalized columns to store the prev and current state, as 
 | 1 | purchase_goods | abc | {...} | {...} | {...} | 2 | order_verified | 3 |
 | 1 | purchase_goods | abc | {...} | {...} | {...} | 4 | delivery_made | 7 |
 
-NOTE: Here we are keeping the final computed steps to make it easier to rollback. There are many other ways to store the sequenced steps, such as [adjacency list](https://en.wikipedia.org/wiki/Adjacency_list) or [Nested set model](https://en.wikipedia.org/wiki/Nested_set_model).
+NOTE: Here we are keeping the final computed steps to make it easier to rollback. There are many other ways to store the sequenced steps, such as [adjacency list](https://en.wikipedia.org/wiki/Adjacency_list) or [nested set model](https://en.wikipedia.org/wiki/Nested_set_model).
 
 Note that we included the `aggregate_version`, it should contain the sequence of the valid steps that needs to be performed. We can create a reference table to store the sequence. This will make it easier to evolve the system. E.g. What if we are going to add another step called `payment_made` after `order_requested`? All the steps below needs to be increment to reflect the updated sequence. Keeping track of the sequences can be made easier if we version them. If a new sequence have been added on 1 January 2010, then:
 
