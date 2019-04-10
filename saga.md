@@ -105,3 +105,20 @@ We can also create denormalized columns to store the prev and current state, as 
 | purchase_goods | abc | {...} | {...} | {...} | 1 | make order |
 | purchase_goods | abc | {...} | {...} | {...} | 2 | verify order |
 | purchase_goods | abc | {...} | {...} | {...} | 4 | make delivery |
+
+## Ensuring data is not being tempered.
+
+Linking states in database (or anywhere else) is tricky. It is hard to tell if the data has been modified by another user, causing discrepancy in state. How do we know that the state before has not been tempered by anyone? One way is for the next state to store the parent's md5 hash and to compare them / or query them:
+
+```sql
+SELECT * FROM target_table WHERE md5(data) = 'caa9a728f63d89450e3c682243fa5bfdsq';
+```
+
+Of course, this can be used to verify if the data has been tempered or not. It does not give any indication on what has changed since the last tempering, or who did it. In order to track the changes, it might be necesary to perform audit-logging or something similar. 
+
+This also introduces another problem. If the parent can be updated, then the children hash must be recomputed. We can set a rule so that none of the rows can be updated, and can only be added. But then again, updating a parent will trigger a propagation to the children - all children rows that are dependent upon the row must be updated. It would have been easier to design the row to store additional columns that contains the previous state, not the hashed reference...
+
+In case if we do create a new row for the parent, we still need to indicate that the previously created row is invalid. We can add two additional columns - valid from and valid to to indicate the validity of the parent. Only the latest parent will be used for the query. This will add a significant amount of complexity as well as burden to the developers that works on the system, since they need to understand the reasoning behind such complex query.
+
+
+This concept could be similar to a linked-list, or blockchain blocks...
