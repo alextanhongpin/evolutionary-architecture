@@ -24,7 +24,8 @@ The states can only move in one direction (e.g. purchase, payment_made, order_re
 The identifier should be used for operation that can be performed once only, e.g for order, you will have an order if for the purchase. This order involves multiple steps, and cannot be repeated. This order will expire after a certain time duration. This order requires a few steps to complete, starting from initialised
 
 The state machines can usually be visualized as a table, with previous state, next state and the actions that triggers the state change:
-| prev | next | action |
+
+| prev | next | action leading to transition |
 | -    | -    | -      |
 | initialised | checkout | user checkout item |
 | checkout | payment made, cancelled | user made payment, user cancel payment |
@@ -41,12 +42,21 @@ Each action can be stored in the database as a row (or stored in one column to s
 Have a main orchestrator manage the sequence.
 For example, an order delivery system.
 
-User purchase an item
-Set the status to checkout
-User pays an item.
-Check the previous state though the aggregate Id, if exist, Add it as a new entry.
+- User purchase an item
+- Set the status to checkout
+- User pays an item.
+- Check the previous state though the aggregate Id, if exist, Add it as a new entry.
 
 The algo is as follow, select all by the same aggregate id, if the I’d exists, query all events. For each events, validate the steps. Ge the last next step. If the current step equals the last next step, check if the validity is okay. add it in. Once all the steps have been completed, purge the entries, as it should not be retried. How to deal with versioning? Store the version in the Database and query them. For different version, we may have different state machine acting. 
 
 We can probably use sorted sets to sort the sequence. Then compare it.
 
+## Dealing with long-living transactions in Saga
+
+What if one of the steps are not immediate, say sendDelivery after payment is confirmed? If there are multiple steps behind, we might need to rollback all (or just some) steps to compensate. So the logic to rollback the transaction must be independent (hopefully idempotent) and can be invoked anytime. Some part of the system needs to keep track of all the previous compensating transaction steps too. 
+
+- which part of the system should have the knowledge?
+- how to deal with versioning?
+- how to ensure if the execution happens only once, or is idempotent?
+- how to ensure the sequence is correct?
+- how to deal with failures when attempting to rollback?
