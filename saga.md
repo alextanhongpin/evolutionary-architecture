@@ -84,6 +84,24 @@ To simplify, saga consist of many steps. Each step will have a transaction, `t` 
 - what if one step is missing in between, leaving a gap. this could happen by accident, even though it should not. 
 - irreverisble side-effects might be triggered by transaction (e.g. notifications, email delivery, invoice sent)
   - best to leave the side-effects at the very end of the saga, so that it will be executed last
+- current state might not be dependent on previous state (e.g. one step is payment, another step is delivery). While the payment is required before delivery, none of the delivery state is related the payment state. They are only related by the delivery status, in which it must be successful.
+- compensate to N-th step. Sometimes we do not need to compensate all the steps in the saga. By right, if there are no compensation required, it should be excluded from the saga transactions. If you happen to see any steps in between that has this property, remove it and redesign your saga.
 
 
 See golang code sample [here](https://github.com/alextanhongpin/go-learn/blob/master/saga.md)
+
+## Keeping the states in mysql
+
+If we are using the bitwise operators, we can store each step number as a column in the unsigned int. Getting the sum is just as simple as:
+```sql
+SELECT SUM(step) FROM saga WHERE aggregate_id = ?
+```
+
+
+We can also create denormalized columns to store the prev and current state, as well as the applied state to ease compensation:
+
+| aggregate | aggregate_id | prev | data | current | step | desc |
+| - | - | - | - | - | - | - |
+| purchase_goods | abc | {...} | {...} | {...} | 1 | make order |
+| purchase_goods | abc | {...} | {...} | {...} | 2 | verify order |
+| purchase_goods | abc | {...} | {...} | {...} | 4 | make delivery |
