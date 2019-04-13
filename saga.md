@@ -145,3 +145,13 @@ This also introduces another problem. If the parent can be updated, then the chi
 In case if we do create a new row for the parent, we still need to indicate that the previously created row is invalid. We can add two additional columns - valid from and valid to to indicate the validity of the parent. Only the latest parent will be used for the query. This will add a significant amount of complexity as well as burden to the developers that works on the system, since they need to understand the reasoning behind such complex query.
 
 This concept could be similar to a linked-list, or blockchain blocks...
+
+
+## Routing Slip
+
+https://www.codit.eu/blog/the-routing-slip-pattern/
+https://www.enterpriseintegrationpatterns.com/patterns/messaging/RoutingTable.html
+http://vasters.com/archive/Sagas.html
+https://blog.bernd-ruecker.com/how-to-implement-long-running-flows-sagas-business-processes-or-similar-3c870a1b95a8
+http://proto.actor/blog/2017/06/24/money-transfer-saga.html
+https://blog.knoldus.com/microservices-and-the-saga-pattern/
