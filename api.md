@@ -25,6 +25,10 @@ Other options:
 - server sent events
 - grpc
 
+## New API?
+
+https://apievangelist.com/2015/05/05/guest-post-why-the-api-pattern-is-broken-and-how-we-can-fix-it/
+
 References:
 - https://cloud.google.com/apis/design/
 - https://jsonapi.org/
