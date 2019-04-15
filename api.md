@@ -4,6 +4,7 @@
 - custom action, search, approve etc
 - filter, search, query
 - params or query? `/users/:id` returns specific user by id. If we need to query user's by email, either make the id or email conditional (but exposing the url in the query is not a good idea, so...) or use a querystring for `/users?email=john@mail.com`.
+- overwriting query? `?name=car&name=paper`
 - pagination: use graphql style with next, prev pagination that is base64 encoded
 - user roles, permissions and scopes
 - x-request-id
@@ -28,6 +29,18 @@ Other options:
 ## New API?
 
 https://apievangelist.com/2015/05/05/guest-post-why-the-api-pattern-is-broken-and-how-we-can-fix-it/
+
+
+## API Monetization
+
+https://dba.stackexchange.com/questions/105915/modeling-invoices-and-orders
+https://developer.ibm.com/apiconnect/2017/10/17/api-monetization-really-mean/
+https://nordicapis.com/top-5-api-monetization-business-models/
+https://www.quora.com/What-are-innovative-ways-to-monetize-your-API
+
+Some other tips:
+- separate frontend from backend
+- application can be whitelabelled, and apis can be charged per requests
 
 References:
 - https://cloud.google.com/apis/design/
