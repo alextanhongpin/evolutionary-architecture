@@ -139,6 +139,7 @@ References:
 - https://www.keycloak.org/docs/latest/server_admin/index.html#roles
 - https://www2.cs.duke.edu/courses/spring04/cps108/readings/usecaseslarman.pdf
 - https://sites.cs.ucsb.edu/~mikec/cs48/project/UseCaseRequirements.pdf
+- https://courses.cs.washington.edu/courses/cse403/04wi/materials/DrDan/UseCaseChapter.pdf
 
 ## User stories and use cases are different
 
