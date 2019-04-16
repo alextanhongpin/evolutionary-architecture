@@ -137,6 +137,7 @@ References:
 - https://auth0.com/docs/scopes/current/custom-claims
 - https://auth0.com/blog/on-the-nature-of-oauth2-scopes/
 - https://www.keycloak.org/docs/latest/server_admin/index.html#roles
+- https://www2.cs.duke.edu/courses/spring04/cps108/readings/usecaseslarman.pdf
 
 ## User stories and use cases are different
 
