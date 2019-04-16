@@ -30,3 +30,14 @@ Testing with database is normally not recommended. But since it is easy to start
 ## Testing and Different methodology
 
 There are TDD, BDD. There's also `should`, `assert` terms used when testing. UseCase requirements can be converted to BDD (GWT, Given When Then style). The problem is the test case tends to get long. Testing a pipeline service can be hard to setup, since there's a possibility the scenario may branch out, causing repetitive steps to be performed.
+
+
+## Testing API HTTP requests
+
+Testing API HTTP request is probably something I've seen many developers doing. While it's not wrong, it doesn't give much details about what we are actually testing. When making a HTTP API requests, the system becomes a black box - we don't really care about the business logic that they are performing, only whether they are returning the correct response payload. Also, the payload could varies, which leads developers to hardcode the json response, again defeating the purpose of the testing.
+
+It is better to isolate the business logic into a Service layer, and call them in the Controller layer. For testing, we can just test against the Service layer rather than the Controller layer.
+
+Testing becomes incredibly straightforward too, since we can bypass the middlewares and loggers, and we can also setup our own infra and pass them down through dependency injection. Some might argue that middlewares are part of business logic too (authentication/authorization), but again, we are not advocating against testing againt API requests - there's a place and time for it.
+
+Testing API requests is common if we are testing against a client API/external integration. For that, it's a better to look into PACT contract testing.
