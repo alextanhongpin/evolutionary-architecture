@@ -320,3 +320,27 @@ func main() {
 }
 
 ```
+
+## Generating TestCases from UseCase
+
+If we have the use case with three steps, and each of them has an extension:
+
+1. step a
+2. step b
+3. step c
+
+extensions:
+1a. extension_a
+2a. extension_b
+3a. extension_c
+
+Then we will have the following test cases combination:
+- step a, step b, step c (all success)
+- none (fail BEFORE step a)
+- step a, extension_a
+- step a, step b, extension b
+- step a, step b, step c, extension c
+
+https://www.computing.dcu.ie/~ltuohey/CA314_2004_2005/GeneratingTestCasesFromUseCasesJune01.pdf
+
+
