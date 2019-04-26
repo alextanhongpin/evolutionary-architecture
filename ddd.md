@@ -1,3 +1,5 @@
+
+
 ## Entity
 
 Entity has 
@@ -58,3 +60,19 @@ func main() {
 	fmt.Println(adults)
 }
 ```
+
+
+### Things to consider when designing a model
+
+- the attributes
+- the identity
+- the behaviour
+- the association
+	- single entity. can it be one, can it possibly be two, can it be a fixed number, can it be unlimited?
+	- multiple entity (e.g. a car and engine can have only one car_engine). can it be one, can it be ...
+- uniqueness
+- aggregates (what entity is dependent on another)
+- saga + state machine (what interaction/steps/process flow that is required in order to reach the final state)
+- is it an immutable object
+
+https://airbrake.io/blog/software-design/domain-driven-design
