@@ -74,5 +74,13 @@ func main() {
 - aggregates (what entity is dependent on another)
 - saga + state machine (what interaction/steps/process flow that is required in order to reach the final state)
 - is it an immutable object
+- does it have a status? do we need to keep track of the status
+- does it have a sequence of state that can change over time? can it be a time series?
+- does it have a validity range (valid from, valid till)? can it expire?
+- when it expires, does it still play a role (historical/readonly, but no actions). E.g. pricing information
+- does it need versioning? version 2 wil have a different business rules from version 1. version 1 is deprecated, version 3 is created, and version 3 can coexists with version 2.
+- which is the aggregate root? when deleting the root entity, how does it affect the rest? will they be deleted?
+- are the entity immediately related? or can they be delayed? (e.g. order can be created, but the payment can be later. once the payment is completed, it needs to be verified, but it will also depends on the admin that manually updates it).
+- let's break it down, it can have diferrent statuses, relationships, lifecycle, version
 
 https://airbrake.io/blog/software-design/domain-driven-design
