@@ -18,6 +18,10 @@ Entity has
 
 - is stateless
 - can perform operation on an entity 
+- use to orchestrate interaction between different entities (e.g. order item), like a saga orchestrator (?)
+- if the behaviour does not belong to an entity, it will normally be implemented here
+- a.k.a usecases
+- may sound like aggregate, but it is actually different. Aggregate root manages a bunch of entity and ensure the state is valid/consistent.
 
 ## Aggregrates
 
@@ -25,6 +29,8 @@ Entity has
 - is defined as a cluster of associated objects that we treat as a unit for the purpose of data changes
 - performs actions between entities that are related to one another
 
+https://medium.com/@unmeshvjoshi/aggregate-oriented-microservices-d314eb04f2b1
+https://softwareengineering.stackexchange.com/questions/237943/domain-services-vs-factories-vs-aggregate-roots
 
 ```go
 package main
@@ -84,3 +90,13 @@ func main() {
 - let's break it down, it can have diferrent statuses, relationships, lifecycle, version
 
 https://airbrake.io/blog/software-design/domain-driven-design
+
+## Other userful terms
+
+We can probably break down our services into the following:
+
+- Service orchestration is the coordination or integration of several services to expose it as a single service.
+- Service aggregation act as a facade over the lower level services, hiding technical details and interrelationship from the service consumer. Service aggregation adds alot of value to the overall system by providing a higher level of abstraction. Tool: Oracle Service Bus (OSB-Proxy Services), for example.
+- Service Augmentantion is used within a service for message enrichment. Suppose that based on client id you need to obtain additional data, like address, email or phone, you should augment message using database queries, etc..
+
+It seems like most of the services (CRUD) written can be classified as service augmentantion. For most CRUD, the service layer tends to be redundant, since it is only a layer that makes a call to the repository. This is especially more apparent for services that are mainly GET (getters).
