@@ -16,3 +16,28 @@ Set a `version` in the `jwt` token, and set the equivalent `version` in the serv
 
 No. https://stackoverflow.com/questions/38992239/json-web-token-make-it-client-specific
 
+## Blacklisting JWT
+
+It's not possible to implement actual logout with JWT. From the client side, we can simply remove the JWT token from the localstorage, but cannot prevent user from keeping a copy of it. To ensure that tokens that have been removed cannot be reused, we need to blacklist them.
+
+One way is to store the blacklisted JWT token in Redis, and set the expiry in Redis by computing the time remaining for the token to expire. But this means for every calls that needs the authorization, they need to call Redis to check if the token is still valid or not.
+
+
+## Custom Bearer
+
+How to implement custom bearer
+
+## Basic Authentication 
+
+For ops login.
+
+## Passwords in environment variable
+
+A common mistake is to store plaintext user credentials in the environment variables. We need to distinguish the types of environment variables. It can usually be categorized as `config` or `secret`.
+
+To pass in the credentials through environment variable, hash the `username:password` using SHA256 (or similar hashing that are strong enough). To compare, hash the input `username:password` credentials with those set in the environment variable.
+
+
+## Encryption
+
+What possible encryption methods are available...
