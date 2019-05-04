@@ -52,3 +52,24 @@ References:
 - https://hackernoon.com/restful-api-design-step-by-step-guide-2f2c9f9fcdbf
 - https://apiguide.readthedocs.io/en/latest/
 - https://swift.org/documentation/api-design-guidelines/
+
+
+## Resource Based URL
+
+URLs naming for Rest APIs are usually plural nouns. 
+
+## Roles in APIs
+
+Some of the difficulty in implementing APIs correctly is the service part. APIs are mainly a layer of HTTP transport, but the core of the APIs are usually service. When designing api services, there are times where we tend to mix up the responsibility and fallback to SOAP based approaches - using verbs. This is understandable, when the APIs themselves may have different behaviours when called by different roles - they simply did not adhere to the classic CRUD APIs.
+
+Google recommend naming custom methods the following way:
+
+- `POST /v1/resource:cancel`
+- `GET /v1/resource:batchGet`
+- `POST /v1/resource:move`
+- `POST /v1/resource:search`
+- `POST /v1/resource:undelete`
+
+https://cloud.google.com/apis/design/custom_methods
+
+## 
