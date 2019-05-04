@@ -104,6 +104,18 @@ References:
 - streaming architecture like netflix
 - photo serving service
 - facebook's safety check feature
+- natural disaster notification system
+- webhook dispatcher system
+- policy agent
+- activity feed logs
+- real-time location services
+- real-time services
+- approval system (auto/manual)
+- saga orchestrator
+- designing facebook like feature
+- scalable counter system
+- tagging system in comments/posts/feeds
+- adding attachments/emoji etc
 
 ## APIs
 
