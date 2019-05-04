@@ -72,4 +72,7 @@ Google recommend naming custom methods the following way:
 
 https://cloud.google.com/apis/design/custom_methods
 
-## 
+## Standard Fields
+Standard fields as defined by google: 
+
+https://cloud.google.com/apis/design/standard_fields
