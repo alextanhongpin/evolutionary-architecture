@@ -119,3 +119,11 @@ Create:
 
 Update:
 - unsetting the values (submit empty name the second time)
+
+Custom Entity/Alias are types that extends the basic type, or types that are used to model a domain:
+
+- birth date: alias of date, but the date cannot be in the future (must be at least today.
+- age: cannot be negative, cannot be an abnormal value (what is considered abnormal? any value that is more than 100 could rouse suspicion, but any values greater than the current year is definitely abnormal)
+- gender: male, female, others. This is usually an enum type, and the capitalization should not matter, but prefable lowercase everything.
+- money: can only be +tive. The signs are usually denoted by the type (income, expense)
+- car: the wheels cannot be 2
