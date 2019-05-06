@@ -41,3 +41,14 @@ To pass in the credentials through environment variable, hash the `username:pass
 ## Encryption
 
 What possible encryption methods are available...
+
+## Replay attack
+
+- timestamp event/requests
+- Events without timestamp is invalid
+- If the event is out of time(less than 5 minutes/validity period ago, or from the future), it is invalid
+- If the action to be taken is only valid for a certain period, set a due date. Action must be carried out within that period
+- Set a date on the entity to be updated, for the next change, check if the ts is greater than the previous timestamp, if yes, only update it
+
+## Performance and security as a feature
+
