@@ -100,3 +100,23 @@ We can probably break down our services into the following:
 - Service Augmentantion is used within a service for message enrichment. Suppose that based on client id you need to obtain additional data, like address, email or phone, you should augment message using database queries, etc..
 
 It seems like most of the services (CRUD) written can be classified as service augmentantion. For most CRUD, the service layer tends to be redundant, since it is only a layer that makes a call to the repository. This is especially more apparent for services that are mainly GET (getters).
+
+## Code Structure
+
+Infrastructure layer
+- Container
+- Factories
+- Persistence 
+- Configuration
+
+Presentation layer
+- Api
+- middlewares
+
+Domain layer
+- E.g. booking
+- Delivery 
+- Order
+- Usecases
+
+
