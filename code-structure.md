@@ -174,7 +174,7 @@ Entity (a.k.a types, model)
 - e.g. We have a user entity, it can have getters/setters for name, age, email state. It can have basic validation for email, or name must be present, or age cannot be less than 0 etc. It has no knowledge on the business rules. They have to be applied to the entity.
 - how is this different than model? An entity only represents the types of data. It should also provide a _basic_ initializer (not all languages support multiple constructors). If we need to customize the entity during construction, it should best be placed in the model, not entity. What are such cases? Let's take an example of creating a user with a role field. By default, it should only create a normal user. What if you need to initialize the the user as admin? Simple - if the role has to be defined all the time - pass in a flag when initializing. But if the assumptions is too vague - then create a factory to initialize it. There's no right or wrong in this case, and it's sometimes hard to find a sweet spot - because any way works. If you have a preferred method - stick with it.
 
-Model
+Service
 - may embed an object
 - may embed a validation policy (specific to business rules)
 - may create an Entity speficic to the domain. E.g. Create a new User entity with the role Admin assigned to it. 
@@ -183,14 +183,20 @@ Model
 - may define interaction with the storage layer through repository patterns, but no strict implementation. Just through interface.
 - ~~after a few attempts, I realized that the model should just be performing business logic. It should be pure functions - rather than modifying the entity, it should return the new values that needs to be set to the data. In other words, it acts as a pure provider, which is basically just a namespaced class with methods that returns values. This is especially useful when dealing with data that is hard to mock (token generation, time, random values). It should not modify the entity at all.~~
 - update: do we even need a model? adding another layer only means more things to mock. 
+- note that the naming has changed to service. Are service and use case the same? Not really, service is used to implement behaviour that an entity does not hold, e.g. checking the persistence layer to see if email already exists for a user(but the code will look the same as repository, or maybe even simpler). Use case is meant to model a business rule by implementing business logic. E.g. login user. Note that a use case may have extensions, which could be at the service layer.
+- service should only perform business logic external to the given entity (checking if the email exists etc), it should not interact with other entities. It's not supposed to deal with aggregate roots too.
+- interacts with the repository layer
 
-Service (a.k.a usecases)
-- may contain several models
+Usecase
+- may contain several service
 - does not have direct access to the storage layer nor models - it should be communicated through the model.
 - handles at most request/response at the highest layer. Mockable.
 - may orchestrate complex business logic. 
 - should be pure and contains no side-effects. Initialization of values should be the models responsibility, and creation of any models should also be done by models.
-- could perform validation, but best for only nil/required values. Business logic validation should be left to the models.
+- could perform validation, but best for only nil/required values. Business logic validation should be left to the models. Note that usecase request validation may be different than the entity.
+- calls services and repository
+- may interact with several entities
+- deals with aggregates, and will normally have an aggregate root.
 ```
 
 ## Some of the scenarios that needs to be considered
@@ -416,37 +422,6 @@ I've been using the models to call the repository in golang for quite a while, t
 ## If/else business logic vs Chain of Responsibility
 
 Rather than having an if/else statement, we can instead use chain of responsibility to delegate the work to be done. This is particularly useful when testing, because we can scope the work and test the logic independantly on the hardcoded if/else in the code section.
-
-## CQRS Naming Convention
-It's hard to find proper CQRS naming convention, hence I've decided to find what's useful and add it here. Some useful guideline is:
-- separate read and write
-- separate command and events
-- use `verb-noun` for commands
-- use `noun-verb` for events in past tense
-
-E.g. Write Service
-
-| Command | Event |
-| --------|-------|
-| CreateEvent | EventCreated |
-| ChangeCustomerLocale | CustomerLocaleChanged |
-| MakeCustomerPreferred | CustomerPreferredMade |
-| EditCustomerDetails | CustomerDetailsEdited | 
-
-Note that it is best to avoid `REST` terms like `UPDATE`, because there's a loss of information here (what is being updated?). In other words, be as specific as possible and group necessary fields that needs to be updated. E.g. `UpdateUserPreference`, `UpdateUserAddress`. If possible, all `WRITE` services should be logged, since they change the state of the application, unlike `READ` services.
-
-E.g. Read Service
-
-| Command | Event |
-| --------|-------|
-| GetCustomer | - |
-| GetCustomerByName | - |
-| GetPreferredCustomer | - |
-
-For `boolean/flags`, you can use the term `Mark/Set` to indicate status change. Don't use ambiguous term such as `Toggle` - they do not provide information of the end state of the action. E.g. when delivering a food - `MarkFoodDelivered`, or order `MarkOrderConfirmed`.
-
-For `update`, note that it can give more meaningful context compared to traditional CRUD. Say we have a separate Ops team to handle user orders, and the user called the customer service to amend the changes made to the order (which is not possible through the webui), we can create an event called `AmendCustomerOrder`, rather than the `UpdateCustomerOrder`, which can serve as a meaningful metrics to find out how many customers made mistakes or other useful data.
-
 
 ## Definition of Code Architecture
 
