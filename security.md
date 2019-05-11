@@ -52,3 +52,20 @@ What possible encryption methods are available...
 
 ## Performance and security as a feature
 
+## Business Login in JWT
+
+JWT should not contain business logic - if the token holds claims that are dynamic, any change to the data requires the old token to be invalidated/blacklisted, and the client has to fetch a new token with the new claims.
+
+JWT Token is best used for `authentication` (who the caller is), even when it can perform `authorization` (what the caller can do) through claims.
+
+## Setting Roles in JWT
+
+JWT token is like a passport - it represents the identity of the user at the time the token is generated, until it expired. Thus, we carry along an assumption that the claims set in the JWT are static and should not change frequently. Roles however can be dynamic. Changing the roles on the server side will still leave the existing JWT token with the old roles.
+
+This can have some serious security consideration, imagine giving an admin access to the token. Even when the token is short-lived, the amount of harm that can be done is immeasuarable. Some possible solution (and problems they introduce):
+
+- maintaining a separate blacklist table, which now makes the application stateful. Also, the blacklist table needs to be stored in a distributed cache to avoid load-balancing issue or role-checking on different application for the same user.
+- check the db everytime a requests is send to validate the role (either an independent call, or in the statement query).
+
+## References
+- https://stackoverflow.com/questions/47224931/is-setting-roles-in-jwt-a-best-practice
