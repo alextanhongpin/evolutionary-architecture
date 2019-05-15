@@ -155,3 +155,40 @@ http://vasters.com/archive/Sagas.html
 https://blog.bernd-ruecker.com/how-to-implement-long-running-flows-sagas-business-processes-or-similar-3c870a1b95a8
 http://proto.actor/blog/2017/06/24/money-transfer-saga.html
 https://blog.knoldus.com/microservices-and-the-saga-pattern/
+
+## Code
+
+
+```go
+type Command interface {
+	Sequence() uint
+	Execute() error
+	Compensate() error
+}
+
+// orderUpdate:success
+// orderUpdate:error
+
+// orderUpdateCancelled:success
+// orderUpdateCancelled:error
+```
+
+Sequence is important because:
+- steps should be executed sequentially
+- steps should have expiration period (if the execution is not successful within a time period, drop it. This is especially true for entity with limited stock, e.g. when booking ticket seats etc, since it's concurrent it may no longer be available in the next step)
+- steps cannot be skipped (jumping from the first step to the last step)
+- steps cannot be executed twice (idempotent as possible), but how about retries
+- steps can be versioned (v1, v2). Different version has different sequence that needs to be completed
+- the server acting as the orchestrator cannot go down (!!!)
+
+
+Execution:
+- can return either success or error. Success will lead to the next sequence, failure will cause all the previous steps to be compensated
+- the current state of the execution is stateful and needs to be stored somewhere. It should also be able to survive the restart of the server
+
+Compensation:
+- the compensation transaction cannot fail
+- if the execution fails in the middle of the process, e.g. 3rd step out of 5 steps, then all steps before it needs to be compensated (unless if there are no side-effects)
+
+References:
+- https://docs.microsoft.com/en-us/azure/architecture/patterns/compensating-transaction
