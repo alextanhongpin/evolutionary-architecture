@@ -6,7 +6,9 @@
 - client side (throttles network calls)
 
 ## Thoughts
+
 - how to deal with delay from reading/setting the values in distributed system? Add additional time
+- rate limiting and throttle are two different things for API Quotas. Rate limit is the rate at which the api may be consumed, normally requests per second, while throttle is the number of requests that can be made at the given time window. For example, our login api endpoint has a rate limit of 1 request per second (user can make up to 86,400 requests in a day), but it only has a daily limit of 10,000 requests per day. 
 
 ## Algorithms
 
@@ -47,5 +49,11 @@
 Implementation of the various rate limiting algorithms here:
 
 - https://github.com/alextanhongpin/go-learn/blob/master/ratelimit.md
-
 - https://medium.com/@saisandeepmopuri/system-design-rate-limiter-and-data-modelling-9304b0d18250
+
+## HTTP Headers
+
+- X-RateLimit-Limit: The maximum number of requests available in the current time frame
+- X-RateLimit-Remaining: The number of remaining requests in the current time frame
+- X-RateLimit-Reset: A unix timestamp of the expected time when the rate limit will reset
+- Retry-After: The date or delay in seconds for the next request
