@@ -67,5 +67,31 @@ This can have some serious security consideration, imagine giving an admin acces
 - maintaining a separate blacklist table, which now makes the application stateful. Also, the blacklist table needs to be stored in a distributed cache to avoid load-balancing issue or role-checking on different application for the same user.
 - check the db everytime a requests is send to validate the role (either an independent call, or in the statement query).
 
+
+## Fuzzy testing (?) with strings
+
+https://github.com/minimaxir/big-list-of-naughty-strings
+
+## Anomaly Detection for requests
+
+In order to accomplish this, we need to detect the usage pattern for each users on the different endpoints. Endpoints such as login will normally be rarely called, hence having a increase request over a short time frame can be suspicious.
+
+- how to detect low requests (below the rate limit) abuse?
+- how to detect scraping (if they call it at fixed interval or non-fixed interval)
+- how to perform time-series anomaly detection?
+
+## Fraud detection
+
+This may be different than anomaly detection, that it detects the attempts of creating fake resources (accounts, orders) and testing the waters.
+
+## Abuse and DDOS
+
+Abuse and DDOS can be prevented by adding rate-limit to the system, and blacklisting the IP address that exceeded the rate limit frequently. There are active and passive systems that detects the abuse.
+
+- active. State is hold in application. The ip is immediately added to blacklist once the threshold is exceeded, and the user is banned.
+- passive. Through log analysis. The request logs are sent to a system to be analysed, and the response is then feed back to a distributed storage (redis etc) and refreshed by the application (or load balancers), which then blacklists the ip.
+
 ## References
 - https://stackoverflow.com/questions/47224931/is-setting-roles-in-jwt-a-best-practice
+- https://assertible.com/blog/api-security-testing-tips-to-prevent-getting-pwned#test-for-authentication-on-all-endpoints
+- https://github.com/shieldfy/API-Security-Checklist
