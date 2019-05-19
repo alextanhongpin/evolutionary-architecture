@@ -101,9 +101,13 @@ There are several confusion regarding throttling and rate limiting.
 - Rate limit defines the rate at which an API can be consumed, e.g. User can only make 1 request per second, that is 86,4000 requests per day. But if we apply the throttle, then the user can only call up to 100 requests per day.
 
 
-https://helpx.adobe.com/coldfusion/api-manager/throttling-and-rate-limiting.html
 
 ## References
 - https://stackoverflow.com/questions/47224931/is-setting-roles-in-jwt-a-best-practice
 - https://assertible.com/blog/api-security-testing-tips-to-prevent-getting-pwned#test-for-authentication-on-all-endpoints
 - https://github.com/shieldfy/API-Security-Checklist
+
+For Throttling and Rate Limiting
+- https://helpx.adobe.com/coldfusion/api-manager/throttling-and-rate-limiting.html
+- https://security.stackexchange.com/questions/74211/what-is-the-difference-between-login-throttling-and-temporary-account-lockout
+- http://timoh6.github.io/2015/05/07/Rate-limiting-web-application-login-attempts.html
