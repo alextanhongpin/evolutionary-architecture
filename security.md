@@ -91,6 +91,18 @@ Abuse and DDOS can be prevented by adding rate-limit to the system, and blacklis
 - active. State is hold in application. The ip is immediately added to blacklist once the threshold is exceeded, and the user is banned.
 - passive. Through log analysis. The request logs are sent to a system to be analysed, and the response is then feed back to a distributed storage (redis etc) and refreshed by the application (or load balancers), which then blacklists the ip.
 
+## Login Jail Gate
+
+https://github.com/alextanhongpin/js-learn/blob/master/counter.md
+
+There are several confusion regarding throttling and rate limiting.
+
+- Throttling is meant to control the usage at a defined time window, e.g. User can only make 100 requests per day.
+- Rate limit defines the rate at which an API can be consumed, e.g. User can only make 1 request per second, that is 86,4000 requests per day. But if we apply the throttle, then the user can only call up to 100 requests per day.
+
+
+https://helpx.adobe.com/coldfusion/api-manager/throttling-and-rate-limiting.html
+
 ## References
 - https://stackoverflow.com/questions/47224931/is-setting-roles-in-jwt-a-best-practice
 - https://assertible.com/blog/api-security-testing-tips-to-prevent-getting-pwned#test-for-authentication-on-all-endpoints
