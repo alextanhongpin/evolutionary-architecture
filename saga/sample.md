@@ -126,3 +126,26 @@ if (isInterrupted) {
   }
 }
 ```
+
+## Sample 3 
+
+With builder pattern
+```js
+const saga = SagaBuilder.new('ReviewPaymentSaga')
+.commit('MAKE_CAR_RESERVATION', cancelCarReservation)
+.compensate('CANCEL_CAR_RESERVATION', cancelCarReservation)
+.commit('BOOK_HOTEL', bookHotel)
+.compensate('CANCEL_HOTEL_BOOKING', cancelHotelBooking)
+.commit('BOOK_FLIGHT', bookFlight)
+.compensate('CANCEL_FLIGHT', cancelFlight)
+.end()
+.triggerCompensationOnError()
+
+SagaService.save(saga).execute()
+```
+
+## Thoughts
+
+- Where to store the state of the sequence (nosql, in-memory, redis?). It has to be distributed for sure if they are called by different services. We can probably store it as a document based event, with all the saga steps and states in a single document json. The existing state can be computed with the bitwise operator. Storing it as a single rows in mysql will consume a lot of storage space.
+- the coordinator is called SEC (Saga Execution Coordinator)
+- the saga should be triggered by the service. The whole lifecyle of the saga starts and ends in the service itself.
