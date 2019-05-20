@@ -1,3 +1,24 @@
+
+# Rate Limit 
+
+- improve application security and performance
+- protect resources from abuse
+- avoid thundering herd/DDOS
+
+
+## Types of rate limit
+
+- Rate-limit throttling: Allows a requests to pass through until a limit is reached for a time interval. 
+- IP-level throttling: Make an API available only through whitelisted IP, or limit the number of requests sent by a certain client ip. Note that there can be many users under the same IP address.
+- Scope limit throttling: Based on the classification of users, you can restrict access to certain part of the API (methods, functions/procedures) or features.
+- Concurrent connection limit: Limit the number of connections a user can make.
+- Resource level throttling (a.k.a Hard Throttling). If a certain query returns a large result set, you can throttle the request so that your sql engine limits the number of rows.
+- Tiers of throttling 
+  - api level
+  - application level
+  - user level
+  - account level
+
 ## Design consideration 
 
 - single machine, single threaded scenario
@@ -57,3 +78,7 @@ Implementation of the various rate limiting algorithms here:
 - X-RateLimit-Remaining: The number of remaining requests in the current time frame
 - X-RateLimit-Reset: A unix timestamp of the expected time when the rate limit will reset
 - Retry-After: The date or delay in seconds for the next request
+
+## References
+
+- https://nordicapis.com/everything-you-need-to-know-about-api-rate-limiting/
