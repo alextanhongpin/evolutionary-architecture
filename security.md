@@ -46,6 +46,8 @@ With that, we have accomplish four things:
 - minimize lookup. We still need to make a lookup to redis on every call, but the logic is only performed (comparing the issued at and last logout at) when the entry exists. It should be faster than performing a db lookup, and it works on multiple services.
 - customize message. If the entry exists in redis, and the token is indeed issued before the last logout, we can return a message indicating that the session expired. This would have differentiate it from the invalid jwt token/jwt expired token.
 
+Optimization. We previously set the expired at for the redis entry to be equal the last login at + jwt duration. If you notice, the duration will actually be very short. We would still have to check the token blacklist status for the lifetime of the jwt token. One way to optimized it is to set the last login at date too in the database. It will be updated with every login and will always hold the latest login at date. When we logout the user, create the entry at redis with the last login at, last logout at, user id and set it to expire with the last login at + jwt duration. If the last login at is 4 days, and the jwt duration is 1 week, then the blacklisted entry will only be valid for the remaining 3 days.
+
 ## Custom Bearer
 
 How to implement custom bearer
