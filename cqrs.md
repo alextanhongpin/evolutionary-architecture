@@ -37,16 +37,22 @@ Summarize it. And how to implement one.
 
 In what situation can CQRS be used, and when it should not be used?
 
+## Glossary
 
+- `command` is the only way to change the state of the system. Commands are responsible for introducing all changes to the system. Command should not return any value. `command` is just a plain object that is used by `command handler` as input value (params) for the operation it represents.
+- `query` is a read operation. It reads the state of the system, filters, aggregrates and transforms data to deliver the most useful format. Multiple execution should not affect the state of the system.
+
+https://www.future-processing.pl/blog/cqrs-simple-architecture/
+https://medium.com/@fagnerbrack/the-power-of-commands-and-events-ec6d2b3f856d
 ## References
-https://github.com/efacilitation/eventric/wiki/Literature
-https://ordina-jworks.github.io/domain-driven%20design/2016/02/02/A-Decade-Of-DDD-CQRS-And-Event-Sourcing.html
-https://stackoverflow.com/questions/4688696/cqrs-how-to-model-a-scenario-execution-system/4699693#4699693
-https://stackoverflow.com/questions/29146167/timeseries-temporal-data-in-ddd-on-write-side-in-cqrs
-http://scottlobdell.me/2017/01/practical-implementation-event-sourcing-mysql/
-https://martinfowler.com/eaaDev/EventSourcing.html
-https://dev.to/barryosull/event-sourcing-what-it-is-and-why-its-awesome
-https://martinfowler.com/eaaDev/AgreementDispatcher.html
-https://www.hugopicado.com/2017/05/06/what-event-sourcing-is-not.html
-https://dzone.com/articles/our-experience-domain-events
-https://news.ycombinator.com/item?id=19072850
+- https://github.com/efacilitation/eventric/wiki/Literature
+- https://ordina-jworks.github.io/domain-driven%20design/2016/02/02/A-Decade-Of-DDD-CQRS-And-Event-Sourcing.html
+- https://stackoverflow.com/questions/4688696/cqrs-how-to-model-a-scenario-execution-system/4699693#4699693
+- https://stackoverflow.com/questions/29146167/timeseries-temporal-data-in-ddd-on-write-side-in-cqrs
+- http://scottlobdell.me/2017/01/practical-implementation-event-sourcing-mysql/
+- https://martinfowler.com/eaaDev/EventSourcing.html
+- https://dev.to/barryosull/event-sourcing-what-it-is-and-why-its-awesome
+- https://martinfowler.com/eaaDev/AgreementDispatcher.html
+- https://www.hugopicado.com/2017/05/06/what-event-sourcing-is-not.html
+- https://dzone.com/articles/our-experience-domain-events
+- https://news.ycombinator.com/item?id=19072850
