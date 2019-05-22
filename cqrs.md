@@ -44,6 +44,15 @@ In what situation can CQRS be used, and when it should not be used?
 
 https://www.future-processing.pl/blog/cqrs-simple-architecture/
 https://medium.com/@fagnerbrack/the-power-of-commands-and-events-ec6d2b3f856d
+
+https://medium.com/@odedia/listen-to-yourself-design-pattern-for-event-driven-microservices-16f97e3ed066
+https://blog.couchbase.com/saga-pattern-implement-business-transactions-using-microservices-part-2/
+https://medium.com/@domagojk/patterns-for-designing-flexible-architecture-in-node-js-cqrs-es-onion-7eb10bbefe17
+https://medium.com/@fagnerbrack/the-power-of-commands-and-events-ec6d2b3f856d
+https://dzone.com/articles/saga-pattern-how-to-implement-business-transaction-1
+https://medium.com/capital-one-tech/microservices-when-to-react-vs-orchestrate-c6b18308a14c
+https://matthiasnoback.nl/2015/01/collecting-events-and-the-events-aware-command-bus/
+
 ## References
 - https://github.com/efacilitation/eventric/wiki/Literature
 - https://ordina-jworks.github.io/domain-driven%20design/2016/02/02/A-Decade-Of-DDD-CQRS-And-Event-Sourcing.html
