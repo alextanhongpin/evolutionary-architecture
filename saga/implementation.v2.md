@@ -17,7 +17,8 @@ class SagaOrchestrator {
     this.queue.on('hotel_booked', this.bookCar)
     this.queue.on('car_booking_cancelled', this.cancelHotelBooking)
     this.queue.on('car_booked', this.bookFlight)
-    this.queue.on('flight_booking_cancelled', this.cancelCarAndHotelBooking)
+    // this.queue.on('flight_booking_cancelled', this.cancelCarAndHotelBooking)
+    this.queue.on('flight_booking_cancelled', this.cancelCarBooking) // This should first cancel the car booking, which will emit the car_booking_cancelled event, which will proceed to cancel the hotel booking.
     this.queue.on('flight_booked', this.completeBooking)
   }
   start(msg) {
