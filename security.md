@@ -125,6 +125,19 @@ There are several confusion regarding throttling and rate limiting.
 - Throttling is meant to control the usage at a defined time window, e.g. User can only make 100 requests per day.
 - Rate limit defines the rate at which an API can be consumed, e.g. User can only make 1 request per second, that is 86,4000 requests per day. But if we apply the throttle, then the user can only call up to 100 requests per day.
 
+## STRIDE
+
+
+- Spoofing: Authenticity. Using another user credentials without their knowledge. 
+- Tampering: Integrity. Tampering of data such as overriding important data or deleting it.
+- Repudiation: Non-repudiability. Attackers hide the actions that they have performed, for instance by erasing them from the logs.
+- Information disclosure: Confidentiality. Data breaches.
+- Denial of Service: Availablity. Prevent regular users from accessing the system, through DDOS etc.
+- Elevation of Privilege: Authorization. Attackers attempt to gain higher privileges.
+
+https://en.wikipedia.org/wiki/STRIDE_(security)
+https://www.futurelearn.com/courses/cyber-security/0/steps/19631
+
 
 ## References
 - https://stackoverflow.com/questions/47224931/is-setting-roles-in-jwt-a-best-practice
