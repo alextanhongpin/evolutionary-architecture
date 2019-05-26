@@ -137,7 +137,7 @@ There are several confusion regarding throttling and rate limiting.
 
 https://en.wikipedia.org/wiki/STRIDE_(security)
 https://www.futurelearn.com/courses/cyber-security/0/steps/19631
-
+https://dev.to/petermbenjamin/demystifying-stride-threat-models-230m
 
 ## References
 - https://stackoverflow.com/questions/47224931/is-setting-roles-in-jwt-a-best-practice
