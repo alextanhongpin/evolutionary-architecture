@@ -116,6 +116,12 @@ References:
 - scalable counter system
 - tagging system in comments/posts/feeds
 - adding attachments/emoji etc
+- designing group purchase forms
+- sync online offline content
+- multilingual and localization with i18n and i10n
+- internal weekly tech newsletter for developers
+- event page for tech events
+- designing a searchable knowledge base for engineers
 
 ## APIs
 
@@ -128,3 +134,18 @@ References:
 ```bash
 $ dot -Tpng delivery-load-balance.dot -o delivery-load-balanced.png
 ```
+
+
+## Questions
+
+- how to design complex event processing CEP architecture
+- offline first architecture for mobile allows us to use the application without being online. Files, data can be stored locally, their md5 hash can be compared with the server and new ones can be refetched only when the data changed. We can keep track of the state by keeping track of the hash of the data (stored as a md5 binary column in mysql?) and the timestamp of last sync.
+- how to design offline mobile experience. We can cache the GET requests and stored them locally, and perform a sync refetch when we are online back. For actions that could modify state (create, update), we can store them in a queue locally, but resume them (rate limited to avoid spam, or just limit the number of items in the queue, and when the queue is full, say has 5 items, tell the user that they cannot execute the operation).
+- how to design large scale multilingual system for mobile (remember, mobile deployement is cumbersome - we don't want to be submitting the app for review everytime the translations change or if there are errors. The translation file must be stored somewhere on the server which cannot be down, and a copy should be stored on the client side, cached. The translation must be versioned, since old users might not upgrade the text, and the old translations need to persist. Translation for ios, android, web must be consistent, could be duplicated to avoid breaking dependencies)
+- how to handle actions for events (?) using real-time streaming architecture with complex event processing to handle business logic.
+- how to update machine learning model real-time (?) or batch update (per hour, per day) when new data is feed into the system. Upgrade should only be done if the newer model is better than the older one, so we can actually run another machine to train the newer data with the previous snapshot, compare the scores and replace (load balance) the old model with the newer one.
+- how to sign out all users with jwt token. You need session, and three variables, last logout at, last login at and user id stored in a distributed cache.
+- how to store real-time user analytics? For every service that provides value, push the event to an aggregator that will flush the data after a certain threshold (size, requests) or time to a storage (minio, s3).
+- how to get count of billions of unique items
+- how to prevent users from executing the same action twice (like/unlike, same user should not be able to like more than once, and a user that has not liked an event cannot unlike it, leading to negative count)
+- how to create a sharable form with capability url that will expire, same as honestbee group purchase
