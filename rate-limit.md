@@ -5,6 +5,12 @@
 - protect resources from abuse
 - avoid thundering herd/DDOS
 
+## Where to rate limit
+
+- All endpoints
+- For public GET endpoints, a typical request of 5 req/sec based on IP should be sufficient
+- For POST/UPDATE/PATCH, limit it depending on your scenario. For example, register and login endpoint should be limited to prevent brute force attempts, and upload files endpoint to prevent resource exhaustion. 
+- Database calls. Aside from caching, adding a rate limit to reduce the load can be effective too. Having a predefined quota for each service to call the database can be useful when there are many services calling the same database.
 
 ## Types of rate limit
 
