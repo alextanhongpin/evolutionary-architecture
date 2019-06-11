@@ -73,6 +73,15 @@ non-200 OK status code: 403 Forbidden body: "{\n  \"documentation_url\": \"https
 ```
 
 
+## Sending single vs multiple errors
+
+For most cases, sending back one should be more than sufficient. Sending back multiple means the client needs to be prepared to handle the errors, and this might introduce tight coupling between the server and the clients.
+
+A better way is to have the clients handle the error throught client-side validation (this is mainly true for forms).
+
+
+https://kevin.burke.dev/kevin/just-return-one-error/
+
 ## Others
 
 - how to provide multilingual for errors
