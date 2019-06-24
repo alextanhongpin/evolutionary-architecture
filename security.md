@@ -139,6 +139,100 @@ https://en.wikipedia.org/wiki/STRIDE_(security)
 https://www.futurelearn.com/courses/cyber-security/0/steps/19631
 https://dev.to/petermbenjamin/demystifying-stride-threat-models-230m
 
+
+## Kerkchoffs Principle
+https://en.wikipedia.org/wiki/Kerckhoffs%27s_principle
+
+## XSS Protection
+
+TODO: Check if the app renders html/script in json response.
+
+## ZAP 
+
+Zed-Attack-Proxy. Try to implement a basic dockerized version, and add it into the pipeline.
+
+## CSP 
+
+Short for Content-Security-Policy. Look into how to implement a basic policy:
+
+```golang
+w.Header().Add("Content-Security-Policy", "default-src 'self'")
+```
+
+## CSRF
+
+```golang
+if !checkCSRFHeader(r.Header.Get("X-CSRF-TOKEN")) {
+    w.WriteHeader(http.StatusNotAcceptable)
+    w.Write([]byte("Invalid CSRF Token"))
+}
+```
+
+## Cookie
+
+Set the option `SameSite=strict`.
+
+## Clickjacking
+
+```golang
+w.Header().Add("X-Frame-Options", "SAMEORIGIN")
+```
+
+## Basic Auth
+
+```golang
+if r.Header.Get("Authorization")[0:5] != "Basic" {
+    // Error
+}
+
+token = r.Header.Get("Authorization")[7:]
+tokenDecoded, err := base64.StdEncoding.DecodeString(token)
+username := tokenDecoded[0:strings.Index(":")]
+password := tokenDecoded[strings.Index(":") + 1:]
+w.Header().Set("WWW-Authenticate", `Basic-Realm=""`)
+```
+
+## NSP
+
+Checkout node-security platform
+
+## Ops Access
+
+Add a cron job to randomize the credentials daily and email/slack it to the user.
+
+## Client Side
+
+When logging in, store the token in the application state rather than local storage. When user closes the application, store it in the local storage.
+
+The next time the user login, get the token from the localStorage, store it in the application state and delete it from the localStorage.
+
+
+## Allow passwords to auto-rotate by randomly generating a unique password
+
+```
+# Generate a hashed credentials
+echo -n "username:password" | shasum -a 256
+
+# Pass this in as an environment variable CREDENTIALS
+
+# In the application, compare the hashed username:password with the credentials
+```
+
+
+
+## Prevent scraping through pagination token
+
+Numeric pagination is easy to scrape `?limit=9999&offset=1`. Find a way to create a pagination token that is hard to scrape.
+
+Also, do not expose `id` of resources to the frontend. That includes pages that displays a single item and so on e.g. `books/:id`. Rather, use slug instead as identifier.
+
+NOTE: I probably misunderstood why some apis base64 encode the token for pagination. Apparently for large scale websites, the integer id cannot be deserialized as int64 for javascript, hence it is base64 encoded as string. It does not add any security enhancement to the api.
+
+## Maching Learning for security
+
+Finding outliers from the data, or probably datapoints with perfect correlation (think scraping at the fixed interval).
+
+
 ## References
 - https://stackoverflow.com/questions/47224931/is-setting-roles-in-jwt-a-best-practice
 - https://assertible.com/blog/api-security-testing-tips-to-prevent-getting-pwned#test-for-authentication-on-all-endpoints
