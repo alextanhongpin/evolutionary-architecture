@@ -8,6 +8,23 @@
 - configuration is different than annotation or labels - we may choose to annotate our application with a version or git hash, deployed date, created at date.
 
 
+### Config
+
+Config can be divided to a few categories:
+- application config, prefixed with `APP_`, e.g. APP_VERSION, APP_HOST, APP_PORT
+- infrastructure config, like database or message queue, e.g. DB_HOST, NATS_HOST, etc
+- service config, for feature toggle, crontabs, etc
+- dependencies, such as logger settings in different environment
+
+When you have a lot of config, things can get pretty messy. Some of the key pointers for each config is to:
+
+- document the usage
+- make the source explicit (e.g. where to find them)
+- set defaults
+
+Configs are typically centralized in a single file. Why not break them down instead to different files or place them in their respective module folder?
+
+
 ## References
 
 Also look into 12 factor app.
