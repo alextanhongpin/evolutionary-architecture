@@ -313,3 +313,149 @@ For Throttling and Rate Limiting
 - https://helpx.adobe.com/coldfusion/api-manager/throttling-and-rate-limiting.html
 - https://security.stackexchange.com/questions/74211/what-is-the-difference-between-login-throttling-and-temporary-account-lockout
 - http://timoh6.github.io/2015/05/07/Rate-limiting-web-application-login-attempts.html
+
+
+## This is the iterinary taken from a security course
+
+Implement all of this
+
+KEY LEARNING OBJECTIVES
+* API and microservices security architecture.  
+* How to create APIs that are easy to use securely and hard to use insecurely.  
+* What are the techniques and tools to design, test and attack APIs and microservices.  
+* Understanding the intricate and minute details of authentication and authorisation frameworks and technologies.  
+* Learning how to effectively solve the problem of credential storage.  
+* Attack and defend against injection vulnerabilities e.g. Template Injection, SQL injection, NoSQL injection (MongoDB, GraphQL, etc.).  
+* Attack and defend against API and serverless oriented vulnerabilities e.g. serialisation, JSON injection, pickling, Edge Side Includes, Serverless Event Injection, etc.  
+* Learn AJAX and REST security best practices.  
+* Know when to use signing, when to use encryption, and when to use both.  
+* Implement applied, battle-tested secure cryptography.  
+* Obtain actionable knowledge and experience in using secure tokens, cookies, keys and tickets for authentication and authorisation. 
+* Attack insecure implementations of session management, input validation, output encoding and loosely coupled components.  
+* Implement secure communication channels with API consumers e.g. web browsers and mobile apps.  
+* Mitigate and defend against XSS, CSRF, JSONP and CORS security weakness in APIs.  
+* Implement secure web socket channels and defend against Cross-Site WebSocket Hijacking.  
+* Implement and attack multi-factor authentication for APIs.  
+* Learn and understand cache security and what threats and vulnerabilities can arise out of insecure caching methods and configurations.  
+* Handle files securely by allowing only authorised downloads even in segmented microservice architectures.  
+ 
+AGENDA
+ 
+Day 1
+* Introduction to the Modern Web
+    * Differences between modern and conventional web technologies.   
+    * Microservices and APIs.  
+    * Cloud-native apps and technologies.  
+    * Containers and orchestration.  
+    * Serverless apps.  
+    * Security in this new world.  
+    * Setting up local and cloud environments for the class.  
+* Security Architecture for APIs
+    * Security of API consumers (Web, Mobile, Microservices, other APIs).   
+    * Types of threats for APIs. 
+    * Serverside attacks against API implementations (injection attacks, data exposure attacks, etc.).  
+    * 3rd-party attacks against APIs (authentication weaknesses, cache attacks, etc.). 
+    * Clientside attacks against API consumers (Confused Deputy attacks, data exposure, authorisation abuse, ID and token hijacking).  
+    * Attacks against API infrastructures.  
+    * Designing and implementing defensible APIs and infrastructures.  
+    * Logging and Monitoring for Serverless.  
+* Data and File Attacks Against APIs and Clients 
+    * Attacking and Securing AWS S3 buckets.  
+    * Insecure Direct File or Object Access (IDOR) attacks.  
+    * Securing file downloads with AWS Signed URLs and Signed Cookies.  
+    * Securing file downloads using X-Sendfile and X-Accel-Redirect. 
+    * Securing file downloads using UUIDs and one-time tokens.  
+    * 3rd-party threats against file downloads (caching, URL shorteners, CDNs).  
+    * File upload security (path traversal attacks, file inclusion, file type confusion, safe bucket uploads with Presigned URLs, etc.) 
+* Injection Attacks Against APIs and Clients 
+    * SQL and NoSQL injection attacks.  
+    * Template injection attacks.  
+    * Object manipulation attacks (Serialisation, Pickling and Eval attacks).  
+    * GraphQL security.  
+    * XXE attacks.  
+    * XSS.  
+    * Serverless Event Injection.  
+    * Edge Side Include Injection.  
+    * Serverside Request Forgery. 
+* Cache Security
+    * Cache security concerns and configurations in API.  
+    * Knowing waht to cache and what not to cache.  
+    * Cache attacks: Edge Side Include Injection, Cache Poisoning.  
+    * Secure configuration of caching proxies.  
+    * Redis and Memcached security.  
+ 
+Day 2
+* HTTP Security
+    * Same Origin Policy (SOP)
+        * Exceptions to SOP  
+        * JSONP Security 
+    * HTTP Atttacks
+        * CORS
+            * What is CORS 
+            * Types of CORS requests 
+            * Securing CORS access 
+        * CSRF
+            * What is CSRF? 
+            * Attacking and defending against CSRF 
+            * CSRF attacks on REST APIs 
+            * CSRF and JWT attacks 
+            * Using CORS Credentials and Origins checks to protect from CSRF 
+    * HTTP Security Headers 
+        * CSP 
+        * X-Frame-Options 
+        * XSS Protection 
+        * Key Pinning 
+        * SSL Enforcement Headers 
+    * Web Socket Security
+        * Cross-Site WebSocket Hijacking (CSWSH) 
+        * Web Socket Origin Checks 
+        * Web Socket SOP Bypass 
+        * Web Socket Cryptography 
+        * Web Socket in the Local Host 
+        * Web Sockets and CSRF Attacks 
+        * Cookie Auth v. Local Storage (Token) Auth in Web Sockets 
+* Token Security
+    * Using Tokens for Authentication and Authorisation  
+    * JSON Web Tokens (JWT) and JSON Web Signature (JWS) Security\
+        * Security weaknesses in stateless and stateful tokens 
+        * Insecure token invalidation  
+        * Handling stateless JWT tokens 
+        * Insecure signing and encryption of tokens 
+        * Stealing tokens via XSS 
+    * Mapping Tokens to Users and Devices 
+    * Double Wrapping JWT 
+    * Stateful v. Stateless Authentication 
+* Authentication and Authorisation in APIs
+    * OAuth
+        * Bearer Tokens, Access Tokens, Refresh Tokens, Scopes, Authorisation Grants 
+        * Implementing OAuth in Web and Mobile Apps  
+        * OAuth Vulnerabilities 
+        * Security OAuth 
+    * Session Management and Privileges
+        * Secure session management between client and server 
+        * Secure Login, Logout, Password Reset and Session Lifetime and Invalidation 
+        * Authorisation and Privilege Management  
+        * IDOR, session hijacking and privilege escalation attacks 
+    * Multifactor Authentication  (MFA)
+        * MFA types (TOTP, SMS, U2F) 
+        * MFA practical implementations (secure enrollment, backup codes, user support) 
+        * Push notifications as MFA 
+* Credential Handling and Storage 
+    * Credential storage in apps (Local Storage, Apple Keychain and Secure Enclave, Android KeyStore) 
+    * Credential storage for APIs
+        * Password Hashing 
+        * HSMs 
+        * Hashicorp Vault 
+        * AWS Secrets Manager 
+    * Checking for compromised credentials using HIBP 
+    * Secrets API in Kubernetes, Docker Swarm, Mesosphere 
+* Cryptography 
+    * Secure SSL/TLS Configuration (Cipher suites, Pinning, PFS, Key and Certificate Management).  
+    * Applied cryptography for secret storage and transmission.  
+    * Securely applying digital signatures.  
+    * Secure password storage and handling.  
+    * Applied cryptography using Libsodium, BouncyCastle.  
+* Rate Limiting and Bot Control
+    * Implementing rate limiting and bot control.  
+    * Catching and blocking bad bots. 
+    * Managing bot control and CAPTCHAs in APIs and mobile.  
