@@ -76,3 +76,52 @@ https://cloud.google.com/apis/design/custom_methods
 Standard fields as defined by google: 
 
 https://cloud.google.com/apis/design/standard_fields
+
+## JSON API Specification
+
+Look into JSON API specification and understand how to implement it correctly.
+
+## Avro Schema
+
+Look into avro schema registry and compare it against protobuf.
+
+
+## Service Value
+
+Defining Service value will enable easy rewrites of the API.
+
+
+
+## System API, Experience API and Process API
+
+https://www.mulesoft.com/sites/default/files/resource-assets/API-led-connectivity-new-soa-updated.pdf
+
+Try to understand the separate layer and why they exist. Is it also possible to abstract, say database access calls to one layer, and reduce the side-effects by splitting read/write (CQRS), which can only be consumed through RPC by other clients?
+
+## Exposing schemas
+
+Given a hypothetical api endpoint `/foods` which return foods, we can have an equivalent schema endpoint `/schemas/foods` that returns the JSON Schema of the resource.
+
+## Intelligent API as a Service
+
+Spam, NER, Search, Viterbi, Markov Chain, Bandit, Recommendation, Sentiment Analysis API for real-world use cases.
+
+
+
+## Service Migration
+
+If there are new services with changing schemas, the idea is to deprecate the older version. It will still be running, but warn the end users about the deadline and the necessary changes for the newer version. Also, log the requests count together with the version to see how many people are still consuming the endpoint. Once the count reach below certain threshold, deprecate it completely. To make the migration transparent, one can apply the proxy or adapter pattern.
+
+
+## Microservices Approach
+
+- what microservices to build? video? check for existing schemas in schema.org (DRY)
+- what cloud design pattern is involved? basically how to handle scaling in the future
+- what technology stack to use (no debate here, but it's good to be clear on this - use the right tool)
+- simple mvp and test cases
+- what data needs to be analysed
+
+
+## Traffic Shifting
+
+It is possible to do traffic-shifting - but can we shard (duplicate) the calls to a staging environment instead to debug/test performance/check errors? When doing so, it is important to isolate side-effects (writes to db, sending out emails, triggering webhook etc). Find out how. 
