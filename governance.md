@@ -37,3 +37,13 @@ How can we design our APIs for it to implement different behaviours based on dif
 - separate the API endpoints for different roles by prefixing the roles and enforce the checking for different endpoints. E.g. for own content, use a root-level `me/` endpoint, for admins/operators access, use `/ops`. 
 - similar as above, but separate through subdomain name, e.g. `ops.api/v1/users`
 - setup middlewares to check the roles
+
+
+## ACL Admin
+
+ACL that allows you to limit user's access to certain operation (read, write, etc) and allow you to invite new users through email. Basic implementation with nodejs [here](https://github.com/alextanhongpin/node-scope).
+
+
+## Ops Access
+
+Allow privilege access to APIs if the user is an Ops (Operator/Admin) etc. Tokens can be generated for the user, which is audited to ensure that the ops are not performing any malicious activity. Last activity, last login date can be tracked etc.
