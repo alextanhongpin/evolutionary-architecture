@@ -6,3 +6,17 @@ Putting infrastructure dependencies however, might cause more issue on the healt
 
 The health of the infrastructure (database, external service etc) should not affect the instance that is running. If you want to test the database health, then plug a health endpoint on the database. There are a few instance where the server keeps restarting mainly because the db is down, and it affects the whole service, even those that do not depend on the db.
 
+
+## Basic API Server Information
+
+Should probably return more meaningful information for backend services at the index `/` endpoint:
+
+```js
+{
+  "language": "go version 1.10", 
+  "build_type": "docker" // or binary
+  "build_date: "2018-07-11T10:12:33Z",
+  "version": "4a2690e",
+  "deployed_date": "2018-07-11T10:12:33Z"
+}
+```
