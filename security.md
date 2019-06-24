@@ -233,6 +233,77 @@ NOTE: I probably misunderstood why some apis base64 encode the token for paginat
 Finding outliers from the data, or probably datapoints with perfect correlation (think scraping at the fixed interval).
 
 
+
+## W3C Web Authentication
+
+https://www.w3.org/TR/webauthn/
+
+## AES-GCM vs AES-CBC for encryption
+
+https://security.stackexchange.com/questions/184305/why-would-i-ever-use-aes-256-cbc-if-aes-256-gcm-is-more-secure
+
+
+## Fire Alarm
+
+Inspired by OWASP AppSensor. Implement something like a fire alarm trigger to disable certain parts of the application when there are possible attackers. I've been wondering how to make full use of logs, (context logs with correlation id, open tracing, open census), just storing them is not enough. There need to be some action that needs to be done. Also, when an application is experiencing high traffic, it should not affect the whole instance - only the pipeline that is affected should be regulated. 
+
+Do a pipeline-style architecture that can be dropped when attacked. Create a log analysis mechanism too.
+
+## Apply Modular Crypt format for Argon2
+
+https://passlib.readthedocs.io/en/stable/modular_crypt_format.html deprecated in favor of 
+https://github.com/P-H-C/phc-string-format/blob/master/phc-sf-spec.md
+
+## How to block ip address?
+https://husobee.github.io/golang/ip-address/2015/12/17/remote-ip-go.html
+
+## Designing a proper security pipeline.
+## Test entropy of random numbers with NIST statistical test suite
+## Questions
+- how to handle anonymous session/best practices and why do we need to do it (prevent attacks, fingerprint user)
+- is sessionid using uuid secure? also look at the mysql uuid to binary to see how we can save bytes
+- how to block ip address, and better way to fingerprint user
+- how does redis ttl works (solved, can create a naive implementation using golang)
+- NIST statistical test suite to test random number
+- how to secure ajax
+- TOCTOU (time of check, time of use race condition)
+- how to design a proper security pipeline in CI/CD (git pre-commit check, zed attack proxy docker)
+- handling caching for client side. One way is to return a version for each api response. When calling the first api call, check the version and see if the data needs to be prefetched.
+- reducing string storage size with 16bits http://www.kinematicsoup.com/news/2016/9/6/data-compression-bit-packing-101
+
+## Api Designs
+
+- throttling, backoff, circuit breaker and rate limit
+- rate limit by ip (throttle individual requests)
+- rate limit by ip + path (throttle individual usage for specific endpoint)
+- circuit breaker for error? when a user type in wrong password three times
+- request id library (make it modular)
+- caching json response?
+- ttl map for golang (similar like redis EXP)
+
+## JWT
+Jwt why different audience for mobile
+Tracking for different devices
+- Logout all feature by changing the main secret
+- Logout all by checking  the issued date less than logout date
+- we can handle logout from different devices with the same trick, but this requires an external distributed cache
+- how to handle sessions from different devices? when the user first request the token, store all the necessary data (user agent, location etc), and every other time the user calls the endpoint with the token, track the location and check if it is possible). We can user haversine distance to calculate the user’s velocity and see if it’s possible. Walking distance, commuting, driving, cycling all has an average velocity. If we can compare the outliers, we can identify suspicious activities)
+- the same concept is used for credit card, called the card velocity. 
+- since we can get the unique id of the device when they logged in, we can tie the usage. This will require a lot of checking though. We can use complex event processing to monitor the changes. stream the data to a pipeline, and compare the location (if null, how should it be handled, if user did not provide the location?)
+- using Subject instead of custom claims
+- setting audience and issuer effectively
+- exclude dynamic roles in the jwt token
+- why use session instead
+- should we have refresh token for applications?
+
+## Authorization
+- how does authorization works for offline application?
+- how to split the application into hybrid offline/online solution? read only data can always be offline. If we want to create data etc, we can perform it locally first, then sync the data later when we are online(?) will this cause a hotspot issue, when all offline devices went online at the same time.
+- how to ensure the files created offline are batched before synced online (especially when there are plenty of files)
+- the idea of putting things offline is to save the network calls to the server, hence reducing server load and making the application more responsive.
+- syncing server like dropbox is what we need. But how do we design it? We can queue the requests on the client side and then fire them when they are back online. We need to ensure the calls are not rapid to prevent own ddos. Another alternative is to set a rule that only online clients can upload content.
+
+
 ## References
 - https://stackoverflow.com/questions/47224931/is-setting-roles-in-jwt-a-best-practice
 - https://assertible.com/blog/api-security-testing-tips-to-prevent-getting-pwned#test-for-authentication-on-all-endpoints
