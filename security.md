@@ -459,3 +459,44 @@ Day 2
     * Implementing rate limiting and bot control.  
     * Catching and blocking bad bots. 
     * Managing bot control and CAPTCHAs in APIs and mobile.  
+
+
+## Refresh token
+
+
+
+Option 1: The worst way to implement refresh token
+- User pass in the old access token, and receives a new access token. This implementation is highly insecure and allows anyone that has access to one of your access token to obtain a new access token…forever.
+
+Option 2: Returns a refresh token and access token when the user logs in. 
+- The refresh token is used to obtain a new access token. 
+- If the attacker manages to retrieve the refresh token, they can also renew the access token forever.
+- User may choose to revoke the refresh token. 
+- This implementation still is not secure
+
+Option 3: Similar as option 2, but a new refresh token is returned with the access token when the user posts to the refresh token endpoint.
+- This assumes that the refresh token is stored in the user table. 
+- Every time the user calls the refresh token, the user table column refresh token will be replaced with a new one.
+- This does not deal with multiple devices. Consider the following scenario:
+    - User logs in device A. User obtains a refresh token.
+    - User logs in device B. User obtains the same refresh token.
+    - Token expires on device A, now user posts to refresh token and receive a new refresh token.
+    - Token on device B will never be able to expire.
+- Concurrency issues when user logs in on multiple devices.
+
+Option 4: 
+
+Summary:
+
+Using a single refresh token?
+- Logging out from a device will remove the refresh token capability from all device. What’s worse if the user did not log out of the device, then the refresh token will be there permanently. Also, logging in again from multiple devices will override the previous refresh token.
+
+Splitting the mobile and web authentication
+- Web SPA should not require a refresh token. Only mobile. If we want to have remember me for web, then use the secure cookie. So a table that stores the refresh token and device id pair should be created. (And maybe user id pair)
+- Every new login will create a new refresh token (not logout, since it can be easily forgotten, or maybe the refresh did not make it in time, and the user login without logging out and not clearing the old refresh token)
+
+The very secure implementation is to issue a new refresh token and invalidate the old one each time. But this makes troubles with concurrent calls (e.g. a multi threaded apps)
+
+Multiple OAuth Refresh Token Rolling for the Same Client
+A client with a single resource owner?s credentials from multiple devices is not working. It has been observed that the Refresh Token issued to one device gets invalidated if a request for the same access token or a refresh token is sent from another device.
+Roll Refresh Token Values: When selected, the OAuth Authorization Server(AS) generates a new refresh token value when a new access token is obtained.
