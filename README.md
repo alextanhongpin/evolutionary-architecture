@@ -220,3 +220,11 @@ Build 3D overlapping news feed where new news will just pop on top of older ones
 - write use cases for passwordless project
 - also take time to write an implementatio for server sent events and websockets with the background task worker with different languages
 - look into how to integrate background notification for websocket events
+
+## Links
+
+https://emacsway.github.io/en/service-layer/
+https://mlflow.org/docs/latest/tracking.html#concepts
+
+
+
