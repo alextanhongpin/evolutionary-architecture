@@ -505,3 +505,7 @@ Roll Refresh Token Values: When selected, the OAuth Authorization Server(AS) gen
 ## Secure in memory
 
 https://github.com/awnumar/memguard
+
+## Secrets with Sops
+
+https://github.com/mozilla/sops
