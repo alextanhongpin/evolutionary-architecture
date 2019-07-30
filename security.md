@@ -500,3 +500,8 @@ The very secure implementation is to issue a new refresh token and invalidate th
 Multiple OAuth Refresh Token Rolling for the Same Client
 A client with a single resource owner?s credentials from multiple devices is not working. It has been observed that the Refresh Token issued to one device gets invalidated if a request for the same access token or a refresh token is sent from another device.
 Roll Refresh Token Values: When selected, the OAuth Authorization Server(AS) generates a new refresh token value when a new access token is obtained.
+
+
+## Secure in memory
+
+https://github.com/awnumar/memguard
