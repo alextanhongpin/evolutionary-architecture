@@ -8,3 +8,18 @@
 - the disadvantage of lazy loading the dependencies is that we don’t know if it works until it is triggered. Hence, it is best to have a function that initialises the critical dependencies to ensure they don’t break when they are called.
 - lazy loading have the advantage of initialising the dependencies that are needed, only during that time.
 - sensible naming convention, e.g. verb+noun for services/repositories, method+service name for controllers, noun+verb+past participant
+
+
+## What are the different kind of architectures available
+
+Different architecture and how they are suitable
+
+
+- Saga design pattern 
+- Cqrs
+- Event sourcing
+- Mvc
+- Onion architecture
+- Clean code
+
+How would each of them work?
