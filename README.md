@@ -128,6 +128,7 @@ References:
 - look into websub and how to implement it
 
 ## Others
+
 - Finanz Revamp, Residenz, Instagram clone, Facebook, what is X is Y (what if JobStreet is Facebook?). 
 - Point-of-Sale system for food ordering, lorry tracking system. 
 - A clone of Journal.
@@ -141,12 +142,43 @@ References:
   - filter function
   - sort function
 - Signal. See how to implement encryption in applications: https://github.com/signalapp/libsignal-protocol-javascript
+- designing a ci server
+- designing a notification system
+- todo- learn lru cache, lfu cache
+- learn system diagrams
+- learn sequence diagram (how to implement it in your work?)
+- learn use cases (how to implement it in your work?)
+- design systems (how to solve scalability issues?)
+- learning dask python for machine learning
+- how to build a machine learning pipeline
+- how to build an etl pipeline
+- how to build an intelligent pipeline for processing documents (Natural language processing pipeline)
 
 ## APIs
 
 - design sample apis for financial stuff
 - design sample api for music player
 - design sample api for notification delivery
+- design reusable machine learning apis
+- design reusable data mining api
+- design reusable NLP apis
+- design search api
+
+## Architecture
+
+Implement all the different architecture patterns
+
+- workflow approval
+- ETL
+- publish/subscribe
+- event driven
+- cqrs
+- streaming
+- clean architecture
+- onion architecture
+- mcv and the mv* family
+
+https://en.wikipedia.org/wiki/Architectural_pattern
 
 ## Generating Graphviz
 
@@ -168,6 +200,10 @@ $ dot -Tpng delivery-load-balance.dot -o delivery-load-balanced.png
 - how to get count of billions of unique items
 - how to prevent users from executing the same action twice (like/unlike, same user should not be able to like more than once, and a user that has not liked an event cannot unlike it, leading to negative count)
 - how to create a sharable form with capability url that will expire, same as honestbee group purchase
+- how does sharding/partitioning works?
+- how to partition by uuid?
+- how to design distributed cache
+- designing architecture with 3 levels (general, domain specific/personalized, modular). Most architecture/system design is geared towards the requirements they need to deliver. We can make it general, but for the best performance, we still need to be specific.
 
 ## SASS
 
