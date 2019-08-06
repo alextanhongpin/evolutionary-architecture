@@ -87,3 +87,11 @@ async function main() {
 
 main().catch(console.error)
 ```
+
+## Improvements
+
+The solution above might work if we are just running a single server. But we might need to run additional servers for redundancy, so it would be better to store the aggregated in a distributed storage, say redis instead. 
+
+- How do we prevent multiple servers from processing the same notification twice (data race)? 
+
+
