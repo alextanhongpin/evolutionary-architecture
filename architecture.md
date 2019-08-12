@@ -23,3 +23,14 @@ Different architecture and how they are suitable
 - Clean code
 
 How would each of them work?
+
+
+## References
+
+Good articles to read
+- https://www.aosabook.org/en/index.html
+
+
+- https://www.tutorialspoint.com/software_architecture_design/distributed_architecture
+- https://keetmalin.wixsite.com/keetmalin/single-post/2017/09/27/Distributed-System-Architectures-and-Architectural-Styles
+- https://slack.engineering/scaling-slacks-job-queue-687222e9d100?gi=14c80a524901
