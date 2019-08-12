@@ -26,3 +26,8 @@ fastcgi_cache_lock on;
 ## Singleflight pattern
 
 Look into the singleflight pattern for subscribing to connection. http://www.cs.duke.edu/courses/cps296.4/fall13/838-CloudPapers/dean_longtail.pdf. Also look into connection pooling in Golang, and sync.Once.
+
+
+## References
+
+- https://news.ycombinator.com/item?id=19683410
