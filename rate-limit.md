@@ -1,11 +1,20 @@
 
 # Rate Limit 
 
+- Fundamentals
+  - [Why rate limit](#why-rate-limit)
+  - [Where to rate limit](#where-to-rate-limit)
+  - [Types of rate limit](#types-of-rate-limit)
+  - [Design consideration](#design-consideration)
+- [Algorithms](#algorithms)
+
+
+## Why rate limit?
 - improve application security and performance
 - protect resources from abuse
 - avoid thundering herd/DDOS
 
-## Where to rate limit
+## Where to rate limit?
 
 - All endpoints
 - For public GET endpoints, a typical request of 5 req/sec based on IP should be sufficient
@@ -25,7 +34,7 @@
   - user level
   - account level
 
-## Design consideration 
+## Design consideration
 
 - single machine, single threaded scenario
 - single machine, multi threaded scenario (race conditions)
@@ -37,13 +46,30 @@
 - how to deal with delay from reading/setting the values in distributed system? Add additional time
 - rate limiting and throttle are two different things for API Quotas. Rate limit is the rate at which the api may be consumed, normally requests per second, while throttle is the number of requests that can be made at the given time window. For example, our login api endpoint has a rate limit of 1 request per second (user can make up to 86,400 requests in a day), but it only has a daily limit of 10,000 requests per day. 
 
-## Algorithms
+# Algorithms
 
 - leaky bucket
 - token bucket
 - fixed window counter
 - sliding window logs
 - sliding window counters
+
+## Leaky bucket
+- incoming packet is thrown into the bucket
+- bucket leaks at a consistent rate
+- traffic shaping - convert bursty traffic into uniform traffic
+
+
+## Token bucket
+- a token is added to the bucket at regular intervals of time
+- bucket has maximum capacity
+- the bucket can hold at most b tokens. If a token arrives when the bucket is full, it is discarded.
+- if there is a packet, a token is discarded and packet is send
+- if there are no token, the packet cannot be send
+
+## Advantage of token bucket over leaky bucket
+- if a bucket is full, tokens are discarded, not packets. In leaky bucket, packets are discarded.
+- token bucket can send large bursts with faster rate while leaky bucket always sends packet at constant rate
 
 ## Fixed Window Counter
 
