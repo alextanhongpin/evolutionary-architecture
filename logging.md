@@ -15,16 +15,19 @@ Log analysis seeks to make sense of logs generated from applications. Why do we 
 
 ## Information from logs
 
-- request url/query strings and fragments
+- url path
+- error messages
+- request params/body/query strings and fragments
 - HTTP status code (2xx-5xx)
 - user agent
 - client ip 
 - timestamp
-- method (GET, POST...)
+- HTTP method (GET, POST...)
 - hostname
 - local server ip
 - bytes downloaded 
-- time taken
+- latency/time taken
+- request id
 
 
 ## Types of analysis
@@ -48,6 +51,10 @@ More on this on [wiki](https://en.m.wikipedia.org/wiki/Log_analysis).
 - artificial ignorance
 
 
+# Logging
 
+How to write your own middleware to log http requests in golang.
+
+https://onepage.nopub.io/p/Logging-HTTP-requests-in-Go-233de7fe59a747078b35b82a1b035d36
 
 https://www.screamingfrog.co.uk/22-ways-to-analyse-log-files/
