@@ -111,6 +111,10 @@ References:
 - event page for tech events
 - designing a searchable knowledge base for engineers
 - look into websub and how to implement it
+- how to warm cache strategy
+- sharing data strategy 
+- how to shard to scale
+- how to parallelise operations (map-reduce?)
 
 ## Others
 
