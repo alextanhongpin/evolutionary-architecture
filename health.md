@@ -20,3 +20,16 @@ Should probably return more meaningful information for backend services at the i
   "deployed_date": "2018-07-11T10:12:33Z"
 }
 ```
+
+
+This is great. I first need to find a way to write better articles.
+Here are some improvements that I’ve done so far:
+1. Add health endpoint
+
+This allows us to check several facts:
+- Uptime: how long has the server been alive, to indicate when the deployment was last done. Human readable relative time
+- deployed_at: last deployment time
+- Version: what is the current version of the system
+- Revision: the git hash of the system
+
+What’s next? Better monitoring
