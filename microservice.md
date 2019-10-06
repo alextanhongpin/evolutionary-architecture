@@ -1,24 +1,40 @@
 designing a code structure for nodejs
 
 how do you design a microservice architecture
+
+Let's break it down to their specific functionality:
+
+Infrastructure. Does your service has the following?
 - graceful shutdown
-- error handling
 - graceful background process/worker termination
-- signalling closing
+- signaling closing
+- distributed tracing
+- metrics collection
+- logging
+
+API. Do you follow the best practices when designing APIs?
+- error handling
+- envelope response
+- validation
 - secure headers
 - ratelimiting
 - retries 
 - circuit breaker
-- logging
+- request id correlation
+
+Architecture. What is the flavour of your service?
+- worker
+- api server
+- web server
 - synchronous - request/response
 - asynchronous - message queue
 - service pattern
 - repository pattern
 - mvc pattern
 - onion architecture
-- request id correlation
-- distributed tracing
-- metrics collection
+
+DevOps
+- logging + errors
 - service discovery
 - load balancing
 - schema validation
@@ -27,7 +43,7 @@ how do you design a microservice architecture
 - build server strategy
 - dockerization
 - app sensor
-- health endpoint
+- [health endpoint](https://github.com/alextanhongpin/evolutionary-architecture/blob/master/health.md)
 
 Entity vs Data Transfer Object (DTO)
 - only rules that concern that particular object
