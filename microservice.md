@@ -1,20 +1,19 @@
-designing a code structure for nodejs
+## Designing a microservice
 
-how do you design a microservice architecture
+## Part 1: Enablers
 
 Let's break it down to their specific functionality:
 
 Infrastructure. Does your service has the following?
 - graceful shutdown
 - graceful background process/worker termination
-- signaling closing
 - distributed tracing
 - metrics collection
 - logging
 
 API. Do you follow the best practices when designing APIs?
 - error handling
-- envelope response
+- envelope response (or json-api)
 - validation
 - secure headers
 - ratelimiting
@@ -26,8 +25,9 @@ Architecture. What is the flavour of your service?
 - worker
 - api server
 - web server
+- distributed cron (when running multiple instances with a cron, we want the leader to handle the cron only)
 - synchronous - request/response
-- asynchronous - message queue
+- asynchronous - message queue, pub/sub
 - service pattern
 - repository pattern
 - mvc pattern
@@ -49,24 +49,13 @@ Entity vs Data Transfer Object (DTO)
 - only rules that concern that particular object
 - usually implemented in OOP style
 
-Use cases
-- business rules of the specific application
+- data transfer object (DTO). DTO should contain only private fields for your data, getter setters and constructors. DTO should not have business logic - though some util methods should be okay. They are immutable (?).
+- rich domain model 
+- value object has behaviour (for read). [Value object is not a DTO](https://en.wikipedia.org/wiki/Data_transfer_object). More on value objects [here](https://martinfowler.com/bliki/ValueObject.html).
+- anemic data model. They are purely data structures. Almost no logic is implemented there. Similar to DTO?
+- data access object (DAO). DAO is a class that has the CRUD operation, while DTO is just an object that holds daa.
 
-E.g.
-Gather info for new loan
-
-Input: Name, address, birthdate, etc
-Output: Same info + credit score
-
-Rules:
-1. Validate name
-2. validate address
-3. get credit score
-4. if credit score < 500: activate denial
-5. else create customer (entity) and activate loan estimation
-
-
-Principles in implementing clean architecture
+## Part 2: Principles
 
 SOLID
 - Single responsibility principle (SRP)
@@ -83,22 +72,7 @@ Others
 - Stable dependency principle (SDP)
 - stable abstraction principle (SAP)
 
-https://pusher.com/tutorials/clean-architecture-introduction
-
-
-
-TODO: Create a dependency graph on the architecture that we currently have. Show them the sequence diagram on how a call works.
-
-# Metrics gathering and collection
-
-https://opentelemetry.io/
-Open metrics
-Open tracing
-Open census
-
-
-
-How to write a microservice? 
+## Part 3: API
 
 Think in terms of rest and resources. 
 
@@ -244,11 +218,11 @@ Middlewares adds capabilities to an endpoint. I will treat them as infra related
 
 ## Controller
 
-decodeRequest, callsService, logErrors, encodeResponse
+Some of the responsibility of the controllers is to decode request, calls service, log errors, and encode response (that includes error).
 
 - Decode requests. There are several ways to decide a requests, they can be from a JSON body, query strings, url parameters or http headers. Most of the time, we need to decide it back to a Golang struct which is typically a data transfer object, they are anemic data models, in which their sole responsibility is to transfer data, not entity or model. They do not represent an entity, but can be mapped to an entity once decoded.
 - Calls service. This is where the service is executed with the requests returned from the decoder. A service accepts a requests, and returns a response or an error. If there are errrors, we log the requests along side after removing the sensitive data (password). Yes, we have to be selective of the data we log. 
-- Log errors. 
+- Log errors. Enuff said.
 - Encode response, for JSON Api, this is normally a JSON body, if it is a html site, it can render a template or in some cases perform a redirection.
 
 ## Services
@@ -284,12 +258,12 @@ Select the fields required for query/exec.
 Map the database columns back into entity when necessary.
 
 This hides the implementation details for querying the db. We only define the interfaces of the database operations as well as their input and output. Note that the input and output can be the entity domain, there are two ways to write a repository
-
+```
 Users. All, withId, withEmail...fluent way
 Repository, getById, getByEmail, getUsers
 Users, fetchAll, fetchOneById, fetchOne...find,
 List, one, all, create, update, delete
-
+```
 It doesn’t matter which way you choose, but be consistent. 
 
 Having an interface layers helps us solve a lot of issue, easier to mock
