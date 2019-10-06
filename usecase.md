@@ -1,3 +1,20 @@
+## A basic use case
+
+```
+UseCase: Gather info for new loan
+Input: Name, address, birthdate, etc
+Output: Same info + credit score
+
+Rules:
+1. Validate name
+2. validate address
+3. get credit score
+4. if credit score < 500: activate denial
+5. else create customer (entity) and activate loan estimation
+```
+
+References: https://pusher.com/tutorials/clean-architecture-introduction
+
 ## Example Use Case
 
 | Topic | Description |
