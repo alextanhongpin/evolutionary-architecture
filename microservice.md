@@ -279,19 +279,3 @@ It doesn’t matter which way you choose, but be consistent.
 Having an interface layers helps us solve a lot of issue, easier to mock
 - testing is easy, since we can mock the repo layer
 - Swapping implementation is easy, like in memory vs Postgres vs sql. This only works as if the interface is really the same. Changing to a nosql might require a different interface. 
-
-## deployments
-Separate staging from production. Dockerizing the app. Deploying to a server. Versioning and environment variables.
-
-// rate limiter
-// request id
-// logging
-// error json
-// health endpoint 
-```
-{
-  "deployed_at": "2019-08-31T00:34:06.806978+08:00",
-  "uptime": "333.71319ms",
-  "version": "b9a0c96"
-}
-```
