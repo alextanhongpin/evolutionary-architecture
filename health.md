@@ -1,35 +1,45 @@
 ## Health Endpoint
 
-The API health endpoint should not contain any infrastructure code. Typically, the health endpoint will be exposed in order for the load balancer to check the status of the server before sending requests to it. It's also important for the auto-scaling feature since an unhealthy node is supposed to be replaced with a healthy one.
+Consider the following scenarios:
 
-Putting infrastructure dependencies however, might cause more issue on the health endpoint. If you place a database ping at the `health` endpoint, and someone changes the endpoint, it will keep restarting infinitely until the connection is restored.
+- You are working on an integration of an api, and you are given an API endpoint, `https://api.abc.com/`. Now, they did not provide sufficient information on the endpoint, so you figured you will have to take a look at the repository and read the code (assuming it's a different team from the same company). But you have no clue on how to get there.
+- Someone reported a bug in the response api - you took charge of finding and fixing the bug. Your teammate shared that he has fixed the bug and had committed it to the repository. Now both of you are wondering, has the fixed been deployed to production?
 
-The health of the infrastructure (database, external service etc) should not affect the instance that is running. If you want to test the database health, then plug a health endpoint on the database. There are a few instance where the server keeps restarting mainly because the db is down, and it affects the whole service, even those that do not depend on the db.
+Wouldn't it be better if our microservice is self-describing, and provide sufficient information that allows us to deal with the scenario above?
 
+You go to the health endpoint and see the following:
 
-## Basic API Server Information
-
-Should probably return more meaningful information for backend services at the index `/` endpoint:
-
-```js
+```
+GET /health HTTP/1.1
 {
-  "language": "go version 1.10", 
-  "build_type": "docker" // or binary
-  "build_date: "2018-07-11T10:12:33Z",
-  "version": "4a2690e",
-  "deployed_date": "2018-07-11T10:12:33Z"
+  "repo": "abc/api",
+  "revision": "2963648",
+  "version": "1.2.0",
+  "deployed_at": "Wed Oct 02 2019 14:19:52 GMT+0000 (Coordinated Universal Time)",
+  "uptime": "4 days"
 }
 ```
 
+Now, you know that you can find the code in repository `abc/api`. Also, you can check the last git revision as well as the version that is deployed to the current environment. From the uptime, you now know that no one has deployed the code in the last 4 days. With that, you have more insights on the services that are currently running.
 
-This is great. I first need to find a way to write better articles.
-Here are some improvements that I’ve done so far:
-1. Add health endpoint
 
-This allows us to check several facts:
-- Uptime: how long has the server been alive, to indicate when the deployment was last done. Human readable relative time
-- deployed_at: last deployment time
-- Version: what is the current version of the system
-- Revision: the git hash of the system
+### What is a health endpoint?
 
-What’s next? Better monitoring
+Typically, the health endpoint is exposed for the load balancer to check the status of the server before sending requests to it. If the load-balancer detects that a particular server is unhealthy, they would replace the server with a healthy one by spinning a new instance. Above, we are using the same endpoint to provide basic information of the server.
+
+## Basic API Server Information
+
+There are several other information that we could return. Here is an explanation on the response that we returned above, and some other possible additions:
+
+- uptime: how long has the server been alive, to indicate when the deployment was last done. Human readable relative time.
+- deployed_at: last deployment time, which is the date the server starts running. 
+- version: what is the current version of the system
+- revision: the git hash of the system
+- build_type: The type of build, e.g. docker, binary
+- build_date: The date the build was made, especially useful for docker. 
+- language: The version of the language used, e.g. `go version 1.10`, note that this might introduce security risk if the particular version has security vulnerabilities.
+- environment: e.g. staging, production etc. Normally this can be derived from the subdomain (`staging.abc.api` for staging, `abc.api` for production).
+
+
+Are you using this too for your team? What do you think can be improved on this?
+
