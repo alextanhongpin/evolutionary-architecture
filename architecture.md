@@ -25,6 +25,15 @@ Different architecture and how they are suitable
 How would each of them work?
 
 
+## AOP
+Aspect-oriented programming, and how it could be use to modularize functionalities. Stuff like decorators for throttling etc.
+
+## Entity component system
+
+http://vasir.net/blog/game-development/how-to-build-entity-component-system-in-javascript
+https://en.m.wikipedia.org/wiki/Entity_component_system
+https://mmstick.keybase.pub/managing-memory-in-rust-ecs/
+
 ## References
 
 Good articles to read
@@ -34,3 +43,4 @@ Good articles to read
 - https://www.tutorialspoint.com/software_architecture_design/distributed_architecture
 - https://keetmalin.wixsite.com/keetmalin/single-post/2017/09/27/Distributed-System-Architectures-and-Architectural-Styles
 - https://slack.engineering/scaling-slacks-job-queue-687222e9d100?gi=14c80a524901
+- https://en.wikipedia.org/wiki/Architectural_pattern
