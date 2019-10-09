@@ -10,6 +10,7 @@ Infrastructure. Does your service has the following?
 - distributed tracing
 - metrics collection
 - logging
+- [configuration](https://github.com/alextanhongpin/evolutionary-architecture/blob/master/configuration.md)
 
 API. Do you follow the best practices when designing APIs?
 - error handling
@@ -149,26 +150,6 @@ Business logic should belong to the domain, and application logic should belong 
 What does this means?
 The logic to extract params from header, body, query string etc are part of the application logic, hence they should belong to the controller. However, creation etc validation should all belong to the model. By model, it can be just a plain object ( or gaoling struct), but it has nothing to do with persistence (repository). 
 https://softwareengineering.stackexchange.com/questions/176639/why-put-the-business-logic-in-the-model-what-happens-when-i-have-multiple-types
-
-# Config and secret management
-
-Static config vs dynamic config. Most configs are static. They are defined in the environment variables and is initialised once when the application start. 
-
-1. Ensure that the env vars are parsed back into the correct data type, since they are mostly loaded as string.
-2. Define the required and optional environment variables, as well as a short description on why they are needed (no magic vars).
-3. Provide default values that allows minimal configuration.
-
-Config for describing the app
-- port, hostname, version
-- Feature toggles
-- Deployed at date
-- Build date for docker
-- GitHub repository path (not necessary)
-
-Secret for credentials
-- app secret
-- Database credentials
-- Tokens, jwt secret
 
 
 Put interfaces in domain, place implementation in packages. Don’t leak implementation details.
