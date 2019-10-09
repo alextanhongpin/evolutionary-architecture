@@ -74,3 +74,10 @@ Secret for credentials
 
 Golang - envconfig
 nodejs - convict
+
+## Feature toggle
+
+Do some sample repos that shows how to perform feature toggle
+
+https://blog.codecentric.de/en/2019/02/feature-toggles-benefits-drawbacks/
+
