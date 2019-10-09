@@ -54,3 +54,23 @@ Secret for credentials
 - app secret
 - Database credentials
 - Tokens, jwt secret
+
+
+- there are two types config - `global` and `package`.
+- `global` config includes app specific configuration, e.g. `APP_PORT`, `APP_HOST`, `APP_VERSION`, `APP_BUILD_AT`
+- `package` config are configuration for vendor packages, such as database, logger etc. `DB_NAME`, `DB_HOST`, `DB_PASS`, `DB_USER`
+- configs can have sane defaults for the `development`, `production`, or `nop` (null object pattern)
+- configs could be passed through golang `flag` or `envvar` (environment variables), pick one and standardize it
+- include the `.env` in the `.gitignore`, we do not want to commit sensitive info to git repository
+- there many libraries to parse and read environment config, use the one that is the most simple to use
+- pass the config down through DI (dependency injection) or params, **DO NOT** call it straight from `os.Getenv`
+- separate required and optional config
+- ensure there is a sane defaults for configs if the value is not provided
+- create separate .env file for different environment, do not place the configs for different environment in one file an comment them - you might forget to uncomment the production one and do damage there will executing the code
+- avoid putting production config locally, just staging and development
+- if unsure of the naming convention for different environment, use `dev`, `staging`, `qa`, and `prod`
+
+## Recommended Library
+
+Golang - envconfig
+nodejs - convict
