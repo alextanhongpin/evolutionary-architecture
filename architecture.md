@@ -37,6 +37,12 @@ http://vasir.net/blog/game-development/how-to-build-entity-component-system-in-j
 https://en.m.wikipedia.org/wiki/Entity_component_system
 https://mmstick.keybase.pub/managing-memory-in-rust-ecs/
 
+
+
+# Using json in sql to replace EAV (Entity-Attribute-Value)
+https://en.m.wikipedia.org/wiki/Entity–attribute–value_model
+https://coussej.github.io/2016/01/14/Replacing-EAV-with-JSONB-in-PostgreSQL/
+
 ## References
 
 Good articles to read
