@@ -17,3 +17,12 @@ e.g.
 if book_local.created_at > book_server.updated_at:
 	can_update
 ```
+
+
+## Security
+
+- store images/profile data offline locally
+- clear all offline content when user logs out
+- logging in with different user should not allow access to the previous user's content
+- but if the user is offline, there's no way to know if the user is authorized
+- to validate the content that is created, we need to ensure that the date is between the server's last item date and the current timestamp (not the future!).
