@@ -113,6 +113,8 @@ Implementation of the various rate limiting algorithms here:
 
 ## References
 
+- rate limiting and throttle, they are two different things. Both are enforcing a policy. But we often talk about application level rate limiting (max 10000 requests per second) and consumer rate limiting (5 req per second), but they are actually not the same. The former is daily throttle quota, the latter is rate limit usage.
+
 - https://nordicapis.com/everything-you-need-to-know-about-api-rate-limiting/
 - https://developer.ibm.com/articles/mw-1705-phillips/
 - https://timoh6.github.io/2015/05/07/Rate-limiting-web-application-login-attempts.html
