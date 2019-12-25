@@ -360,4 +360,6 @@ Then we will have the following test cases combination:
 
 https://www.computing.dcu.ie/~ltuohey/CA314_2004_2005/GeneratingTestCasesFromUseCasesJune01.pdf
 
+# Create domain model
 
+User is an actor, User Account is a domain model. Start of by recognizing the domain models in your application, and build use cases around them. Model the behaviours around the domain models too.
