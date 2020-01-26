@@ -250,3 +250,16 @@ It doesn’t matter which way you choose, but be consistent.
 Having an interface layers helps us solve a lot of issue, easier to mock
 - testing is easy, since we can mock the repo layer
 - Swapping implementation is easy, like in memory vs Postgres vs sql. This only works as if the interface is really the same. Changing to a nosql might require a different interface. 
+
+
+## Microservices best practices
+
+
+### When dealing with multiple associations
+
+- Operations should obey single responsibility principles, e.g. updating an entity should not affect the associations (deletion, creation)
+- Update should not include delete operation, and vice versa
+- When deleting multi associations, use the database cascade
+- When dealing with operations such as uniqueness, do not check on the application level - instead, do it at the database layer. This is because when the services scales beyond a single node, and there are concurrent activities, the uniqueness is not longer achievable (multiple inserts at the same time)
+
+
