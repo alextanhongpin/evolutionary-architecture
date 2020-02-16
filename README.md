@@ -22,6 +22,7 @@ __Evolutionary architecture__ is just a change of mindset. Rather than starting 
   - [go-openid](https://github.com/alextanhongpin/go-openid)
   - [book-my-show](https://github.com/alextanhongpin/book-my-show)
   - [chat-playground](https://github.com/alextanhongpin/chat-playground)
+  - [passport](https://github.com/alextanhongpin/passport) simplify login for microservices
 - Language
   - [NodeJS](https://github.com/alextanhongpin/node-rest)
   - [go-microservice](https://github.com/alextanhongpin/go-microservice)
@@ -37,6 +38,7 @@ __Evolutionary architecture__ is just a change of mindset. Rather than starting 
   - [go-websocket](https://github.com/alextanhongpin/go-websocket)
   - [nim-jester](https://github.com/alextanhongpin/nim-jester)
   - [react-hook-boilerplate](https://github.com/alextanhongpin/react-hook-boilerplate)
+  - [passwordless](https://github.com/alextanhongpin/passwordless)
 - Machine Learning
   - [Bandit Server](https://github.com/alextanhongpin/go-bandit-server)
   - [Spam API](https://github.com/alextanhongpin/spam-api)
@@ -245,6 +247,19 @@ Build 3D overlapping news feed where new news will just pop on top of older ones
 - write use cases for passwordless project
 - also take time to write an implementatio for server sent events and websockets with the background task worker with different languages
 - look into how to integrate background notification for websocket events
+
+## How to design slug history friendly Id
+## How to design tagging database systems
+## How to design mentions
+## Passwordless Login
+## Create a portfolio to showcase all the apps you build
+## Company Site
+
+## API Code Generation
+
+- Client side call
+- Backend side call
+
 
 ## Links
 
