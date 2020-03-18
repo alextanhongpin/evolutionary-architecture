@@ -125,3 +125,21 @@ If there are new services with changing schemas, the idea is to deprecate the ol
 ## Traffic Shifting
 
 It is possible to do traffic-shifting - but can we shard (duplicate) the calls to a staging environment instead to debug/test performance/check errors? When doing so, it is important to isolate side-effects (writes to db, sending out emails, triggering webhook etc). Find out how. 
+
+## Single API for two stuff.
+
+Most of the time, we have to deal with scenarios where we can handle conditional in one single api, .e.g follow. Consider the options below, which is better?
+
+A single endpoint to update follow/unfollow status:
+```
+PATCH /songs/:id/follows
+```
+
+Two endpoints with a single responsiblity:
+```
+POST /songs/:id/follows
+DELETE /songs/:id/unfollow
+```
+
+The first option requires us to return the status to indicate if the user has successfully followed or unfollowed a song.
+The second is easier, since we know which endpoint we are calling. There operation is idempotent too - triggering it multiple times will not cause error - you can only follow once, or unfollow once.
