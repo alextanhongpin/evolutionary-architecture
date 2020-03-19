@@ -26,6 +26,7 @@ __Evolutionary architecture__ is just a change of mindset. Rather than starting 
   - [passwordless](https://github.com/alextanhongpin/passwordless) passwordless authentication example
   - [autocomplete](https://github.com/alextanhongpin/autocomplete) a google like auto-complete and auto-correct server
   - [opencv-sudoku](https://github.com/alextanhongpin/opencv-sudoku) sudoku solver with open cv
+  - [github scraper](https://github.com/alextanhongpin/go-github-scraper-sg-ui) scrape github users around Singapore and Malaysia, analyse github stats, perform recommendations of similar users through tfidf, find users by companies and languages
 - Language
   - [NodeJS](https://github.com/alextanhongpin/node-rest)
   - [go-microservice](https://github.com/alextanhongpin/go-microservice)
@@ -252,7 +253,9 @@ Build 3D overlapping news feed where new news will just pop on top of older ones
 - look into how to integrate background notification for websocket events
 
 ## How to design slug history friendly Id
+We can create a trigger to insert the updated name into a new row whenever there are changes.
 ## How to design tagging database systems
+Done
 ## How to design mentions
 ## Passwordless Login
 ## Create a portfolio to showcase all the apps you build
