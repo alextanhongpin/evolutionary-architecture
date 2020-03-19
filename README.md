@@ -25,6 +25,7 @@ __Evolutionary architecture__ is just a change of mindset. Rather than starting 
   - [passport](https://github.com/alextanhongpin/passport) simplify login for microservices
   - [passwordless](https://github.com/alextanhongpin/passwordless) passwordless authentication example
   - [autocomplete](https://github.com/alextanhongpin/autocomplete) a google like auto-complete and auto-correct server
+  - [opencv-sudoku](https://github.com/alextanhongpin/opencv-sudoku) sudoku solver with open cv
 - Language
   - [NodeJS](https://github.com/alextanhongpin/node-rest)
   - [go-microservice](https://github.com/alextanhongpin/go-microservice)
