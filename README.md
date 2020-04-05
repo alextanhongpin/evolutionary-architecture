@@ -17,7 +17,7 @@ __Evolutionary architecture__ is just a change of mindset. Rather than starting 
   - [appsensor](https://github.com/alextanhongpin/go-appsensor)
   - [pastebin](https://github.com/alextanhongpin/pastebin)
   - [stock app](https://github.com/alextanhongpin/stock-sg)
-  - [finanz-v2](https://github.com/alextanhongpin/finanz-v2)
+  - [finanz](https://github.com/alextanhongpin/finanz-v2) https://finanz-95e6d.firebaseapp.com/ A simple app to track your finance
   - [asteroid game typescript](https://github.com/alextanhongpin/typescript-asteroid-remake)
   - [go-openid](https://github.com/alextanhongpin/go-openid)
   - [book-my-show](https://github.com/alextanhongpin/book-my-show)
