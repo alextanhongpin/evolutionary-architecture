@@ -61,3 +61,16 @@ For `.env` extension
 References:
 - https://cloud.google.com/appengine/docs/standard/java/creating-separate-dev-environments
 
+
+
+## AWS Resource naming conventions practices
+Have proper naming conventions for the Amazon Web Services security group. The naming convention should follow enterprise standards. For example it can follow the notation: ‘AWS Region+ Environment Code+ OS Type+ Tier+ Application Code’
+
+```
+Security Group Name – EU-P-LWA001
+AWS Region ( 2 char ) = EU, VA, CA etc
+Environment Code (1 Char) = P-Production , Q-QA, T-testing, D-Development etc
+OS Type (1 Char)= L -Linux, W-Windows etc
+Tier (1 Char)= W-Web, A-App, C-Cache, D-DB etc
+Application Code ( 4 Chars) = A001
+```
