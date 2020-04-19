@@ -240,3 +240,23 @@ const Payment = {
 - https://medium.com/@krzychukosobudzki/repository-design-pattern-bc490b256006
 - https://stackoverflow.com/questions/13633201/service-layer-and-repositories-relationship
 - https://softwareengineering.stackexchange.com/questions/345661/is-a-facade-repository-an-ok-design
+
+
+Infrastructure management
+
+What is the proper way to manage infrastructure at scale?
+- how to find out cost of infra
+- how to design infrastructure when working in teams
+- how to debug errors in infrastructure
+- how to document them
+- Business use case
+    - what value does this feature add?
+- Documenting apis (using swagger)
+
+Naming things
+- Environment naming
+- Application naming
+- Tags
+
+- design an endgoal
+- create roadmaps and milestones
