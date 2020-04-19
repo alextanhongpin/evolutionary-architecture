@@ -58,3 +58,27 @@ How to write your own middleware to log http requests in golang.
 https://onepage.nopub.io/p/Logging-HTTP-requests-in-Go-233de7fe59a747078b35b82a1b035d36
 
 https://www.screamingfrog.co.uk/22-ways-to-analyse-log-files/
+
+
+
+## What is the difference between logging and events?
+
+
+
+https://answers.splunk.com/answers/771511/whats-the-difference-between-an-event-and-a-log.html
+
+https://stackoverflow.com/questions/14127591/what-is-the-difference-between-events-events-logs
+https://charity.wtf/2019/02/05/logs-vs-structured-events/
+
+
+
+## How to perform log analysis?
+
+
+https://coralogix.com/log-analytics-blog/analyzing-log-data-important/
+https://digitalguardian.com/blog/what-log-analysis-use-cases-best-practices-and-more
+https://sematext.com/blog/log-analysis/
+https://builtvisible.com/log-file-analysis/
+
+
+## Why do we perform log analysis
