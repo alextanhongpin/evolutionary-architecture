@@ -273,4 +273,49 @@ https://emacsway.github.io/en/service-layer/
 https://mlflow.org/docs/latest/tracking.html#concepts
 
 
+## Tech in real life
+
+It is more than just doing front end/back end.
+
+
+### Tech in different industry
+
+
+Flights
+- genetic algorithm for flight scheduling problem
+- travelling salesman problem
+
+
+Logistic
+- last mile problems
+- bin-packing problem (3 dimensional). How many items can I pack in a box?
+- optimal route problem
+
+Schools
+- scheduling problem
+
+Dating
+- stable marriage problem
+
+Hostel
+- rental harmony problem (sperner’s lemma)
+
+Email
+- spam detection
+
+Comments
+- spam detection
+- sentiment analysis
+- deduplication issue
+
+Finance
+- auditing history (event sourcing ?)
+
+
+
+Most of the problems above can be split into subcategories?
+- the evergrowing storage problem (event sourcing etc)
+- the computational problem (parallelize through map reduce, using evolutionary algorithm to tradeoff speed vs accuracy)
+
+
 
