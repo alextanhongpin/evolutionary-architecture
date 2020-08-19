@@ -263,3 +263,16 @@ Having an interface layers helps us solve a lot of issue, easier to mock
 - When dealing with operations such as uniqueness, do not check on the application level - instead, do it at the database layer. This is because when the services scales beyond a single node, and there are concurrent activities, the uniqueness is not longer achievable (multiple inserts at the same time)
 
 
+
+- microservices are usually composed of different layers (controllers, service, repository).
+- each layers usually have different responsibility, as well as different input and output that is required on order to operate
+- sometimes they are the same, which means we will be creating duplicate input and output types
+- Different layers, different input and output
+If controller, one can stick with request response
+For services, stick with dtos, they should produce an entity output
+For repository, stick with entity or partial entity with meta (pagination, filtering and sorting), for output stick with entity and error
+
+- different input and output calls for different validation
+- for most scenario, we want to assume that all inputs are required, and default values should be populated
+- service layer must have a validation, because they may be reused by another service
+- Validation happens at top layers but can be multiple. E.g. controller validation for request response, and service validation. Why duplicate validationat service, because sometimes we want to reuse the service, and we need to validate the response. that is why controller request has to be mapped to service dto.
