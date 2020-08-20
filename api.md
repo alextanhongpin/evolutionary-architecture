@@ -1,9 +1,15 @@
 # Patterns in API
 
+
+The basics
+- CRUD
+
+
+Additional
 - [capabilities url](https://www.w3.org/TR/capability-urls/)
-- default action, CRUD 
+- default action, crud
 - custom action, search, approve etc
-- filter, search, query
+- filter, search, query, selecting fields, including relations
 - params or query? `/users/:id` returns specific user by id. If we need to query user's by email, either make the id or email conditional (but exposing the url in the query is not a good idea, so...) or use a querystring for `/users?email=john@mail.com`.
 - overwriting query? `?name=car&name=paper`
 - pagination: use graphql style with next, prev pagination that is base64 encoded
