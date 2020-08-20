@@ -1,5 +1,6 @@
+# Patterns in API
 
-- capabilities url
+- [capabilities url](https://www.w3.org/TR/capability-urls/)
 - default action, CRUD 
 - custom action, search, approve etc
 - filter, search, query
@@ -18,6 +19,7 @@
 - http status codes
 - versioning
 - documentation (swagger, or custom)
+- how does REST compares to GraphQL
 
 
 Other options:
@@ -25,6 +27,12 @@ Other options:
 - websocket
 - server sent events
 - grpc
+
+## Rest vs Graphql
+
+- Graphql will always return status 200
+- Error handling in graphql is different than REST
+- handling nested relations is easier than REST
 
 ## New API?
 
