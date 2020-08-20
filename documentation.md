@@ -16,3 +16,6 @@ Technology implementation
 - we do not need to explain the dependency (unless it is extrrnal, or its meant for development and is not sttaed in the dependency management, because it's a global installation). E.g. migration tool, code editor used etc
 - scope. What is the service used for
 
+tips
+- ignore outside conventions, design your own docs that works for your use case
+- update changes only if the old pattern no longer works
