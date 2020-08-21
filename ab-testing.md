@@ -7,6 +7,14 @@
 - can we use bandit algorithm for testing?
 - how to create an a/b testing framework
 
+
+## Strategy
+
+- select two (or more) features to compare
+- decide on how to split the users (hash string ids into integers, then take odd/even, take user in id ranges, show to users by different time zones)
+- decide which users should be in the denylists/allowlists (by ips etc)
+- decide on which environment to perform tests, or which not to perform (usually in staging etc you still want to run the tests to see if the code is working)
+
 ## References
 - http://blog.richardweiss.org/2016/12/25/hash-splits.html
 - https://blog.offerup.com/a-good-hash-is-hard-to-find-60e8a201e8ce
