@@ -24,6 +24,7 @@
 - we need to identify the period where the tests should be active, let's say we set it to 2 weeks to get sufficient numbers
 - we need to store the metrics, which is the data whether the user click on the blue or green button
 - we probably need a place to display the metrics, and the decision on the outcome, e.g. blue button perform n% better than green, so we should use blue
+- basic algorithm to compute the results includes just basic counter, chi-test
 
 
 ## References
