@@ -33,3 +33,8 @@ The service should contain the following information:
 - version
 - dependencies (calling who, who's calling)
 - technology stack (vulnerable?)
+- private (whether the service is active or not, or has been deprecated)
+- deprecated at (a future date where the service might be deprecated)
+
+
+A simpler approach is to use package namespace for services, e.g. github namespace, `alextanhongpin/service-a`, similar like go packages. 
