@@ -6,3 +6,19 @@
 - For interface, use verbs, .e.g logger.
 
 https://en.oxforddictionaries.com/spelling/nouns-ending-in-er-or-and-ar
+
+
+## Infrastructure
+
+Naming infrastructure can be tricky. There are several naming convention that we can adopt:
+
+- per domain
+- per team
+- per category (using colors, fruits, pokemon name)
+
+
+
+We might want to include the infrastructure naming too, like message bus, database, loadbalancer.
+
+- different region
+- different environment
