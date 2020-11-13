@@ -1,5 +1,25 @@
 ## A/B Testing
 
+
+## What is A/B Testing
+
+A/B Testing (a.k.a split testing) is a process of showing two variants of the same web page to different segments of website visitors at the same time and comparing which variant drives more conversion.
+
+## What A/B Testing is not
+
+A/B Testing is not blue-green deployments. A/B Testing is for measuring functionality in the app. Blue-green deployments is about releasing new software safely and rolling back predictably.
+
+## Why A/B testing
+
+- solve visitor pain points
+- get more conversion by investing less
+- reduce bounce rates
+- make low risks modifications
+- redesigning your website
+- changing the product pricing
+- feature change
+
+## Questions in mind
 - how can we conduct effective a/b testing
 - how to use canary deployment for testing
 - how to test by countries
