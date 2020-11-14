@@ -43,6 +43,7 @@ __Evolutionary architecture__ is just a change of mindset. Rather than starting 
   - [nim-jester](https://github.com/alextanhongpin/nim-jester)
   - [react-hook-boilerplate](https://github.com/alextanhongpin/react-hook-boilerplate)
   - [passwordless](https://github.com/alextanhongpin/passwordless)
+  - [go-graphql-template](https://github.com/alextanhongpin/go-graphql-template) Golang template for graphql with dataloaders and database migrations
 - Machine Learning
   - [Bandit Server](https://github.com/alextanhongpin/go-bandit-server)
   - [Spam API](https://github.com/alextanhongpin/spam-api)
@@ -213,14 +214,13 @@ Implementing dynamic pricing is also possible.
 
 ## Reverse Engineering
 
-Why does YouTube pause the video play after a while? Maybe because they have complex event processing to determine the users activity - active, idle, picky(when they click another link before the first video payback is completed) etc.
+- Why does YouTube pause the video play after a while? Maybe because they have complex event processing to determine the users activity - active, idle, picky(when they click another link before the first video payback is completed) etc.
 
-Why does Facebook like still works when it’s offline? Because they debounce it. There’s no merit in showing real time like counter since it can be taxing fro performance. Thus it is better to only make the call after user is idle, his also prevents abuse on the system.
+- Why does Facebook like still works when it’s offline? Because they debounce it. There’s no merit in showing real time like counter since it can be taxing fro performance. Thus it is better to only make the call after user is idle, his also prevents abuse on the system.
 
-Why does grab shows finding for driver? It’s basically an asynchronous process working to match the drivers in the background based on the current location, whether the driver has accepted the request, or whether the driver has sufficient rating to be recommended. Note that it’s not necessary the first driver that would be selected. A bunch of drivers can first accept the passenger, then the algorithm will decide if they can take the passenger based on the rating. 
+- Why does grab shows finding for driver? It’s basically an asynchronous process working to match the drivers in the background based on the current location, whether the driver has accepted the request, or whether the driver has sufficient rating to be recommended. Note that it’s not necessary the first driver that would be selected. A bunch of drivers can first accept the passenger, then the algorithm will decide if they can take the passenger based on the rating. 
 
-
-Why does Facebook implement reaction into the comments instead of like? The like allows them to find what content is popular. Reaction however, kills two birds with a stone. First, the sum of all the reactions is similar to the like. In addition, they can also grab the user's sentiment for sentiment analysis.
+- Why does Facebook implement reaction into the comments instead of like? The like allows them to find what content is popular. Reaction however, kills two birds with a stone. First, the sum of all the reactions is similar to the like. In addition, they can also grab the user's sentiment for sentiment analysis.
 
 
 ## IDM (Internet Downloader Manager)
@@ -252,19 +252,17 @@ Build 3D overlapping news feed where new news will just pop on top of older ones
 - also take time to write an implementatio for server sent events and websockets with the background task worker with different languages
 - look into how to integrate background notification for websocket events
 
-## How to design slug history friendly Id
-We can create a trigger to insert the updated name into a new row whenever there are changes.
-## How to design tagging database systems
-Done
-## How to design mentions
-## Passwordless Login
-## Create a portfolio to showcase all the apps you build
-## Company Site
-
 ## API Code Generation
 
 - Client side call
 - Backend side call
+
+Code generation has a lot of use cases - to generate boilerplate code for faster development. For example, when designing rest apis, a well designed architecture would have a service layer, controller layer, repository layer, dtos and entities that maps to the database at least. For each of these files there will be a unit/integration test too. Since rest is 90% CRUD, we can use code generation instead of writing them (or worst, copying them) when adding a new domain.
+
+There are several other advantages:
+- teams are up-to-date with the latest practices. This is in contrast with documenting new decisions (if there ever was). To upgrade the legacy code, just rename the old folder to `service-v1`, and use code generation to generate new code that follows the latest practices. 
+- save time from writing code
+- templates can be reused for different projects
 
 
 ## Links
@@ -311,11 +309,10 @@ Comments
 Finance
 - auditing history (event sourcing ?)
 
-
-
 Most of the problems above can be split into subcategories?
 - the evergrowing storage problem (event sourcing etc)
 - the computational problem (parallelize through map reduce, using evolutionary algorithm to tradeoff speed vs accuracy)
 
 
-
+Documentation
+- Digital garden
