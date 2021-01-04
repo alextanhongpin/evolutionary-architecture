@@ -1,3 +1,14 @@
+## Analytics Engine
+
+How to create a pluggable analytics engine architecture?
+
+Use cases:
+- page views
+- churn
+- how to use data to help user make decision
+- how to use data to make recommendation
+- how to show trending data
+
 ## Analytics with Web Beacon API
 
 What can we track with the web beacon api?
