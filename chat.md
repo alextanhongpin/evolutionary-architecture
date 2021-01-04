@@ -76,3 +76,13 @@ status(id User) bool
 getHistory(id User, since Time, limit int)
 notify(id User, msg string)
 ```
+
+
+## Extension
+
+- how to notify user's presence? (when user is online or offline)
+- how to decide which user to show (show the ones last communicated with, and the rest based on the last added date, and optional for user to search for friends)
+- how to create group chat
+- how to attach different media types (links, image)
+- how to moderate content
+- how to create a pluggable chat system
