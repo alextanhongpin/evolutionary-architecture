@@ -316,3 +316,18 @@ Most of the problems above can be split into subcategories?
 
 Documentation
 - Digital garden
+
+## Exaggerated Thinking
+
+Sometimes when developing software, we need to think in scale. That is to say, we exaggerate the conditions:
+
+- What if I have 1 million endpoints?
+- What if I have 1 million connected users?
+- What if I have the same user logged in diffent platforms?
+- What if I click the button a thousand times?
+
+This will help shape the design of the software in a different way. Before this, I tried designing a simple chat app, without taking into consideration that they could be online on multiple platforms at the same time. What happens next is that when a user logs in another platform, the user from the previous one was kicked out!
+
+The same thing goes with clicking the button a thousand times. In fact, when I first started as a frontend engineer, it did not occur to me that forgetting to prevent double submit on forms would be equivalent to shooting yourself in the foot.
+
+We can apply that thinking in another direction too - that is minimizing. What if all the users got disconnected? Clean the aftermath, such as state/sessions etc, reset the frontend store so that another user don't get the state of the previous logged in user. 
