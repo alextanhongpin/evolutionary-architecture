@@ -160,6 +160,29 @@ References:
 - design reusable NLP apis
 - design search api
 
+## Microservice Features
+
+- authz/authn
+- localization
+- webhook
+- capability url
+- sending signed signature
+- real-time bidirectional - websocket
+- real-time unidirectional - server-sent-events
+- tracing
+- logging
+- caching
+- notification
+- streaming
+- messaging
+
+## Event Driven Architecture
+
+- event notification pattern
+- event-carried state transfer pattern
+- event sourcing pattern
+- command query responsibility segregation (CQRS) pattern
+
 ## Architecture
 
 Implement all the different architecture patterns
