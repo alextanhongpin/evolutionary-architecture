@@ -123,3 +123,16 @@ For the scenario where Bob liked Alice's answer:
 | 2 | bob | john | question: `{"id": 1, "body": "how to design a notification system?", "user": "john"}` | answer:`{"id": 2, "body": "you can also take a look at this", "question_id": 1, "user": "bob"}` | question_answered | Bob answered the question "how to design a notification system?" | `null` | now |
 | 3 | bob | alice | question: `{"id": 1, "body": "how to design a notification system?", "user": "john"}` | answer:`{"id": 2, "body": "you can also take a look at this", "question_id": 1, "user": "bob"}` | question_answered | Bob answered the question "how to design a notification system?" | `null` | now |
 | 4 | bob | alice | answer: `{"id": 2, "body": "you can also take a look at this", "question_id": 1, "user": "bob"}` | answer_like:`{"id": 1, "answer_id": 1, "user": "bob"}` | answer_liked | Bob liked the answer "read this!" | `null` | now |
+
+
+
+We can apply conditional unique constraints to perform aggregation:
+
+1. With Postgres, we can add unique constraints with a where condition `CREATE UNIQUE INDEX stop_myc ON stop (col_a) WHERE (col_b is NOT null);`
+2. The notification table can be modified to include two additional column, `group` and `history`. If the `group` column is true, then we can apply the unique constraints on receiver, action id/type and event id/type. The history column than keeps track of the grouped sender as well as the sender action/event payload. 
+3. In postgres, we can slice an array column, so that the size will never grow beyond a certain limit.
+
+## Preventing unbounded growth
+
+- keep only notifications for n days
+- keep only the last 1000 notifications
