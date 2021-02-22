@@ -27,6 +27,7 @@
 - There are two possible ways to implement a saga: Orchestration (an orchestrator tells the participants what local transactions to execute) and Choreography (each local transaction publishes domain events that trigger local transactions in other services).
 - often designed as long living transactions where the required steps may not be known at design time 
 - for each transaction, there's a compensating action
+- saga is like an event handler, it receives event and publishes the command for the next step
 
 # References 
 1. [Cloud Architecture: The Scheduler-Agent-Supervisor Pattern](https://vasters.com/archive/Cloud-Architecture-The-Scheduler-Agent-Supervisor-Pattern.html)
@@ -37,3 +38,4 @@
 6. [StackOverflow: What is the difference between a saga, a process manager and a document-based approach?](https://stackoverflow.com/questions/15528015/what-is-the-difference-between-a-saga-a-process-manager-and-a-document-based-ap)
 7. [Clarifying the Saga Pattern](http://web.archive.org/web/20161205130022/http://kellabyte.com:80/2012/05/30/clarifying-the-saga-pattern)
 8. [Process Manager](https://www.enterpriseintegrationpatterns.com/patterns/messaging/ProcessManager.html)
+9. [StackOverflow: CQRS Saga](https://stackoverflow.com/questions/13489829/cqrs-sagas-did-i-understand-them-right)
