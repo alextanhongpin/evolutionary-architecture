@@ -29,6 +29,16 @@
 - for each transaction, there's a compensating action
 - saga is like an event handler, it receives event and publishes the command for the next step
 
+# Design
+- Workflow usually involves lifecycles from start to end
+- The definition of done depends on the usecases - it can be successful completion, partial termination due to errors, or compensation (like saga)
+- The state will be persisted for every intermediate steps
+- Each steps should be idempotent (it should be safe to execute it again)
+
+# Modelling workflow in REST api
+
+https://www.kennethlange.com/how-to-model-workflows-in-rest-apis/
+
 # References 
 1. [Cloud Architecture: The Scheduler-Agent-Supervisor Pattern](https://vasters.com/archive/Cloud-Architecture-The-Scheduler-Agent-Supervisor-Pattern.html)
 2. [Microsoft: Scheduler-agent-Supervisor](https://docs.microsoft.com/en-us/azure/architecture/patterns/scheduler-agent-supervisor)
