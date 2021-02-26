@@ -11,3 +11,4 @@
 ## Running distributed cron
 
 - running the cron in multiple instances requires some coordinate - allow only the leader to trigger the cronjob. Else, ensure the operation are immutable.
+- use pg advisory locks to prevent multiple process running at the same time
