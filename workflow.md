@@ -28,6 +28,9 @@
 - often designed as long living transactions where the required steps may not be known at design time 
 - for each transaction, there's a compensating action
 - saga is like an event handler, it receives event and publishes the command for the next step
+- saga allows for the implementation of long-running, distributed business transactions, executing a set of operations across multiple microservice, applying consistent all-or-nothing semantics [10]
+- communication pattern: for the sake of decoupling, communication between microservices should preferable happen asynchronously, for instance using distributed commit logs like Apache Kafka
+- the outbox pattern provides a solution for service authors to perform writes to their local database and send messages via Apache Kafka, without relying on unsafe "dual writes"
 
 # Design
 - Workflow usually involves lifecycles from start to end
@@ -49,3 +52,4 @@ https://www.kennethlange.com/how-to-model-workflows-in-rest-apis/
 7. [Clarifying the Saga Pattern](http://web.archive.org/web/20161205130022/http://kellabyte.com:80/2012/05/30/clarifying-the-saga-pattern)
 8. [Process Manager](https://www.enterpriseintegrationpatterns.com/patterns/messaging/ProcessManager.html)
 9. [StackOverflow: CQRS Saga](https://stackoverflow.com/questions/13489829/cqrs-sagas-did-i-understand-them-right)
+10. [Saga Orchestration Outbox](https://www.infoq.com/articles/saga-orchestration-outbox/)
