@@ -44,6 +44,18 @@
 https://www.kennethlange.com/how-to-model-workflows-in-rest-apis/
 
 # Where does workflow fits in DDD, EventSourcing or CQRS?
+https://github.com/symfony/symfony-docs/issues/10819
+# Long Running Processes
+
+- How to model long running processes correctly?
+https://www.slideshare.net/BerndRuecker/long-running-processes-in-ddd
+https://www.quora.com/Is-CQRS-and-DDD-suitable-for-building-workflow-automation
+https://stackoverflow.com/questions/1844498/workflow-foundation-with-ddd
+https://domaindrivendesign.yahoogroups.narkive.com/s4dQTLfv/ddd-and-workflow
+
+
+
+https://www.infoq.com/articles/events-workflow-automation/
 
 # State Machine vs Workflow
 https://jmettraux.wordpress.com/2009/07/03/state-machine-workflow-engine/
