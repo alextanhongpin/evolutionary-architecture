@@ -13,6 +13,7 @@
 - A process manager will retain state between messages, and will contain logic in order to determine which action should be taken in response to a message (for example, transitioning state or sending another message). 
 - Some frameworks incorrectly refer to these as sagas.
 - Process Manager is a processing unit that it's existing in order to mantain the state of the sequence and determine the next processing step based on intermediate results. It's a routing pattern. It's more like an Orchestrator Saga.
+- Process manager transforms events into commands. Events are fed into the state-machine to produce a command. See [11].
 
 # Saga
 
@@ -42,6 +43,23 @@
 
 https://www.kennethlange.com/how-to-model-workflows-in-rest-apis/
 
+# Where does workflow fits in DDD, EventSourcing or CQRS?
+
+# State Machine vs Workflow
+https://jmettraux.wordpress.com/2009/07/03/state-machine-workflow-engine/
+https://gist.github.com/andymatuschak/d5f0a8730ad601bcccae97e8398e25b2
+https://en.m.wikipedia.org/wiki/Event-driven_finite-state_machine
+https://bertilmuth.medium.com/kissing-the-state-machine-goodbye-eae80c090b3f
+https://doc.akka.io/docs/akka/current/typed/persistence-fsm.html
+https://sceweb.uhcl.edu/helm/RationalUnifiedProcess/process/modguide/md_stadm.htm
+https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/3/en/eventhandlers.html
+https://docs.microsoft.com/en-us/previous-versions/windows/desktop/cc853480(v=vs.85)
+https://stackoverflow.com/questions/4962755/why-are-commands-and-events-separately-represented
+https://softwareengineering.stackexchange.com/questions/319487/in-cqrs-es-can-a-command-create-another-command
+https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/saga/saga
+https://stackoverflow.com/questions/12001337/using-a-workflow-engine-state-machine-engine-or-rolling-my-own
+https://dzone.com/articles/event-sourcing-the-pains-of-wrongly-designed-aggre
+
 # References 
 1. [Cloud Architecture: The Scheduler-Agent-Supervisor Pattern](https://vasters.com/archive/Cloud-Architecture-The-Scheduler-Agent-Supervisor-Pattern.html)
 2. [Microsoft: Scheduler-agent-Supervisor](https://docs.microsoft.com/en-us/azure/architecture/patterns/scheduler-agent-supervisor)
@@ -53,3 +71,4 @@ https://www.kennethlange.com/how-to-model-workflows-in-rest-apis/
 8. [Process Manager](https://www.enterpriseintegrationpatterns.com/patterns/messaging/ProcessManager.html)
 9. [StackOverflow: CQRS Saga](https://stackoverflow.com/questions/13489829/cqrs-sagas-did-i-understand-them-right)
 10. [Saga Orchestration Outbox](https://www.infoq.com/articles/saga-orchestration-outbox/)
+11. [Long Running Processes: Event Sourcing in CQRS](https://medium.com/@drozzy/long-running-processes-event-sourcing-cqrs-c87fbb2ca644)
