@@ -6,6 +6,12 @@
 4. Saga (choreography and orchestration)
 5. The routing-slip pattern
 
+# State machine
+
+https://www.nurkiewicz.com/2009/09/state-pattern-introducing-domain-driven.html
+https://www.thereformedprogrammer.net/a-robust-event-driven-architecture-for-using-with-entity-framework-core/
+https://softwareengineering.stackexchange.com/questions/385771/domain-events-cqrs-and-dependency-resolution-in-handlers
+
 
 # Process Manager
 
