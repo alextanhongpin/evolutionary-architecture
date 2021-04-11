@@ -63,6 +63,41 @@ https://domaindrivendesign.yahoogroups.narkive.com/s4dQTLfv/ddd-and-workflow
 
 https://www.infoq.com/articles/events-workflow-automation/
 
+
+
+## Rule Engine
+https://docs.drools.org/6.0.0.CR3/drools-expert-docs/html_single/#d0e8782
+http://dwhbp.com/post/2011/10/30/Implementing-a-Business-Rule-Engine.aspx
+
+
+## Workflow Engine
+https://itnext.io/the-concept-of-workflow-engines-c14e8088283
+
+https://cadenceworkflow.io/docs/use-cases/periodic-execution/
+https://n8n.io
+https://docs.temporal.io/blog/temporal-a-central-brain-for-box/
+https://flowable.com/open-source/docs/bpmn/ch07b-BPMN-Constructs/#transactions-and-concurrency
+
+## Workflow vs State Machine
+https://stackoverflow.com/questions/8840527/what-is-the-difference-between-state-machine-and-workflow
+
+
+## Saga
+https://vasters.com/archive/Sagas.html
+https://dzone.com/articles/microservices-using-saga-pattern
+https://sunnyatticsoftware.com/blog/saga-vs-process-manager
+
+Scheduler Agent Supervisor Pattern
+https://docs.microsoft.com/en-us/azure/architecture/patterns/scheduler-agent-supervisor
+
+
+## Idempotency
+https://blog.jonathanoliver.com/idempotency-patterns/
+https://docs.microsoft.com/en-us/azure/architecture/patterns/compensating-transaction
+https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/
+
+
+
 # State Machine vs Workflow
 https://jmettraux.wordpress.com/2009/07/03/state-machine-workflow-engine/
 https://gist.github.com/andymatuschak/d5f0a8730ad601bcccae97e8398e25b2
