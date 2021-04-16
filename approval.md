@@ -16,3 +16,21 @@ https://docs.microsoft.com/en-us/flow/sequential-modern-approvals
 - Does it need approval from one, two, many
 - Is it sequential approval, or can it be simultaneous
 - Roles: Who has higher priority, and who has more access rights
+
+
+
+## Workflow approval system
+
+- each workflow step is configurable
+- workflow input should not depend on previous step output
+- each workflow step can be described as json
+- each step must have a set of required condition defined by approver
+- when the step condition is fulfilled, approver received the notification
+- once approver approved, the next step is executed
+
+each step condition
+- validator
+- participants (email)
+- approver
+- required fields
+- remarks 
