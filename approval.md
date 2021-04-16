@@ -34,3 +34,12 @@ each step condition
 - approver
 - required fields
 - remarks 
+
+
+## Change request system for database
+
+- user submit request to modify data
+- user defines when the data should change
+- system store the command
+- user can choose to cancel the command
+- when the time range hits, the system updates the data in the storage
