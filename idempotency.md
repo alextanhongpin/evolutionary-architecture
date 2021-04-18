@@ -1,3 +1,4 @@
+Idempotent manager
 ```go
 package main
 
@@ -6,7 +7,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"time"
 )
 
@@ -26,21 +26,37 @@ func main() {
 	fmt.Println("Hello, playground")
 }
 
+type jsonMarshaler interface {
+	MarshalJSON() ([]byte, error)
+	UnmarshalJSON([]byte, interface{}) error
+}
+
+type RequestParams interface {
+	jsonMarshaler
+	ID() string
+	Name() string
+}
+
+type ResponseParams interface {
+	jsonMarshaler
+}
+
+type RequestFn interface {
+	Do(ctx context.Context, req RequestParams) (ResponseParams, error)
+}
+
 type State struct {
 	ID             string
 	Name           string
 	Status         Status // When end
-	Version        int64
+	IdempotencyKey string
 	RequestParams  json.RawMessage // When start
 	ResponseParams json.RawMessage // When end
 	FailureReason  string          // When end
-
-	StartedAt  *time.Time // When start
-	CompleteBy *time.Time
-	CreatedAt  time.Time
-	UpdatedAt  time.Time
-
-	RetryAttempt int64
+	StartedAt      *time.Time      // When start
+	CompleteBy     *time.Time
+	CreatedAt      time.Time
+	UpdatedAt      time.Time
 }
 
 type SchedulerRepo interface {
@@ -53,76 +69,75 @@ type Scheduler struct {
 	repo SchedulerRepo
 }
 
-type AgentFunc func(ctx context.Context, in json.RawMessage) (json.RawMessage, error)
-
-func (s *Scheduler) Retry(ctx context.Context, id string, fn AgentFunc) error {
+func (s *Scheduler) Retry(ctx context.Context, id string, fn RequestFn) error {
 	state, err := s.repo.Find(ctx, id)
 	if err != nil {
 		return err
 	}
-	return s.Do(ctx, state, state.RequestParams, fn)
+	return s.Do(ctx, state, fn, )
 }
 
-func (s *Scheduler) Wrap(ctx context.Context, name, id string, req json.RawMessage, fn AgentFunc) error {
-	state, err := s.repo.Upsert(ctx, State{
-		ID:      id,
-		Name:    name,
-		Status:  StatusPending,
-		Version: 1,
-	})
+func (s *Scheduler) Do(ctx context.Context, state State, fn RequestFn, req RequestParams) error {
+	state, err := s.updateInit(ctx, req)
 	if err != nil {
-		log.Fatal(err)
-	}
-	return s.Do(ctx, state, req, fn)
-}
-
-func (s *Scheduler) Do(ctx context.Context, state State, req json.RawMessage, fn AgentFunc) error {
-	switch state.Status {
-	case StatusPending:
-		if state.StartedAt != nil {
-			return ErrProcessing
-		}
-	case StatusCompleted:
-		return ErrCompleted
-	case StatusFailed:
-		state.RetryAttempt++
-	default:
-		log.Fatalf("invalid status: %s", state.Status)
-	}
-
-	now := time.Now()
-	state.RequestParams = req
-	state.StartedAt = &now
-	if err := s.repo.Update(ctx, state); err != nil {
 		return err
 	}
+	if state.Status != StatusPending {
+		return ErrProcessing
+	}
+	if err := s.updateStart(ctx, state, req); err != nil {
+		return err
+	}
+	// If the server crash here, the request params would have been stored anyway.
+	// That way, we can just retry the operation.
 
 	// Do work
-	res, err := fn(ctx, req)
+	res, err := fn.Do(ctx, req)
+	// If the server crash here, we won't know unless we call back the source.
+	// This should be handle in the supervisor.
 	if err != nil {
-		state.Status = StatusFailed
-		state.ResponseParams = res
-		state.FailureReason = err.Error()
-		return s.repo.Update(ctx, state)
+		return s.updateFailure(ctx, state, res, err.Error())
 	}
-	state.Status = StatusCompleted
-	state.ResponseParams = res
-	state.FailureReason = ""
-	return s.repo.Update(ctx, state)
+	return s.updateSuccess(ctx, state, res)
 }
-
-type FlightScheduler struct {
-	Scheduler
-}
-
-func (f *FlightScheduler) BookFlight(ctx context.Context, id string, arrivalAt time.Time) {
-	f.Scheduler.Wrap(ctx, id, "flight-scheduler", json.RawMessage(`{"arrivedAt": %q}`), func(ctx context.Context, in json.RawMessage) (json.RawMessage, error) {
-		var req FlightRequest
-		if err := json.Unmarshal(in, &req); err != nil {
-			return nil, err
-		}
-		// Book flight through http request.
-		return nil, nil
+func (s *Scheduler) updateInit(ctx context.Context, req RequestParams) (State, error) {
+	state, err := s.repo.Upsert(ctx, State{
+		ID:     req.ID(),
+		Name:   req.Name(),
+		Status: StatusPending,
 	})
+	return state, err
+}
+
+func (s *Scheduler) updateStart(ctx context.Context, state State, req RequestParams) error {
+	started := state
+	now := time.Now()
+	started.StartedAt = &now
+	started.RequestParams, _ = req.MarshalJSON()
+	return s.repo.Update(ctx, started)
+}
+
+func (s *Scheduler) updateSuccess(ctx context.Context, state State, res ResponseParams) error {
+	success := state
+	success.Status = StatusCompleted
+	success.ResponseParams, _ = res.MarshalJSON()
+	success.FailureReason = ""
+	return s.repo.Update(ctx, success)
+}
+
+func (s *Scheduler) updateFailure(ctx context.Context, state State, res ResponseParams, failureReason string) error {
+	failed := state
+	failed.Status = StatusFailed
+	failed.ResponseParams, _ = res.MarshalJSON()
+	failed.FailureReason = failureReason
+	return s.repo.Update(ctx, failed)
+}
+
+type Supervisor struct{}
+
+func (s *Supervisor) Validate() {
+	// Find expired
+	// Check against external API response, if they are completed, mark them as completed with the value response.
+	// Else, mark them back as pending.
 }
 ```
