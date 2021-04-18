@@ -43,3 +43,36 @@ each step condition
 - system store the command
 - user can choose to cancel the command
 - when the time range hits, the system updates the data in the storage
+
+# approver define single step workflow
+
+- approver create a new approval workflow
+- approver define the fields that are required
+- approver define who can be the requesters (through email)
+- approver save workflow
+
+# approver define multi step workflow
+- approver create a new approval workflow
+- approver add step 1
+- approver define the fields that are required
+- approver define who can be the requesters (through email)
+- approver repeat for the number of steps
+- approver save workflow
+
+# Requested request approval
+- requester view all the list of workflow available
+- requester choose the desired workflow
+- requester submit the relevant details
+- system send notification to the approver
+
+# Approver reject request
+- approver view the notification
+- approver click reject with comment
+- system send notification to the requester
+
+
+# Approver approve request
+- approver view the notification
+- approver click approve with comment
+- system sends notification to the requester
+- if the step is multi-step, the next series of requesters will be notified
