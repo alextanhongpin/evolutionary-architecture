@@ -28,7 +28,7 @@ func main() {
 
 type jsonMarshaler interface {
 	MarshalJSON() ([]byte, error)
-	UnmarshalJSON([]byte, interface{}) error
+	UnmarshalJSON(interface{}) error
 }
 
 type RequestParams interface {
@@ -69,12 +69,34 @@ type Scheduler struct {
 	repo SchedulerRepo
 }
 
+type requestParams struct {
+	id, name string
+	payload  []byte
+}
+
+func (r requestParams) ID() string {
+	return r.id
+}
+func (r requestParams) Name() string {
+	return r.name
+}
+func (r requestParams) MarshalJSON() ([]byte, error) {
+	return r.payload, nil
+}
+func (r *requestParams) UnmarshalJSON(v interface{}) error {
+	return nil
+}
+
 func (s *Scheduler) Retry(ctx context.Context, id string, fn RequestFn) error {
 	state, err := s.repo.Find(ctx, id)
 	if err != nil {
 		return err
 	}
-	return s.Do(ctx, state, fn, )
+	return s.Do(ctx, state, fn, &requestParams{
+		id:      state.ID,
+		name:    state.Name,
+		payload: state.RequestParams,
+	})
 }
 
 func (s *Scheduler) Do(ctx context.Context, state State, fn RequestFn, req RequestParams) error {
@@ -91,13 +113,17 @@ func (s *Scheduler) Do(ctx context.Context, state State, fn RequestFn, req Reque
 	// If the server crash here, the request params would have been stored anyway.
 	// That way, we can just retry the operation.
 
-	// Do work
+	// Do work (how to wrap this in pg-advisory?)
+	// Store the State in context?
 	res, err := fn.Do(ctx, req)
+
 	// If the server crash here, we won't know unless we call back the source.
 	// This should be handle in the supervisor.
 	if err != nil {
 		return s.updateFailure(ctx, state, res, err.Error())
 	}
+
+	// If the server crash here, the status will remain pending. It is up to the supervisor to reconcile.
 	return s.updateSuccess(ctx, state, res)
 }
 func (s *Scheduler) updateInit(ctx context.Context, req RequestParams) (State, error) {
