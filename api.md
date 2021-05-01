@@ -157,3 +157,9 @@ DELETE /songs/:id/unfollow
 
 The first option requires us to return the status to indicate if the user has successfully followed or unfollowed a song.
 The second is easier, since we know which endpoint we are calling. There operation is idempotent too - triggering it multiple times will not cause error - you can only follow once, or unfollow once.
+
+
+## Custom Methods
+https://cloud.google.com/apis/design/custom_methods
+
+
