@@ -86,7 +86,7 @@ https://stackoverflow.com/questions/8840527/what-is-the-difference-between-state
 https://vasters.com/archive/Sagas.html
 https://dzone.com/articles/microservices-using-saga-pattern
 https://sunnyatticsoftware.com/blog/saga-vs-process-manager
-
+https://blog.jonathanoliver.com/cqrs-sagas-with-event-sourcing-part-ii-of-ii/
 Scheduler Agent Supervisor Pattern
 https://docs.microsoft.com/en-us/azure/architecture/patterns/scheduler-agent-supervisor
 
