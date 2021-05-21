@@ -113,6 +113,8 @@ https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/saga
 https://stackoverflow.com/questions/12001337/using-a-workflow-engine-state-machine-engine-or-rolling-my-own
 https://dzone.com/articles/event-sourcing-the-pains-of-wrongly-designed-aggre
 
+Serverless workflow implementation https://serverlessworkflow.io/
+
 # References 
 1. [Cloud Architecture: The Scheduler-Agent-Supervisor Pattern](https://vasters.com/archive/Cloud-Architecture-The-Scheduler-Agent-Supervisor-Pattern.html)
 2. [Microsoft: Scheduler-agent-Supervisor](https://docs.microsoft.com/en-us/azure/architecture/patterns/scheduler-agent-supervisor)
