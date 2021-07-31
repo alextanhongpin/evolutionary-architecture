@@ -163,3 +163,10 @@ The second is easier, since we know which endpoint we are calling. There operati
 https://cloud.google.com/apis/design/custom_methods
 
 
+## Custom Methods and non-restful issue
+
+- bulk create/update/delete
+- finding an entity by a non primary key
+  - e.g. getting users by email, this however could return many `GET /users?email=xyz`
+- stateful operations like updating status, updating single field
+
