@@ -170,3 +170,6 @@ https://cloud.google.com/apis/design/custom_methods
   - e.g. getting users by email, this however could return many `GET /users?email=xyz`
 - stateful operations like updating status, updating single field
 
+
+## fetching nested resources
+https://medium.com/strands-tech-corner/how-to-manage-nested-resources-lists-of-nested-sub-resources-in-a-rest-api-2e642fc6c147
