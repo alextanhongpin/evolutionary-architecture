@@ -509,3 +509,5 @@ https://github.com/awnumar/memguard
 ## Secrets with Sops
 
 https://github.com/mozilla/sops
+
+https://github.com/toniblyx/prowler#requirements-and-installation
