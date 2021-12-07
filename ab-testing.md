@@ -47,6 +47,12 @@ A/B Testing is not blue-green deployments. A/B Testing is for measuring function
 - basic algorithm to compute the results includes just basic counter, chi-test
 
 
+## Variations
+
+- what other variations of a/b testing do we have?
+- how to seamlessly integrate the a/b testing into applications?
+
+
 ## References
 - http://blog.richardweiss.org/2016/12/25/hash-splits.html
 - https://blog.offerup.com/a-good-hash-is-hard-to-find-60e8a201e8ce
